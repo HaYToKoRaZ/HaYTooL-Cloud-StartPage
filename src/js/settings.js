@@ -7,7 +7,7 @@ export const Settings = {
     showClock: true, showSeconds: true, showGreeting: true, 
     showWeather: true, showFavBar: true, showQuote: true,
     folderColumns: 6, folderIconSize: 32, showSearchBar: true, showTopLangSelector: true, showThemeBtn: true,
-    timezone: 'auto', iconApi: 'iconhorse',
+    timezone: 'auto', iconApi: 'iconhorse', showImportBtn: true,
     weatherCityObj: null // { name: "Kadıköy", country: "Türkiye", lat: 40.9, lon: 29.0 }
   },
   
@@ -60,6 +60,7 @@ export const Settings = {
     this.vis('topLangPicker', this.config.showTopLangSelector !== false);
     this.vis('topThemeBtn', this.config.showThemeBtn !== false);
     this.vis('favBarSection',     this.config.showFavBar);
+    this.vis('bookmarkImportBtn', this.config.showImportBtn !== false);
     
 
     // Folder cols CSS Variable ile çözüldü
@@ -142,6 +143,9 @@ export const Settings = {
         const nFav = document.getElementById('toggleFavBar').checked;
         if (nFav !== config.showFavBar) { config.showFavBar = nFav; changed = true; }
 
+        const nImport = document.getElementById('toggleImportBtn')?.checked;
+        if (nImport !== undefined && nImport !== config.showImportBtn) { config.showImportBtn = nImport; changed = true; }
+
         const tzSel = document.getElementById('timezoneSelect');
         if (tzSel && tzSel.value !== config.timezone) { config.timezone = tzSel.value; changed = true; }
 
@@ -197,7 +201,54 @@ export const Settings = {
         a.download = 'haytool_backup_' + new Date().toISOString().slice(0,10) + '.json';
         a.click();
         URL.revokeObjectURL(url);
-        this.toast(I18n.t('toast_backup_downloaded'));
+        this.toast(I18n.t('toast_backup_downloaded', 'Yedek indirildi'));
+      });
+    }
+
+    const expHtmlBtn = document.getElementById('exportHtmlBtn');
+    if (expHtmlBtn) {
+      expHtmlBtn.addEventListener('click', async () => {
+        const favs = await Storage.get('favorites_bar', []);
+        const cats = await Storage.get('shortcut_categories', []);
+        const items = await Storage.get('shortcuts_v2', []);
+        
+        let html = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>Bookmarks</TITLE>
+<H1>Bookmarks</H1>
+<DL><p>\n`;
+        
+        if (favs && favs.length > 0) {
+          html += `    <DT><H3>HaYTooL Favorites</H3>\n    <DL><p>\n`;
+          favs.forEach(f => {
+            html += `        <DT><A HREF="${f.url}">${f.title}</A>\n`;
+          });
+          html += `    </DL><p>\n`;
+        }
+
+        if (cats && cats.length > 0) {
+          cats.forEach(c => {
+            const cItems = items.filter(i => i.categoryId === c.id);
+            if (cItems.length > 0) {
+              html += `    <DT><H3>${c.name}</H3>\n    <DL><p>\n`;
+              cItems.forEach(i => {
+                html += `        <DT><A HREF="${i.url}">${i.title}</A>\n`;
+              });
+              html += `    </DL><p>\n`;
+            }
+          });
+        }
+
+        html += `</DL><p>\n`;
+
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'haytool_bookmarks_' + new Date().toISOString().slice(0,10) + '.html';
+        a.click();
+        URL.revokeObjectURL(url);
+        this.toast(I18n.t('toast_backup_downloaded', 'HTML yer imleri dışa aktarıldı!'));
       });
     }
 
@@ -332,6 +383,7 @@ export const Settings = {
     t('toggleFavBar',         this.config.showFavBar);
     t('toggleSearchBar',      this.config.showSearchBar);
     t('toggleTopLang',        this.config.showTopLangSelector !== false);
+    t('toggleImportBtn',      this.config.showImportBtn !== false);
     
     const input = document.getElementById('weatherCityInput');
     if (input && this.config.weatherCityObj) {

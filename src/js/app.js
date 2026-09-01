@@ -26,7 +26,7 @@ class StartPageApp {
         Favorites.render();
       });
       
-      console.log('✨ HaYTooL Cloud StartPage v3.0.0 - hazır.');
+      console.log('✨ HaYTooL Cloud StartPage v4.0.0 - hazır.');
     } catch (err) {
       console.error('[App] Başlatma hatası:', err);
     }

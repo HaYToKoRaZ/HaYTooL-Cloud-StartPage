@@ -92,7 +92,7 @@
   <!-- ====== FOOTER ====== -->
   <footer class="bottom-bar">
     <div id="quoteBox" class="quote-box"></div>
-    <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage" target="_blank" rel="noopener noreferrer" class="footer-brand" style="text-decoration:none; color:inherit; transition: color 0.2s;">HaYTooL StartPage v3.0.0</a>
+    <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage" target="_blank" rel="noopener noreferrer" class="footer-brand" style="text-decoration:none; color:inherit; transition: color 0.2s;">HaYTooL StartPage v4.0.0</a>
   </footer>
 
   <!-- ====== FAVORİ EKLE MODAL ====== -->
@@ -390,6 +390,10 @@
           <span data-i18n="show_fav_bar">Favorites Bar</span>
           <label class="switch"><input type="checkbox" id="toggleFavBar" checked><span class="slider"></span></label>
         </div>
+        <div class="toggle-item">
+          <span data-i18n="settings_show_import_btn">Show "Import Bookmarks" Button</span>
+          <label class="switch"><input type="checkbox" id="toggleImportBtn" checked><span class="slider"></span></label>
+        </div>
       </div>
 
       <!-- Yedekleme -->
@@ -402,6 +406,7 @@
             <input type="file" id="importDataInput" accept=".json" style="display:none;">
           </label>
         </div>
+        <button type="button" id="exportHtmlBtn" class="btn-secondary" style="width:100%;margin-bottom:0.5rem;border-color:var(--accent-primary);color:var(--accent-primary);" data-i18n="btn_export_html">Export as Standard HTML Bookmarks</button>
         <button type="button" id="resetSettingsBtn" class="btn-secondary" style="width:100%;color:var(--accent-rose);border-color:rgba(244,63,94,0.3);" data-i18n="btn_reset_all">Reset All Data</button>
       </div>
 
