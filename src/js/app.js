@@ -19,7 +19,8 @@ class StartPageApp {
       this.initClock();
       
       this.initGlobalKeys();
-      console.log('🚀 HaYTooL Cloud StartPage v2.0.0 – hazır.');
+      this.initSearchBar();
+      console.log('?? HaYTooL Cloud StartPage v2.0.0 - hazr.');
     } catch (err) {
       console.error('[App] Başlatma hatası:', err);
     }
@@ -91,6 +92,48 @@ class StartPageApp {
         document.querySelectorAll('.modal-overlay.active').forEach(el => el.classList.remove('active'));
     });
   }
-}
+
+  async initSearchBar() {
+    const searchContainer = document.getElementById('topSearchBarContainer');
+    const searchForm = document.getElementById('topSearchForm');
+    const searchInput = document.getElementById('topSearchInput');
+    const engineSelect = document.getElementById('topSearchEngineSelect');
+    
+    // Initial display setting
+    if (Settings.config && Settings.config.showSearchBar === false) {
+      if (searchContainer) searchContainer.style.display = 'none';
+    }
+
+    const savedEngine = await Storage.get('search_engine', 'google');
+    if (engineSelect) {
+      engineSelect.value = savedEngine;
+      engineSelect.addEventListener('change', (e) => {
+        Storage.set('search_engine', e.target.value);
+      });
+    }
+
+    if (searchForm) {
+      searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const q = searchInput.value.trim();
+        if (!q) return;
+        const engine = engineSelect.value || 'google';
+        let url = '';
+        switch (engine) {
+          case 'yandex': url = 'https://yandex.com/search/?text=' + encodeURIComponent(q); break;
+          case 'bing': url = 'https://www.bing.com/search?q=' + encodeURIComponent(q); break;
+          case 'duckduckgo': url = 'https://duckduckgo.com/?q=' + encodeURIComponent(q); break;
+          case 'youtube': url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q); break;
+          case 'chatgpt': url = 'https://chatgpt.com/?q=' + encodeURIComponent(q); break;
+          case 'perplexity': url = 'https://www.perplexity.ai/search?q=' + encodeURIComponent(q); break;
+          case 'gemini': url = 'https://gemini.google.com/app'; break;
+          case 'claude': url = 'https://claude.ai/new'; break;
+          default: url = 'https://www.google.com/search?q=' + encodeURIComponent(q); break;
+        }
+        window.open(url, '_blank');
+        searchInput.value = '';
+      });
+    }
+  }
 
 document.addEventListener('DOMContentLoaded', () => new StartPageApp().init());
