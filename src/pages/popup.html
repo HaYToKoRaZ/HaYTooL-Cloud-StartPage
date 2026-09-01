@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add to HaYTooL StartPage</title>
+  <link rel="stylesheet" href="../css/popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="popup-header">
+      <img src="../assets/icons/icon32.png" alt="Logo" class="logo">
+      <h2 id="titleLabel">Add Shortcut</h2>
+    </div>
+    
+    <div class="popup-body">
+      <form id="addForm">
+        <div class="form-group">
+          <label for="titleInput">Title</label>
+          <input type="text" id="titleInput" class="form-input" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="urlInput">URL</label>
+          <input type="url" id="urlInput" class="form-input" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="folderSelect">Save to</label>
+          <select id="folderSelect" class="form-input">
+            <!-- Populated dynamically -->
+            <option value="_favorites">⭐ Favorites Bar</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="btn-primary" id="saveBtn">Save</button>
+      </form>
+      <div id="successMsg" class="success-msg" style="display:none;">
+        ✅ Shortcut saved successfully!
+      </div>
+    </div>
+  </div>
+  <script src="../js/popup.js" type="module"></script>
+</body>
+</html>
