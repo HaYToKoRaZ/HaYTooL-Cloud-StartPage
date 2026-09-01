@@ -110,5 +110,11 @@
   "lang_tr": "🇹🇷 Türkçe",
   "lang_en": "🇬🇧 English",
   "toast_backup_downloaded": "Yedek başarıyla indirildi!",
-  "toast_backup_uploaded": "Yedek başarıyla yüklendi! Sayfa yenileniyor..."
+  "toast_backup_uploaded": "Yedek başarıyla yüklendi! Sayfa yenileniyor...",
+  "menu_shortlist": "Kısa Liste (10 Link)",
+  "menu_rename": "Yeniden Adlandır",
+  "menu_sort": "Linkleri A-Z Sırala",
+  "menu_update_icons": "İkonları Toplu Güncelle",
+  "menu_delete_folder": "Klasörü Sil",
+  "show_fav_bar": "Favori Barı"
 }
