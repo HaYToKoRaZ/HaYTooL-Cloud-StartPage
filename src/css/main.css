@@ -1879,7 +1879,7 @@ body[data-cols="10"] .folders-grid { grid-template-columns: repeat(10, 1fr) !imp
   cursor: pointer;
   opacity: 0.6;
   padding: 0.4rem;
-  margin-left: auto; /* saa yasla */
+  margin-right: 0.5rem; /* Sola yaslı olduğu için sağdan boşluk veriyoruz */
   transition: opacity 0.2s;
 }
 .fav-global-opt-btn:hover { opacity: 1; }
@@ -1902,16 +1902,17 @@ body[data-cols="10"] .folders-grid { grid-template-columns: repeat(10, 1fr) !imp
 }
 .fav-bar-container.view-list .fav-item-link,
 .fav-bar-container.view-shortlist .fav-item-link {
-  flex-direction: row;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
 }
 .fav-bar-container.view-list .fav-item-label,
 .fav-bar-container.view-shortlist .fav-item-label {
-  margin-top: 0;
-  margin-left: 0.5rem;
+  margin-top: 0.4rem;
+  margin-left: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: block;
 }
 
 /* --- DÜZENLE BUTONLARI --- */
@@ -1973,3 +1974,4 @@ body[data-cols="10"] .folders-grid { grid-template-columns: repeat(10, 1fr) !imp
 .fav-list-btn {
   right: 66px; /* Liste düzenle butonunun solunda */
 }
+.fav-bar-container.view-icon .fav-item-label { display: none; }

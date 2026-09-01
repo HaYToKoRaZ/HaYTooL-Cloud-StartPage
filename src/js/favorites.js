@@ -24,6 +24,17 @@ export const Favorites = {
     const limit = 10;
     const isShortlist = (this.view === 'shortlist');
 
+        // Ayarlar butonu (En Sola)
+    const optBtn = document.createElement('button');
+    optBtn.className = 'fav-global-opt-btn';
+    optBtn.innerHTML = '⚙️';
+    optBtn.title = 'Favoriler Barı Görünümü';
+    optBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      this._showGlobalMenu(e);
+    });
+    bar.appendChild(optBtn);
+
     this.items.forEach((fav, idx) => {
       const item = this._makeFavItem(fav, idx);
       if (isShortlist && idx >= limit) {
@@ -48,7 +59,7 @@ export const Favorites = {
     const addBtn = document.createElement('button');
     addBtn.className = 'fav-add-btn';
     addBtn.title = 'Favori Ekle';
-    addBtn.innerHTML = this.view === 'icon' ? '<span class="fav-add-icon">+</span><span class="fav-item-label">Ekle</span>' : '<span class="fav-add-icon">+</span><span>Ekle</span>';
+    addBtn.innerHTML = this.view === 'icon' ? '<span class="fav-add-icon" style="font-size:1.4rem;">+</span>' : '<span class="fav-add-icon">+</span><span class="fav-item-label">Ekle</span>';
     addBtn.addEventListener('click', () => { 
       const m = document.getElementById('favAddModal'); 
       m.removeAttribute('data-edit-idx'); 
@@ -58,16 +69,7 @@ export const Favorites = {
     });
     bar.appendChild(addBtn);
 
-    // Ayarlar butonu
-    const optBtn = document.createElement('button');
-    optBtn.className = 'fav-global-opt-btn';
-    optBtn.innerHTML = '⚙️';
-    optBtn.title = 'Favoriler Barı Görünümü';
-    optBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      this._showGlobalMenu(e);
-    });
-    bar.appendChild(optBtn);
+
   },
 
   _makeFavItem(fav, idx) {
