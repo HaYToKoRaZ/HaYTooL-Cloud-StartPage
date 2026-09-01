@@ -7,7 +7,7 @@ export const Settings = {
     showClock: true, showSeconds: true, showGreeting: true, 
     showWeather: true, showFavBar: true, showQuote: true,
     folderColumns: 6, folderIconSize: 32, showSearchBar: true, showTopLangSelector: true, showThemeBtn: true,
-    timezone: 'auto', iconApi: 'google-hd',
+    timezone: 'auto', iconApi: 'iconhorse',
     weatherCityObj: null // { name: "Kadıköy", country: "Türkiye", lat: 40.9, lon: 29.0 }
   },
   
@@ -116,7 +116,7 @@ export const Settings = {
         const nIcon = parseInt(document.getElementById('iconSizeSelect')?.value) || 32;
         if (nIcon !== config.folderIconSize) { config.folderIconSize = nIcon; changed = true; }
         
-        const nIconApi = document.getElementById('iconApiSelect')?.value || 'google-hd';
+        const nIconApi = document.getElementById('iconApiSelect')?.value || 'iconhorse';
         if (nIconApi !== config.iconApi) { config.iconApi = nIconApi; changed = true; }
         
         const nClk = document.getElementById('toggleClock').checked;
