@@ -24,16 +24,7 @@ export const Favorites = {
     const limit = 10;
     const isShortlist = (this.view === 'shortlist');
 
-        // Ayarlar butonu (En Sola)
-    const optBtn = document.createElement('button');
-    optBtn.className = 'fav-global-opt-btn';
-    optBtn.innerHTML = '⚙️';
-    optBtn.title = 'Favoriler Barı Görünümü';
-    optBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      this._showGlobalMenu(e);
-    });
-    bar.appendChild(optBtn);
+    
 
     this.items.forEach((fav, idx) => {
       const item = this._makeFavItem(fav, idx);
@@ -68,6 +59,17 @@ export const Favorites = {
       m.classList.add('active'); 
     });
     bar.appendChild(addBtn);
+
+    // Ayarlar butonu (En Sağa)
+    const optBtn = document.createElement('button');
+    optBtn.className = 'fav-global-opt-btn';
+    optBtn.innerHTML = '⚙️';
+    optBtn.title = 'Favoriler Barı Görünümü';
+    optBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      this._showGlobalMenu(e);
+    });
+    bar.appendChild(optBtn);
 
 
   },
@@ -127,8 +129,7 @@ export const Favorites = {
     const check = v => this.view === v ? '✓ ' : '　';
     const items = [
       { label: check('icon') + '⊞ İkon Görünümü', action: () => this._setView('icon') },
-      { label: check('list') + '📋 Tam Liste Görünümü', action: () => this._setView('list') },
-      { label: check('shortlist') + '📃 Kısa Liste (10 Link)', action: () => this._setView('shortlist') }
+      { label: check('list') + '📋 Liste Görünümü', action: () => this._setView('list') }
     ];
 
     items.forEach(it => {
