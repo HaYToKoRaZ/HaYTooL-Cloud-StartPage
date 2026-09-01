@@ -10,6 +10,21 @@ export const Favorites = {
   view: 'icon',
 
   async init() {
+    const isFirstRun = await Storage.get('is_fav_first_run_v3', true);
+    if (isFirstRun) {
+      const genId = () => Date.now().toString() + Math.random().toString(36).substr(2, 5);
+      const defaultFavs = [
+        { id: genId(), title: 'YouTube', url: 'https://www.youtube.com' },
+        { id: genId(), title: 'ChatGPT', url: 'https://chat.openai.com' },
+        { id: genId(), title: 'GitHub', url: 'https://github.com' },
+        { id: genId(), title: 'Gmail', url: 'https://mail.google.com' },
+        { id: genId(), title: 'Spotify', url: 'https://open.spotify.com' },
+        { id: genId(), title: 'Google', url: 'https://www.google.com' }
+      ];
+      await Storage.set(this.FAV_KEY, defaultFavs);
+      await Storage.set('is_fav_first_run_v3', false);
+    }
+
     this.items = await Storage.get(this.FAV_KEY, []);
     this.view  = await Storage.get(this.VIEW_KEY, 'icon');
     this.render();
