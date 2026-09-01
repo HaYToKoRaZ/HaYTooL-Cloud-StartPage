@@ -18,7 +18,6 @@ export const Favorites = {
         { id: genId(), title: 'WhatsApp', url: 'https://web.whatsapp.com' },
         { id: genId(), title: 'Wikipedia', url: 'https://www.wikipedia.org' },
         { id: genId(), title: 'Reddit', url: 'https://www.reddit.com' },
-        { id: genId(), title: 'Pinterest', url: 'https://www.pinterest.com' },
         { id: genId(), title: 'Outlook', url: 'https://outlook.live.com' },
         { id: genId(), title: 'Gmail', url: 'https://mail.google.com' }
       ];

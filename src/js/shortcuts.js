@@ -100,40 +100,108 @@ export const Shortcuts = {
     const genId = () => Date.now().toString() + Math.random().toString(36).substr(2, 5);
     const cats = [
       { id: 'cat_1', name: 'Sosyal Medya', icon: '📱', col: 1, order: 0 },
-      { id: 'cat_2', name: 'Haberler', icon: '📰', col: 2, order: 0 },
-      { id: 'cat_3', name: 'Eğlence', icon: '🎬', col: 3, order: 0 },
-      { id: 'cat_4', name: 'Üretkenlik', icon: '💻', col: 4, order: 0 },
-      { id: 'cat_5', name: 'Alışveriş', icon: '🛒', col: 5, order: 0 },
-      { id: 'cat_6', name: 'Geliştirici', icon: '👨‍💻', col: 6, order: 0 }
+      { id: 'cat_2', name: 'Sohbet', icon: '💬', col: 1, order: 1 },
+      
+      { id: 'cat_3', name: 'Haberler', icon: '📰', col: 2, order: 0 },
+      { id: 'cat_4', name: 'Spor', icon: '⚽', col: 2, order: 1 },
+      
+      { id: 'cat_5', name: 'Eğlence', icon: '🎬', col: 3, order: 0 },
+      { id: 'cat_6', name: 'Müzik', icon: '🎵', col: 3, order: 1 },
+      
+      { id: 'cat_7', name: 'Üretkenlik', icon: '💻', col: 4, order: 0 },
+      { id: 'cat_8', name: 'Eğitim', icon: '📚', col: 4, order: 1 },
+      
+      { id: 'cat_9', name: 'Alışveriş', icon: '🛒', col: 5, order: 0 },
+      { id: 'cat_10', name: 'Finans', icon: '💰', col: 5, order: 1 },
+      
+      { id: 'cat_11', name: 'Geliştirici', icon: '👨‍💻', col: 6, order: 0 },
+      { id: 'cat_12', name: 'Teknoloji', icon: '🚀', col: 6, order: 1 }
     ];
     
     const items = [
-      // Sosyal
+      // 1. Sosyal Medya
       { id: genId(), categoryId: 'cat_1', title: 'Facebook', url: 'https://www.facebook.com' },
       { id: genId(), categoryId: 'cat_1', title: 'X (Twitter)', url: 'https://twitter.com' },
       { id: genId(), categoryId: 'cat_1', title: 'Instagram', url: 'https://www.instagram.com' },
       { id: genId(), categoryId: 'cat_1', title: 'LinkedIn', url: 'https://www.linkedin.com' },
-      // Haber
-      { id: genId(), categoryId: 'cat_2', title: 'Google News', url: 'https://news.google.com' },
-      { id: genId(), categoryId: 'cat_2', title: 'BBC News', url: 'https://www.bbc.com/news' },
-      { id: genId(), categoryId: 'cat_2', title: 'CNN', url: 'https://edition.cnn.com' },
-      // Eğlence
-      { id: genId(), categoryId: 'cat_3', title: 'YouTube', url: 'https://www.youtube.com' },
-      { id: genId(), categoryId: 'cat_3', title: 'Netflix', url: 'https://www.netflix.com' },
-      { id: genId(), categoryId: 'cat_3', title: 'Spotify', url: 'https://open.spotify.com' },
-      { id: genId(), categoryId: 'cat_3', title: 'Twitch', url: 'https://www.twitch.tv' },
-      // Üretkenlik
-      { id: genId(), categoryId: 'cat_4', title: 'Gmail', url: 'https://mail.google.com' },
-      { id: genId(), categoryId: 'cat_4', title: 'Google Drive', url: 'https://drive.google.com' },
-      { id: genId(), categoryId: 'cat_4', title: 'ChatGPT', url: 'https://chat.openai.com' },
-      // Alışveriş
-      { id: genId(), categoryId: 'cat_5', title: 'Amazon', url: 'https://www.amazon.com' },
-      { id: genId(), categoryId: 'cat_5', title: 'AliExpress', url: 'https://www.aliexpress.com' },
-      { id: genId(), categoryId: 'cat_5', title: 'eBay', url: 'https://www.ebay.com' },
-      // Geliştirici
-      { id: genId(), categoryId: 'cat_6', title: 'GitHub', url: 'https://github.com' },
-      { id: genId(), categoryId: 'cat_6', title: 'Stack Overflow', url: 'https://stackoverflow.com' },
-      { id: genId(), categoryId: 'cat_6', title: 'CodePen', url: 'https://codepen.io' }
+      { id: genId(), categoryId: 'cat_1', title: 'TikTok', url: 'https://www.tiktok.com' },
+      
+      // 2. Sohbet
+      { id: genId(), categoryId: 'cat_2', title: 'Telegram', url: 'https://web.telegram.org' },
+      { id: genId(), categoryId: 'cat_2', title: 'Discord', url: 'https://discord.com' },
+      { id: genId(), categoryId: 'cat_2', title: 'Skype', url: 'https://www.skype.com' },
+      { id: genId(), categoryId: 'cat_2', title: 'Slack', url: 'https://slack.com' },
+      { id: genId(), categoryId: 'cat_2', title: 'Messenger', url: 'https://www.messenger.com' },
+      
+      // 3. Haberler
+      { id: genId(), categoryId: 'cat_3', title: 'Google News', url: 'https://news.google.com' },
+      { id: genId(), categoryId: 'cat_3', title: 'BBC News', url: 'https://www.bbc.com/news' },
+      { id: genId(), categoryId: 'cat_3', title: 'CNN', url: 'https://edition.cnn.com' },
+      { id: genId(), categoryId: 'cat_3', title: 'NY Times', url: 'https://www.nytimes.com' },
+      { id: genId(), categoryId: 'cat_3', title: 'Reuters', url: 'https://www.reuters.com' },
+      
+      // 4. Spor
+      { id: genId(), categoryId: 'cat_4', title: 'ESPN', url: 'https://www.espn.com' },
+      { id: genId(), categoryId: 'cat_4', title: 'Marca', url: 'https://www.marca.com' },
+      { id: genId(), categoryId: 'cat_4', title: 'Goal', url: 'https://www.goal.com' },
+      { id: genId(), categoryId: 'cat_4', title: 'Bleacher Report', url: 'https://bleacherreport.com' },
+      { id: genId(), categoryId: 'cat_4', title: 'Sky Sports', url: 'https://www.skysports.com' },
+      
+      // 5. Eğlence
+      { id: genId(), categoryId: 'cat_5', title: 'YouTube', url: 'https://www.youtube.com' },
+      { id: genId(), categoryId: 'cat_5', title: 'Netflix', url: 'https://www.netflix.com' },
+      { id: genId(), categoryId: 'cat_5', title: 'Twitch', url: 'https://www.twitch.tv' },
+      { id: genId(), categoryId: 'cat_5', title: 'Disney+', url: 'https://www.disneyplus.com' },
+      { id: genId(), categoryId: 'cat_5', title: 'Prime Video', url: 'https://www.primevideo.com' },
+      
+      // 6. Müzik
+      { id: genId(), categoryId: 'cat_6', title: 'Spotify', url: 'https://open.spotify.com' },
+      { id: genId(), categoryId: 'cat_6', title: 'SoundCloud', url: 'https://soundcloud.com' },
+      { id: genId(), categoryId: 'cat_6', title: 'Apple Music', url: 'https://music.apple.com' },
+      { id: genId(), categoryId: 'cat_6', title: 'Deezer', url: 'https://www.deezer.com' },
+      { id: genId(), categoryId: 'cat_6', title: 'Tidal', url: 'https://tidal.com' },
+      
+      // 7. Üretkenlik
+      { id: genId(), categoryId: 'cat_7', title: 'Google Drive', url: 'https://drive.google.com' },
+      { id: genId(), categoryId: 'cat_7', title: 'Notion', url: 'https://www.notion.so' },
+      { id: genId(), categoryId: 'cat_7', title: 'Trello', url: 'https://trello.com' },
+      { id: genId(), categoryId: 'cat_7', title: 'Asana', url: 'https://asana.com' },
+      { id: genId(), categoryId: 'cat_7', title: 'Evernote', url: 'https://evernote.com' },
+      
+      // 8. Eğitim
+      { id: genId(), categoryId: 'cat_8', title: 'Coursera', url: 'https://www.coursera.org' },
+      { id: genId(), categoryId: 'cat_8', title: 'Udemy', url: 'https://www.udemy.com' },
+      { id: genId(), categoryId: 'cat_8', title: 'Khan Academy', url: 'https://www.khanacademy.org' },
+      { id: genId(), categoryId: 'cat_8', title: 'edX', url: 'https://www.edx.org' },
+      { id: genId(), categoryId: 'cat_8', title: 'Duolingo', url: 'https://www.duolingo.com' },
+      
+      // 9. Alışveriş
+      { id: genId(), categoryId: 'cat_9', title: 'Amazon', url: 'https://www.amazon.com' },
+      { id: genId(), categoryId: 'cat_9', title: 'AliExpress', url: 'https://www.aliexpress.com' },
+      { id: genId(), categoryId: 'cat_9', title: 'eBay', url: 'https://www.ebay.com' },
+      { id: genId(), categoryId: 'cat_9', title: 'Walmart', url: 'https://www.walmart.com' },
+      { id: genId(), categoryId: 'cat_9', title: 'Etsy', url: 'https://www.etsy.com' },
+      
+      // 10. Finans
+      { id: genId(), categoryId: 'cat_10', title: 'Yahoo Finance', url: 'https://finance.yahoo.com' },
+      { id: genId(), categoryId: 'cat_10', title: 'Bloomberg', url: 'https://www.bloomberg.com' },
+      { id: genId(), categoryId: 'cat_10', title: 'Forbes', url: 'https://www.forbes.com' },
+      { id: genId(), categoryId: 'cat_10', title: 'Investing', url: 'https://www.investing.com' },
+      { id: genId(), categoryId: 'cat_10', title: 'TradingView', url: 'https://www.tradingview.com' },
+      
+      // 11. Geliştirici
+      { id: genId(), categoryId: 'cat_11', title: 'GitHub', url: 'https://github.com' },
+      { id: genId(), categoryId: 'cat_11', title: 'Stack Overflow', url: 'https://stackoverflow.com' },
+      { id: genId(), categoryId: 'cat_11', title: 'CodePen', url: 'https://codepen.io' },
+      { id: genId(), categoryId: 'cat_11', title: 'HackerRank', url: 'https://www.hackerrank.com' },
+      { id: genId(), categoryId: 'cat_11', title: 'LeetCode', url: 'https://leetcode.com' },
+      
+      // 12. Teknoloji
+      { id: genId(), categoryId: 'cat_12', title: 'ChatGPT', url: 'https://chat.openai.com' },
+      { id: genId(), categoryId: 'cat_12', title: 'TechCrunch', url: 'https://techcrunch.com' },
+      { id: genId(), categoryId: 'cat_12', title: 'The Verge', url: 'https://www.theverge.com' },
+      { id: genId(), categoryId: 'cat_12', title: 'Wired', url: 'https://www.wired.com' },
+      { id: genId(), categoryId: 'cat_12', title: 'CNET', url: 'https://www.cnet.com' }
     ];
     
     await Storage.set(this.CAT_KEY, cats);
