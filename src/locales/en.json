@@ -115,6 +115,8 @@
   "toast_backup_uploaded": "Backup uploaded successfully! Reloading...",
   "menu_shortlist": "Short List (10 Links)",
   "menu_rename": "Rename",
+  "menu_hide": "Hide Folder",
+  "menu_unhide": "Unhide Folder",
   "menu_sort": "Sort Links A–Z",
   "menu_update_icons": "Bulk Update Icons",
   "menu_delete_folder": "Delete Folder",

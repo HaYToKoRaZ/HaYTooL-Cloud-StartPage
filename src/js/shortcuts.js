@@ -433,6 +433,12 @@ export const Shortcuts = {
       { separator: true },
       { label: '➕ ' + I18n.t('add_shortcut', 'Add Link'), action: () => this.openAddLinkModal(cat.id) },
       { label: '✏️ ' + I18n.t('menu_rename', 'Rename'), action: () => this._openRenameModal(cat) },
+      { label: cat.isHidden ? '👁️ ' + I18n.t('menu_unhide', 'Unhide Folder') : '🕵️ ' + I18n.t('menu_hide', 'Hide Folder'), action: async () => {
+          cat.isHidden = !cat.isHidden;
+          await Storage.set(this.CAT_KEY, this.categories);
+          this.renderFolders();
+        } 
+      },
       { label: '🔤 ' + I18n.t('menu_sort', 'Sort Links A–Z'), action: () => this._sortFolderItems(cat.id) },
       { label: '🔄 ' + I18n.t('menu_update_icons', 'Bulk Update Icons'), action: () => this._bulkUpdateFavicons(cat.id) },
       { separator: true },
