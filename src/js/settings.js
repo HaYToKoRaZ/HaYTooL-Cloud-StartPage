@@ -36,7 +36,8 @@ export const Settings = {
     
 
     // Folder cols CSS Variable ile çözüldü
-    document.body.setAttribute('data-cols', this.config.folderColumns || 3); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', this.config.folderColumns || 3);
+    document.body.setAttribute('data-cols', this.config.folderColumns || 3);
+    document.documentElement.style.setProperty('--folder-icon-size', (this.config.folderIconSize || 64) + 'px'); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', this.config.folderColumns || 3);
   },
 
   vis(id, show) { const el = document.getElementById(id); if (el) el.style.display = show ? '' : 'none'; },
@@ -210,6 +211,9 @@ export const Settings = {
     f('customBgInput',        this.config.customBgUrl);
     f('langSelect',           I18n.currentLang);
     f('folderColumnsSelect',  String(this.config.folderColumns || 3));
+    f('iconSizeSlider',       String(this.config.folderIconSize || 64));
+    const iconVal = document.getElementById('iconSizeValue');
+    if (iconVal) iconVal.textContent = (this.config.folderIconSize || 64) + 'px';
     t('toggleClock',          this.config.showClock);
     t('toggleSeconds',        this.config.showSeconds);
     t('toggleGreeting',       this.config.showGreeting);
