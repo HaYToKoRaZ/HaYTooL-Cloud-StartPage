@@ -108,5 +108,7 @@
   "size_96": "Çok Büyük (96px)",
   "size_128": "Devasa (128px)",
   "lang_tr": "🇹🇷 Türkçe",
-  "lang_en": "🇬🇧 English"
+  "lang_en": "🇬🇧 English",
+  "toast_backup_downloaded": "Yedek başarıyla indirildi!",
+  "toast_backup_uploaded": "Yedek başarıyla yüklendi! Sayfa yenileniyor..."
 }

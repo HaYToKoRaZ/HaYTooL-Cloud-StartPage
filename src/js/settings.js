@@ -156,7 +156,7 @@ export const Settings = {
         a.download = 'haytool_backup_' + new Date().toISOString().slice(0,10) + '.json';
         a.click();
         URL.revokeObjectURL(url);
-        this.toast('Yedek başarıyla indirildi!');
+        this.toast(I18n.t('toast_backup_downloaded'));
       });
     }
 
@@ -172,7 +172,7 @@ export const Settings = {
             for (const key of Object.keys(data)) {
               await Storage.set(key, data[key]);
             }
-            this.toast('Yedek başarıyla yüklendi! Sayfa yenileniyor...');
+            this.toast(I18n.t('toast_backup_downloaded'));
             setTimeout(() => window.location.reload(), 1500);
           } catch(err) {
             alert('Yedek yüklenirken hata oluştu: ' + err.message);
