@@ -1616,30 +1616,21 @@ body {
   position: relative; display: inline-flex;
 }
 .link-icon-card {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 0.25rem; text-decoration: none; padding: 0.35rem 0.4rem;
-  border-radius: var(--radius-sm); min-width: 52px; max-width: 68px;
-  transition: background var(--transition-fast);
-  color: var(--text-muted);
-}
-.link-icon-card:hover { background: rgba(255,255,255,0.07); }
-
-.link-fav-icon {
-  width: 28px; height: 28px;
+  width: 48px; height: 48px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.05rem; border-radius: 6px;
-  flex-shrink: 0;
+  padding: 0; border-radius: 12px;
+  text-decoration: none; position: relative;
+  transition: all 0.2s;
+}
+.link-icon-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+.link-fav-icon {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; color: var(--text-main); flex-shrink: 0;
 }
 .link-fav-icon img { width: 22px; height: 22px; border-radius: 4px; object-fit: contain; }
 
-.link-icon-label {
-  font-size: 0.68rem; font-weight: 500;
-  color: var(--text-dim); text-align: center;
-  max-width: 64px; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis;
-}
-.link-icon-card:hover .link-icon-label { color: var(--text-main); }
-
+.link-icon-label { display: none; }
 /* Liste Görünümü */
 .folder-body.view-list { display: flex; flex-direction: column; gap: 0; }
 .folder-body.view-list .link-item {
