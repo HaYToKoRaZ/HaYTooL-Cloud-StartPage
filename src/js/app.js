@@ -62,7 +62,13 @@ class StartPageApp {
         const dayNum = now.toLocaleDateString(lang, { day: "numeric" });
         const monthName = now.toLocaleDateString(lang, { month: "short" });
         const year = now.toLocaleDateString(lang, { year: "numeric" });
-        dateEl.innerHTML = `${dayName}, ${dayNum} ${monthName}<br>${year}`;
+        dateEl.innerHTML = `<div style="display:flex; align-items:center; gap:0.4rem; justify-content:center;">
+          <div style="font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);">${dayNum}</div>
+          <div style="text-align: left; line-height: 1.1;">
+            <div style="font-size: 0.85rem; font-weight: 600; color: #f1f5f9;">${monthName}</div>
+            <div style="font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">${dayName} ${year}</div>
+          </div>
+        </div>`;
       }
       
       if (greetEl) {
