@@ -118,7 +118,8 @@ export const Favorites = {
       iconBox.textContent = fav.icon;
     } else {
       try {
-        const domain = new URL(fav.url).hostname;
+        let domain = new URL(fav.url).hostname;
+        if (domain.startsWith('www.')) domain = domain.substring(4);
         const api = Settings.config.iconApi || 'google';
         let src = '';
         if (api === 'google') src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';

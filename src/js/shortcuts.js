@@ -519,7 +519,8 @@ export const Shortcuts = {
       box.textContent = item.icon;
     } else {
       try {
-        const d = new URL(item.url).hostname;
+        let d = new URL(item.url).hostname;
+        if (d.startsWith('www.')) d = d.substring(4);
         const api = Settings.config.iconApi || 'google';
         let src = '';
         if (api === 'google') src = 'https://www.google.com/s2/favicons?domain=' + d + '&sz=64';
