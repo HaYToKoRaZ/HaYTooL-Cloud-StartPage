@@ -322,7 +322,7 @@ export const Shortcuts = {
       });
       
       const editBtn = document.createElement('button');
-      editBtn.className = 'link-edit-btn'; editBtn.innerHTML = '✏️'; editBtn.title = 'Düzenle';
+      editBtn.className = 'link-edit-btn'; editBtn.innerHTML = '✏️'; editBtn.title = I18n.t('edit_shortcut');
       editBtn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); this.openEditLinkModal(item); });
       
       wrap.appendChild(a);
@@ -369,7 +369,7 @@ export const Shortcuts = {
       });
       
       const editBtn = document.createElement('button');
-      editBtn.className = 'link-edit-btn link-edit-list'; editBtn.innerHTML = '✏️'; editBtn.title = 'Düzenle';
+      editBtn.className = 'link-edit-btn link-edit-list'; editBtn.innerHTML = '✏️'; editBtn.title = I18n.t('edit_shortcut');
       editBtn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); this.openEditLinkModal(item); });
       
       wrap.appendChild(a);
@@ -410,7 +410,7 @@ export const Shortcuts = {
       { label: check('list') + '📋 Tam Liste Görünümü', action: () => this._setView(cat.id, 'list') },
       { label: check('shortlist') + '📃 Kısa Liste (10 Link)', action: () => this._setView(cat.id, 'shortlist') },
       { separator: true },
-      { label: '+ Link Ekle', action: () => this.openAddLinkModal(cat.id) },
+      { label: I18n.t('add_shortcut'), action: () => this.openAddLinkModal(cat.id) },
       { label: '✏️ Yeniden Adlandır', action: () => this._openRenameModal(cat) },
       { label: '🔤 Linkleri A-Z Sırala', action: () => this._sortFolderItems(cat.id) },
       { label: '🔄 İkonları Toplu Güncelle', action: () => this._bulkUpdateFavicons(cat.id) },
