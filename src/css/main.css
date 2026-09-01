@@ -1826,3 +1826,76 @@ body[data-cols="4"] .folders-grid { grid-template-columns: repeat(4, 1fr) !impor
 body[data-cols="5"] .folders-grid { grid-template-columns: repeat(5, 1fr) !important; }
 
 
+
+
+/* --- SHORTLIST BUTONLARI VE CSS --- */
+.show-more-btn {
+  width: 100%;
+  padding: 0.6rem;
+  background: rgba(255,255,255,0.03);
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-top: 1px solid var(--border-glass);
+  transition: all var(--transition-fast);
+}
+.show-more-btn:hover {
+  background: rgba(255,255,255,0.08);
+  color: var(--text-main);
+}
+
+.fav-show-more-btn {
+  padding: 0.5rem 1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  cursor: pointer;
+  margin: 0.2rem;
+  white-space: nowrap;
+}
+.fav-show-more-btn:hover { background: rgba(255,255,255,0.1); }
+
+.fav-global-opt-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0.4rem;
+  margin-left: auto; /* saa yasla */
+  transition: opacity 0.2s;
+}
+.fav-global-opt-btn:hover { opacity: 1; }
+
+/* --- FAVORLER BARI LSTE GRNM --- */
+.fav-bar-container.view-list,
+.fav-bar-container.view-shortlist {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+.fav-bar-container.view-list .fav-item,
+.fav-bar-container.view-shortlist .fav-item {
+  width: 240px;
+  background: var(--surface-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 0.2rem;
+}
+.fav-bar-container.view-list .fav-item-link,
+.fav-bar-container.view-shortlist .fav-item-link {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.fav-bar-container.view-list .fav-item-label,
+.fav-bar-container.view-shortlist .fav-item-label {
+  margin-top: 0;
+  margin-left: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

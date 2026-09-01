@@ -1,15 +1,14 @@
 ﻿import { Storage } from './storage.js';
 
-/**
- * HaYTooL Cloud StartPage - Favoriler Barı
- * Üst satır: ikon + isim, sağ tık / "..." ile ekle/çıkar
- */
 export const Favorites = {
   FAV_KEY: 'favorites_bar',
+  VIEW_KEY: 'fav_bar_view', // 'icon', 'list', 'shortlist'
   items: [],
+  view: 'icon',
 
   async init() {
     this.items = await Storage.get(this.FAV_KEY, []);
+    this.view  = await Storage.get(this.VIEW_KEY, 'icon');
     this.render();
     this.setupAddModal();
   },
@@ -18,19 +17,51 @@ export const Favorites = {
     const bar = document.getElementById('favBar');
     if (!bar) return;
     bar.innerHTML = '';
+    
+    // Uygula CSS sınıfı
+    bar.className = 'fav-bar-container view-' + this.view;
+
+    const limit = 10;
+    const isShortlist = (this.view === 'shortlist');
 
     this.items.forEach((fav, idx) => {
       const item = this._makeFavItem(fav, idx);
+      if (isShortlist && idx >= limit) {
+        item.style.display = 'none';
+        item.classList.add('shortlist-hidden');
+      }
       bar.appendChild(item);
     });
+
+    if (isShortlist && this.items.length > limit) {
+      const moreBtn = document.createElement('button');
+      moreBtn.className = 'fav-show-more-btn';
+      moreBtn.textContent = 'Daha fazla (' + (this.items.length - limit) + ') ▾';
+      moreBtn.addEventListener('click', () => {
+        bar.querySelectorAll('.shortlist-hidden').forEach(el => el.style.display = 'flex');
+        moreBtn.style.display = 'none';
+      });
+      bar.appendChild(moreBtn);
+    }
 
     // "+" ekle butonu
     const addBtn = document.createElement('button');
     addBtn.className = 'fav-add-btn';
     addBtn.title = 'Favori Ekle';
-    addBtn.innerHTML = '<span class="fav-add-icon">＋</span><span class="fav-item-label">Ekle</span>';
+    addBtn.innerHTML = this.view === 'icon' ? '<span class="fav-add-icon">+</span><span class="fav-item-label">Ekle</span>' : '<span class="fav-add-icon">+</span><span>Ekle</span>';
     addBtn.addEventListener('click', () => document.getElementById('favAddModal').classList.add('active'));
     bar.appendChild(addBtn);
+
+    // Ayarlar butonu
+    const optBtn = document.createElement('button');
+    optBtn.className = 'fav-global-opt-btn';
+    optBtn.innerHTML = '⚙️';
+    optBtn.title = 'Favoriler Barı Görünümü';
+    optBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      this._showGlobalMenu(e);
+    });
+    bar.appendChild(optBtn);
   },
 
   _makeFavItem(fav, idx) {
@@ -65,7 +96,6 @@ export const Favorites = {
     link.appendChild(iconBox);
     link.appendChild(label);
 
-    // "..." seçenekler butonu
     const optBtn = document.createElement('button');
     optBtn.className = 'fav-options-btn';
     optBtn.innerHTML = '⋯';
@@ -80,6 +110,34 @@ export const Favorites = {
     return wrap;
   },
 
+  _showGlobalMenu(e) {
+    const menu = document.getElementById('contextMenu');
+    if (!menu) return;
+    menu.innerHTML = '';
+    menu.style.display = 'block';
+
+    const check = v => this.view === v ? '✓ ' : '　';
+    const items = [
+      { label: check('icon') + '⊞ İkon Görünümü', action: () => this._setView('icon') },
+      { label: check('list') + '📋 Tam Liste Görünümü', action: () => this._setView('list') },
+      { label: check('shortlist') + '📃 Kısa Liste (10 Link)', action: () => this._setView('shortlist') }
+    ];
+
+    items.forEach(it => {
+      const btn = document.createElement('button');
+      btn.className = 'ctx-item';
+      btn.textContent = it.label;
+      btn.addEventListener('click', () => { it.action(); this._closeMenu(); });
+      menu.appendChild(btn);
+    });
+
+    const x = Math.min(e.clientX, window.innerWidth - 180);
+    const y = e.clientY + 8;
+    menu.style.left = x + 'px';
+    menu.style.top  = y + 'px';
+    setTimeout(() => document.addEventListener('click', this._closeMenu.bind(this), { once: true }), 50);
+  },
+
   _showFavContextMenu(e, fav, idx) {
     const menu = document.getElementById('contextMenu');
     if (!menu) return;
@@ -87,9 +145,9 @@ export const Favorites = {
     menu.style.display = 'block';
 
     const items = [
-      { label: '↑ Sola Taşı',   icon: '←', action: () => this._moveItem(idx, -1) },
-      { label: '→ Sağa Taşı',   icon: '→', action: () => this._moveItem(idx, +1) },
-      { label: '🗑 Favoriden Çıkar', icon: '', action: () => this._remove(idx), danger: true },
+      { label: '⬅ Sola Taşı', action: () => this._moveItem(idx, -1) },
+      { label: '➡ Sağa Taşı', action: () => this._moveItem(idx, +1) },
+      { label: '🗑 Favoriden Çıkar', action: () => this._remove(idx), danger: true },
     ];
 
     items.forEach(it => {
@@ -106,6 +164,12 @@ export const Favorites = {
     menu.style.top  = y + 'px';
 
     setTimeout(() => document.addEventListener('click', this._closeMenu.bind(this), { once: true }), 50);
+  },
+
+  async _setView(v) {
+    this.view = v;
+    await Storage.set(this.VIEW_KEY, v);
+    this.render();
   },
 
   _closeMenu() {

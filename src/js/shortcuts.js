@@ -1,14 +1,10 @@
 ﻿import { Storage } from './storage.js';
 
-/**
- * HaYTooL Cloud StartPage - 3-Sütun Klasör Grid + İkon/Liste Görünümü
- * Her klasör: açılır/kapanır, seçenekler menüsü, per-folder görünüm tercihi
- */
 export const Shortcuts = {
   CAT_KEY:       'shortcut_categories',
   ITEMS_KEY:     'shortcuts_v2',
   COLLAPSED_KEY: 'collapsed_folders',
-  VIEW_KEY:      'folder_views',      // { [catId]: 'icon' | 'list' }
+  VIEW_KEY:      'folder_views',      // { [catId]: 'icon' | 'list' | 'shortlist' }
 
   categories:      [],
   items:           [],
@@ -32,9 +28,6 @@ export const Shortcuts = {
     this.setupRenameModal();
   },
 
-  /* ======================================================
-     RENDER: 3-Sütun Klasör Grid
-     ====================================================== */
   renderFolders() {
     const grid = document.getElementById('shortcutsGrid');
     if (!grid) return;
@@ -45,7 +38,6 @@ export const Shortcuts = {
       return;
     }
 
-    // Kategorisiz öğeleri gruplayalım
     const grouped = {};
     this.categories.forEach(c => { grouped[c.id] = []; });
     grouped['__other__'] = [];
@@ -54,7 +46,6 @@ export const Shortcuts = {
       else grouped['__other__'].push(item);
     });
 
-    // Klasörleri oluştur
     this.categories.forEach(cat => {
       grid.appendChild(this._makeFolderCard(cat, grouped[cat.id] || []));
     });
@@ -63,7 +54,6 @@ export const Shortcuts = {
       grid.appendChild(this._makeFolderCard(other, grouped['__other__']));
     }
 
-    // "+ Yeni Kısayol Ekle" kartı
     const addCard = document.createElement('div');
     addCard.className = 'folder-card folder-add-card';
     addCard.innerHTML = '<button class="folder-add-btn" id="globalAddLinkBtn"><span style="font-size:1.5rem">+</span><span>Link Ekle</span></button>';
@@ -100,7 +90,6 @@ export const Shortcuts = {
     cnt.className = 'folder-count';
     cnt.textContent = items.length;
 
-    // Seçenekler butonu
     const optBtn = document.createElement('button');
     optBtn.className = 'folder-opt-btn';
     optBtn.innerHTML = '⋯';
@@ -116,7 +105,6 @@ export const Shortcuts = {
     header.appendChild(cnt);
     header.appendChild(optBtn);
 
-    // Başlığa tıklayınca aç/kapat
     header.addEventListener('click', async e => {
       if (e.target.closest('.folder-opt-btn')) return;
       card.classList.toggle('collapsed');
@@ -127,12 +115,33 @@ export const Shortcuts = {
 
     /* --- Body --- */
     const body = document.createElement('div');
-    body.className = 'folder-body view-' + view;
+    // Kısa Liste = liste görünümü + 10 limitli özel davranış
+    body.className = 'folder-body ' + (view === 'icon' ? 'view-icon' : 'view-list');
     body.setAttribute('data-view', view);
 
-    items.forEach(item => body.appendChild(this._makeLinkItem(item, view)));
+    const limit = 10;
+    const isShortlist = (view === 'shortlist');
+    
+    items.forEach((item, idx) => {
+      const el = this._makeLinkItem(item, view);
+      if (isShortlist && idx >= limit) {
+        el.style.display = 'none';
+        el.classList.add('shortlist-hidden');
+      }
+      body.appendChild(el);
+    });
 
-    // "+ Bu klasöre ekle" butonu (sadece icon görünümünde küçük +, liste görünümünde satır)
+    if (isShortlist && items.length > limit) {
+      const moreBtn = document.createElement('button');
+      moreBtn.className = 'show-more-btn';
+      moreBtn.textContent = 'Daha fazla göster (' + (items.length - limit) + ') ▾';
+      moreBtn.addEventListener('click', () => {
+        body.querySelectorAll('.shortlist-hidden').forEach(el => el.style.display = 'flex');
+        moreBtn.style.display = 'none';
+      });
+      body.appendChild(moreBtn);
+    }
+
     const addLinkBtn = document.createElement('button');
     addLinkBtn.className = 'add-to-folder-btn';
     addLinkBtn.innerHTML = view === 'icon' ? '<span>+</span>' : '<span>+</span><span>Link Ekle</span>';
@@ -151,7 +160,6 @@ export const Shortcuts = {
     const icon = this._iconEl(item);
 
     if (view === 'icon') {
-      // İkon kartı: ikon + isim altında
       const a = document.createElement('a');
       a.href = item.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
       a.className = 'link-icon-card';
@@ -177,7 +185,6 @@ export const Shortcuts = {
       wrap.appendChild(del);
 
     } else {
-      // Liste satırı: ikon + isim + url + sil
       const a = document.createElement('a');
       a.href = item.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
       a.className = 'link-list-row';
@@ -207,7 +214,6 @@ export const Shortcuts = {
       wrap.appendChild(a);
       wrap.appendChild(del);
     }
-
     return wrap;
   },
 
@@ -227,9 +233,6 @@ export const Shortcuts = {
     return box;
   },
 
-  /* ======================================================
-     FOLDER CONTEXT MENU
-     ====================================================== */
   _showFolderMenu(e, cat, count, card) {
     const menu = document.getElementById('contextMenu');
     if (!menu) return;
@@ -237,30 +240,17 @@ export const Shortcuts = {
     menu.style.display = 'block';
 
     const view = this.folderViews[cat.id] || 'icon';
+    const check = v => view === v ? '✓ ' : '　';
 
     const opts = [
-      {
-        label: view === 'icon' ? '📋 Liste Görünümüne Geç' : '⊞ İkon Görünümüne Geç',
-        action: async () => {
-          const nv = view === 'icon' ? 'list' : 'icon';
-          this.folderViews[cat.id] = nv;
-          await Storage.set(this.VIEW_KEY, this.folderViews);
-          this.renderFolders();
-        }
-      },
-      {
-        label: '+ Link Ekle',
-        action: () => this.openAddLinkModal(cat.id)
-      },
-      {
-        label: '✏️ Yeniden Adlandır',
-        action: () => this._openRenameModal(cat)
-      },
+      { label: check('icon') + '⊞ İkon Görünümü', action: () => this._setView(cat.id, 'icon') },
+      { label: check('list') + '📋 Tam Liste Görünümü', action: () => this._setView(cat.id, 'list') },
+      { label: check('shortlist') + '📃 Kısa Liste (10 Link)', action: () => this._setView(cat.id, 'shortlist') },
       { separator: true },
-      {
-        label: '🗑 Klasörü Sil',
-        danger: true,
-        action: async () => {
+      { label: '+ Link Ekle', action: () => this.openAddLinkModal(cat.id) },
+      { label: '✏️ Yeniden Adlandır', action: () => this._openRenameModal(cat) },
+      { separator: true },
+      { label: '🗑 Klasörü Sil', danger: true, action: async () => {
           if (!confirm('"' + cat.name + '" klasörü ve ' + count + ' linki silinecek. Emin misiniz?')) return;
           this.categories = this.categories.filter(c => c.id !== cat.id);
           this.items      = this.items.filter(i => i.categoryId !== cat.id);
@@ -268,7 +258,7 @@ export const Shortcuts = {
           await Storage.set(this.ITEMS_KEY, this.items);
           this.renderFolders();
         }
-      },
+      }
     ];
 
     opts.forEach(opt => {
@@ -290,14 +280,17 @@ export const Shortcuts = {
     setTimeout(() => document.addEventListener('click', () => this._closeMenu(), { once: true }), 50);
   },
 
+  async _setView(catId, viewType) {
+    this.folderViews[catId] = viewType;
+    await Storage.set(this.VIEW_KEY, this.folderViews);
+    this.renderFolders();
+  },
+
   _closeMenu() {
     const m = document.getElementById('contextMenu');
     if (m) m.style.display = 'none';
   },
 
-  /* ======================================================
-     ADD LINK MODAL
-     ====================================================== */
   setupShortcutModal() {
     const modal   = document.getElementById('shortcutModal');
     const form    = document.getElementById('shortcutForm');
@@ -335,9 +328,6 @@ export const Shortcuts = {
     setTimeout(() => document.getElementById('shortcutTitleInput')?.focus(), 100);
   },
 
-  /* ======================================================
-     RENAME MODAL
-     ====================================================== */
   setupRenameModal() {
     const modal   = document.getElementById('renameModal');
     const closeB  = document.getElementById('closeRenameModal');
@@ -371,9 +361,6 @@ export const Shortcuts = {
     setTimeout(() => document.getElementById('renameInput')?.focus(), 100);
   },
 
-  /* ======================================================
-     BOOKMARK IMPORTER
-     ====================================================== */
   setupBookmarkImport() {
     const btn   = document.getElementById('bookmarkImportBtn');
     const input = document.getElementById('bookmarkFileInput');
