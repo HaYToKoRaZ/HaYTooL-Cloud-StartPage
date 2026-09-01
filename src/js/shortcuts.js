@@ -20,6 +20,12 @@ export const Shortcuts = {
   colorIdx: 0,
 
   async init() {
+    const isFirstRun = await Storage.get('is_first_run_v3', true);
+    if (isFirstRun) {
+      await this._seedDefaults();
+      await Storage.set('is_first_run_v3', false);
+    }
+
     this.categories       = await Storage.get(this.CAT_KEY, []);
     this.items            = await Storage.get(this.ITEMS_KEY, []);
     const collapsedArr    = await Storage.get(this.COLLAPSED_KEY, []);
@@ -88,6 +94,50 @@ export const Shortcuts = {
       clearTimeout(this._resizeTimer);
       this._resizeTimer = setTimeout(() => this.applyMasonry(), 100);
     });
+  },
+
+  async _seedDefaults() {
+    const genId = () => Date.now().toString() + Math.random().toString(36).substr(2, 5);
+    const cats = [
+      { id: 'cat_1', name: 'Sosyal Medya', icon: '📱', col: 1, order: 0 },
+      { id: 'cat_2', name: 'Haberler', icon: '📰', col: 2, order: 0 },
+      { id: 'cat_3', name: 'Eğlence', icon: '🎬', col: 3, order: 0 },
+      { id: 'cat_4', name: 'Üretkenlik', icon: '💻', col: 4, order: 0 },
+      { id: 'cat_5', name: 'Alışveriş', icon: '🛒', col: 5, order: 0 },
+      { id: 'cat_6', name: 'Geliştirici', icon: '👨‍💻', col: 6, order: 0 }
+    ];
+    
+    const items = [
+      // Sosyal
+      { id: genId(), categoryId: 'cat_1', title: 'Facebook', url: 'https://www.facebook.com' },
+      { id: genId(), categoryId: 'cat_1', title: 'X (Twitter)', url: 'https://twitter.com' },
+      { id: genId(), categoryId: 'cat_1', title: 'Instagram', url: 'https://www.instagram.com' },
+      { id: genId(), categoryId: 'cat_1', title: 'LinkedIn', url: 'https://www.linkedin.com' },
+      // Haber
+      { id: genId(), categoryId: 'cat_2', title: 'Google News', url: 'https://news.google.com' },
+      { id: genId(), categoryId: 'cat_2', title: 'BBC News', url: 'https://www.bbc.com/news' },
+      { id: genId(), categoryId: 'cat_2', title: 'CNN', url: 'https://edition.cnn.com' },
+      // Eğlence
+      { id: genId(), categoryId: 'cat_3', title: 'YouTube', url: 'https://www.youtube.com' },
+      { id: genId(), categoryId: 'cat_3', title: 'Netflix', url: 'https://www.netflix.com' },
+      { id: genId(), categoryId: 'cat_3', title: 'Spotify', url: 'https://open.spotify.com' },
+      { id: genId(), categoryId: 'cat_3', title: 'Twitch', url: 'https://www.twitch.tv' },
+      // Üretkenlik
+      { id: genId(), categoryId: 'cat_4', title: 'Gmail', url: 'https://mail.google.com' },
+      { id: genId(), categoryId: 'cat_4', title: 'Google Drive', url: 'https://drive.google.com' },
+      { id: genId(), categoryId: 'cat_4', title: 'ChatGPT', url: 'https://chat.openai.com' },
+      // Alışveriş
+      { id: genId(), categoryId: 'cat_5', title: 'Amazon', url: 'https://www.amazon.com' },
+      { id: genId(), categoryId: 'cat_5', title: 'AliExpress', url: 'https://www.aliexpress.com' },
+      { id: genId(), categoryId: 'cat_5', title: 'eBay', url: 'https://www.ebay.com' },
+      // Geliştirici
+      { id: genId(), categoryId: 'cat_6', title: 'GitHub', url: 'https://github.com' },
+      { id: genId(), categoryId: 'cat_6', title: 'Stack Overflow', url: 'https://stackoverflow.com' },
+      { id: genId(), categoryId: 'cat_6', title: 'CodePen', url: 'https://codepen.io' }
+    ];
+    
+    await Storage.set(this.CAT_KEY, cats);
+    await Storage.set(this.ITEMS_KEY, items);
   },
 
   async toggleHiddenFolders() {
