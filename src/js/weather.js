@@ -30,15 +30,8 @@ export const Weather = {
     if (manualCity && manualCity.trim()) {
       await this.fetchByCity(manualCity.trim());
     } else {
-      // GPS otomatik konum
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          pos => this.fetchWeather(pos.coords.latitude, pos.coords.longitude, ''),
-          () => this.fetchWeather(41.0082, 28.9784, 'İstanbul')
-        );
-      } else {
-        this.fetchWeather(41.0082, 28.9784, 'İstanbul');
-      }
+      // GPS otomatik konum isteğini kaldırdık. Varsayılan şehir: İstanbul
+      this.fetchWeather(41.0082, 28.9784, 'İstanbul');
     }
   },
 
