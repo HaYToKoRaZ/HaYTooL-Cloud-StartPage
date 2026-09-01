@@ -2095,7 +2095,7 @@ body[data-cols="1"] .folders-grid {
   border-radius: 8px;
   max-width: 110px;
 }
-.top-search-engine option { background: #1a1a1a; color: #fff; }
+.top-search-engine option, .top-search-engine optgroup { background: var(--bg-base); color: var(--text-main); }
 .top-search-engine:hover, .top-search-engine:focus { color: var(--text-main); background: rgba(255,255,255,0.1); }
 
 /* ── Custom Language Picker ─────────────────────── */
