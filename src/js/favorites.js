@@ -129,7 +129,6 @@ export const Favorites = {
         if (api === 'google') src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
         else if (api === 'google-hd') src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=128';
         else if (api === 'iconhorse') src = 'https://icon.horse/icon/' + domain;
-        else if (api === 'clearbit') src = 'https://logo.clearbit.com/' + domain;
         else if (api === 'duckduckgo') src = 'https://icons.duckduckgo.com/ip3/' + domain + '.ico';
         else src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
         

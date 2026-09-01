@@ -530,7 +530,6 @@ export const Shortcuts = {
         if (api === 'google') src = 'https://www.google.com/s2/favicons?domain=' + d + '&sz=64';
         else if (api === 'google-hd') src = 'https://www.google.com/s2/favicons?domain=' + d + '&sz=128';
         else if (api === 'iconhorse') src = 'https://icon.horse/icon/' + d;
-        else if (api === 'clearbit') src = 'https://logo.clearbit.com/' + d;
         else if (api === 'duckduckgo') src = 'https://icons.duckduckgo.com/ip3/' + d + '.ico';
         else src = 'https://www.google.com/s2/favicons?domain=' + d + '&sz=64';
         
