@@ -2208,3 +2208,4 @@ body[data-cols="1"] .folders-grid {
   padding: 0.6rem 0.8rem;
   font-size: 0.95rem;
 }
+.folder-is-hidden { opacity: 0.6; border: 1px dashed var(--border) !important; }

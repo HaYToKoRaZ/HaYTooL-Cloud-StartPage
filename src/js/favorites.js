@@ -1,5 +1,7 @@
 import { Storage } from './storage.js';
 import { Settings } from './settings.js';
+import { Shortcuts } from './shortcuts.js';
+import { I18n } from './i18n.js';
 
 export const Favorites = {
   FAV_KEY: 'favorites_bar',
@@ -69,6 +71,14 @@ export const Favorites = {
     optBtn.addEventListener('click', e => {
       e.stopPropagation();
       this._showGlobalMenu(e);
+    });
+    optBtn.addEventListener('auxclick', e => {
+      if (e.button === 1) {
+        e.preventDefault();
+        Shortcuts.showHidden = !Shortcuts.showHidden;
+        Shortcuts.renderFolders();
+        Shortcuts._toast(I18n.t('toast_hidden_toggled', '🕵️ Hidden folders visibility toggled!'));
+      }
     });
     bar.appendChild(optBtn);
 

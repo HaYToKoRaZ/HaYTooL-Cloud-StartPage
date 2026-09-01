@@ -13,6 +13,7 @@ export const Shortcuts = {
   items:           [],
   collapsedFolders:new Set(),
   folderViews:     {},
+  showHidden:      false,
 
   COLORS: ['#6366f1','#ec4899','#10b981','#f59e0b','#06b6d4','#8b5cf6','#f43f5e','#14b8a6','#3b82f6','#a78bfa','#fb923c','#34d399','#e11d48','#0891b2'],
   colorIdx: 0,
@@ -38,9 +39,21 @@ export const Shortcuts = {
     this.renderFolders();
     this.setupShortcutModal();
     this.setupBookmarkImport();
-      this.setupCollapseExpandAll();
+    this.setupCollapseExpandAll();
     this.setupRenameModal();
     
+    const topGear = document.getElementById('settingsBtn');
+    if (topGear) {
+      topGear.addEventListener('auxclick', e => {
+        if (e.button === 1) {
+          e.preventDefault();
+          this.showHidden = !this.showHidden;
+          this.renderFolders();
+          this._toast(I18n.t('toast_hidden_toggled', '🕵️ Hidden folders visibility toggled!'));
+        }
+      });
+    }
+
     const grid = document.getElementById('shortcutsGrid');
     if (grid) {
       grid.addEventListener('dragover', e => {
@@ -95,7 +108,10 @@ export const Shortcuts = {
       else grouped['__other__'].push(item);
     });
 
-    this.categories.forEach(cat => {
+    // Filtrele: gizli klasörler ancak showHidden açıksa gösterilir
+    const visibleCats = this.categories.filter(cat => this.showHidden || !cat.isHidden);
+    
+    visibleCats.forEach(cat => {
       grid.appendChild(this._makeFolderCard(cat, grouped[cat.id] || []));
     });
     if (grouped['__other__'].length > 0) {
@@ -122,6 +138,10 @@ export const Shortcuts = {
     if (cat.id !== '__other__') {
       const numCols = parseInt(document.body.getAttribute('data-cols')) || 3;
       card.style.gridColumn = Math.min(cat.col || 1, numCols);
+    }
+    
+    if (cat.isHidden) {
+      card.classList.add('folder-is-hidden');
     }
 
     // --- Srkle brak mant (Drag & Drop) ---
@@ -597,8 +617,10 @@ export const Shortcuts = {
         if (!cat) return;
         const newName = document.getElementById('renameInput').value.trim();
         const newIcon = document.getElementById('renameIconInput').value.trim();
+        const isHidden = document.getElementById('renameHiddenCheck').checked;
         if (newName) cat.name = newName;
-        if (newIcon) cat.icon = newIcon;
+        if (newIcon !== undefined) cat.icon = newIcon;
+        cat.isHidden = isHidden;
         await Storage.set(this.CAT_KEY, this.categories);
         this.renderFolders();
         modal.classList.remove('active');
@@ -611,6 +633,8 @@ export const Shortcuts = {
     modal.setAttribute('data-cat-id', cat.id);
     document.getElementById('renameInput').value    = cat.name;
     document.getElementById('renameIconInput').value = cat.icon || '';
+    const hc = document.getElementById('renameHiddenCheck');
+    if (hc) hc.checked = !!cat.isHidden;
     modal.removeAttribute('data-edit-id');
     document.getElementById('shortcutForm').reset();
     modal.classList.add('active');
