@@ -250,7 +250,8 @@ export const Shortcuts = {
       wrap.appendChild(del);
     }
     return wrap;
-  }
+  },
+
   _iconEl(item) {
     const box = document.createElement('div');
     box.className = 'link-fav-icon';
