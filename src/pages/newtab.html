@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <link rel="alternate icon" type="image/png" href="../assets/icons/favicon.png">
   <link rel="stylesheet" href="../css/theme.css">
-  <link rel="stylesheet" href="../css/main.css?v=57436197">
+  <link rel="stylesheet" href="../css/main.css?v=faf1bd18">
 </head>
 <body class="bg-preset-aurora">
   <div id="bgLayer"></div>
@@ -198,12 +198,45 @@
       <div class="form-group"><label>Zaman Dilimi</label>
         <select id="timezoneSelect" class="form-select">
           <option value="auto">Otomatik (Yerel)</option>
-          <option value="Europe/Istanbul">Türkiye (İstanbul)</option>
-          <option value="Europe/Berlin">Avrupa (Berlin)</option>
-          <option value="Europe/London">İngiltere (Londra)</option>
-          <option value="America/New_York">ABD (New York)</option>
-          <option value="Asia/Dubai">BAE (Dubai)</option>
-          <option value="Asia/Tokyo">Japonya (Tokyo)</option>
+          <optgroup label="Avrupa (Europe)">
+            <option value="Europe/Istanbul">Türkiye (İstanbul)</option>
+            <option value="Europe/London">İngiltere (Londra)</option>
+            <option value="Europe/Berlin">Almanya (Berlin)</option>
+            <option value="Europe/Paris">Fransa (Paris)</option>
+            <option value="Europe/Moscow">Rusya (Moskova)</option>
+            <option value="Europe/Rome">İtalya (Roma)</option>
+            <option value="Europe/Madrid">İspanya (Madrid)</option>
+            <option value="Europe/Kiev">Ukrayna (Kiev)</option>
+          </optgroup>
+          <optgroup label="Asya (Asia)">
+            <option value="Asia/Dubai">BAE (Dubai)</option>
+            <option value="Asia/Tokyo">Japonya (Tokyo)</option>
+            <option value="Asia/Shanghai">Çin (Şanghay)</option>
+            <option value="Asia/Seoul">Güney Kore (Seul)</option>
+            <option value="Asia/Singapore">Singapur</option>
+            <option value="Asia/Kolkata">Hindistan (Kalküta)</option>
+            <option value="Asia/Bangkok">Tayland (Bangkok)</option>
+            <option value="Asia/Jakarta">Endonezya (Cakarta)</option>
+          </optgroup>
+          <optgroup label="Amerika (America)">
+            <option value="America/New_York">ABD - Doğu (New York)</option>
+            <option value="America/Chicago">ABD - Merkez (Chicago)</option>
+            <option value="America/Los_Angeles">ABD - Pasifik (Los Angeles)</option>
+            <option value="America/Toronto">Kanada (Toronto)</option>
+            <option value="America/Sao_Paulo">Brezilya (Sao Paulo)</option>
+            <option value="America/Mexico_City">Meksika (Mexico City)</option>
+            <option value="America/Buenos_Aires">Arjantin (Buenos Aires)</option>
+          </optgroup>
+          <optgroup label="Okyanusya (Oceania)">
+            <option value="Australia/Sydney">Avustralya (Sidney)</option>
+            <option value="Pacific/Auckland">Yeni Zelanda (Auckland)</option>
+            <option value="Pacific/Honolulu">Hawaii (Honolulu)</option>
+          </optgroup>
+          <optgroup label="Afrika (Africa)">
+            <option value="Africa/Cairo">Mısır (Kahire)</option>
+            <option value="Africa/Johannesburg">Güney Afrika (Johannesburg)</option>
+            <option value="Africa/Lagos">Nijerya (Lagos)</option>
+          </optgroup>
         </select>
       </div>
 
@@ -248,8 +281,7 @@
         <div class="toggle-item"><span>Karşılama</span><label class="switch"><input type="checkbox" id="toggleGreeting" checked><span class="slider"></span></label></div>
         <div class="toggle-item"><span>Hava Durumu</span><label class="switch"><input type="checkbox" id="toggleWeather" checked><span class="slider"></span></label></div>
         <div class="toggle-item"><span>Favoriler Barı</span><label class="switch"><input type="checkbox" id="toggleFavBar" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>İlham Sözü</span><label class="switch"><input type="checkbox" id="toggleQuote" checked><span class="slider"></span></label></div>
-      </div>
+        </div>
       <div style="margin-top:1.25rem;">
         <h4 style="font-size:0.88rem;margin-bottom:0.6rem;color:var(--text-muted);">Yedekleme</h4>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">

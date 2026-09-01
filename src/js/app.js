@@ -17,7 +17,7 @@ class StartPageApp {
       await Favorites.init();
       await Shortcuts.init();
       this.initClock();
-      this.initQuotes();
+      
       this.initGlobalKeys();
       console.log('🚀 HaYTooL Cloud StartPage v2.0.0 – hazır.');
     } catch (err) {
@@ -106,3 +106,4 @@ class StartPageApp {
 }
 
 document.addEventListener('DOMContentLoaded', () => new StartPageApp().init());
+}

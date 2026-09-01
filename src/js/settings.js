@@ -33,7 +33,7 @@ export const Settings = {
     this.vis('greetingText',      this.config.showGreeting);
     this.vis('weatherBadge',      this.config.showWeather);
     this.vis('favBarSection',     this.config.showFavBar);
-    this.vis('quoteBox',          this.config.showQuote);
+    
 
     // Folder cols CSS Variable ile çözüldü
     document.body.setAttribute('data-cols', this.config.folderColumns || 3); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', this.config.folderColumns || 3);
@@ -87,8 +87,7 @@ export const Settings = {
         const nFav = document.getElementById('toggleFavBar').checked;
         if (nFav !== config.showFavBar) { config.showFavBar = nFav; changed = true; }
         
-        const nQuote = document.getElementById('toggleQuote').checked;
-        if (nQuote !== config.showQuote) { config.showQuote = nQuote; changed = true; }
+        
         
         const nLang = document.getElementById('langSelect').value;
         if (nLang !== I18n.currentLang) {
@@ -216,7 +215,7 @@ export const Settings = {
     t('toggleGreeting',       this.config.showGreeting);
     t('toggleWeather',        this.config.showWeather);
     t('toggleFavBar',         this.config.showFavBar);
-    t('toggleQuote',          this.config.showQuote);
+    
     
     const input = document.getElementById('weatherCityInput');
     if (input && this.config.weatherCityObj) {
