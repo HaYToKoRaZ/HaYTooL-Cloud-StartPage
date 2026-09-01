@@ -19,7 +19,7 @@ export const Favorites = {
     bar.innerHTML = '';
     
     // Uygula CSS sınıfı
-    bar.className = 'fav-bar-container view-' + this.view;
+    bar.className = 'fav-bar fav-bar-container view-' + this.view;
 
     const limit = 10;
     const isShortlist = (this.view === 'shortlist');

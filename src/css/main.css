@@ -1443,7 +1443,8 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 0.2rem;
+  
+  flex-wrap: wrap;gap: 0.2rem;
   overflow-x: auto;
   scrollbar-width: none;
   padding: 0.2rem 0;
