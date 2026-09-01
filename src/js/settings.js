@@ -34,12 +34,13 @@ export const Settings = {
     this.vis('digitalSeconds',    this.config.showSeconds);
     this.vis('greetingText',      this.config.showGreeting);
     this.vis('weatherBadge',      this.config.showWeather);
+      this.vis('topSearchBarContainer', this.config.showSearchBar);
     this.vis('favBarSection',     this.config.showFavBar);
     
 
     // Folder cols CSS Variable ile çözüldü
     document.body.setAttribute('data-cols', this.config.folderColumns || 3);
-    document.documentElement.style.setProperty('--folder-icon-size', (this.config.folderIconSize || 64) + 'px'); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', this.config.folderColumns || 3);
+    document.documentElement.style.setProperty('--folder-icon-size', (this.config.folderIconSize || 32) + 'px'); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', this.config.folderColumns || 3);
     window.dispatchEvent(new Event('resize'));
   },
 
@@ -76,7 +77,7 @@ export const Settings = {
         const nCols = parseInt(document.getElementById('folderColumnsSelect').value) || 3;
         if (nCols !== config.folderColumns) { config.folderColumns = nCols; changed = true; }
         
-        const nIcon = parseInt(document.getElementById('iconSizeSelect')?.value) || 64;
+        const nIcon = parseInt(document.getElementById('iconSizeSelect')?.value) || 32;
         if (nIcon !== config.folderIconSize) { config.folderIconSize = nIcon; changed = true; }
         
         const nClk = document.getElementById('toggleClock').checked;
@@ -91,7 +92,10 @@ export const Settings = {
         const nWea = document.getElementById('toggleWeather').checked;
         if (nWea !== config.showWeather) { config.showWeather = nWea; changed = true; }
         
-        const nFav = document.getElementById('toggleFavBar').checked;
+        const nSearch = document.getElementById('toggleSearchBar').checked;
+          if (nSearch !== config.showSearchBar) { config.showSearchBar = nSearch; changed = true; }
+          
+          const nFav = document.getElementById('toggleFavBar').checked;
         if (nFav !== config.showFavBar) { config.showFavBar = nFav; changed = true; }
         
         
@@ -274,7 +278,7 @@ export const Settings = {
     f('customBgInput',        this.config.customBgUrl);
     f('langSelect',           I18n.currentLang);
     f('folderColumnsSelect',  String(this.config.folderColumns || 3));
-    f('iconSizeSelect',       String(this.config.folderIconSize || 64));
+    f('iconSizeSelect',       String(this.config.folderIconSize || 32));
     
     const input = document.getElementById('weatherCityInput');
     if (input && this.config.weatherCityObj) {

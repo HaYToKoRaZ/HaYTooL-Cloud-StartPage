@@ -100,9 +100,7 @@ class StartPageApp {
     const engineSelect = document.getElementById('topSearchEngineSelect');
     
     // Initial display setting
-    if (Settings.config && Settings.config.showSearchBar === false) {
-      if (searchContainer) searchContainer.style.display = 'none';
-    }
+    
 
     const savedEngine = await Storage.get('search_engine', 'google');
     if (engineSelect) {
@@ -135,5 +133,6 @@ class StartPageApp {
       });
     }
   }
+}
 
 document.addEventListener('DOMContentLoaded', () => new StartPageApp().init());
