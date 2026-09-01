@@ -1,4 +1,4 @@
-﻿import { I18n }      from './i18n.js';
+import { I18n }      from './i18n.js';
 import { Storage }   from './storage.js';
 import { Weather }   from './weather.js';
 import { Shortcuts } from './shortcuts.js';
@@ -20,7 +20,13 @@ class StartPageApp {
       
       this.initGlobalKeys();
       this.initSearchBar();
-      console.log('?? HaYTooL Cloud StartPage v2.0.0 - hazr.');
+      
+      window.addEventListener('render_shortcuts_and_favorites', () => {
+        Shortcuts.renderFolders();
+        Favorites.render();
+      });
+      
+      console.log('✨ HaYTooL Cloud StartPage v3.0.0 - hazır.');
     } catch (err) {
       console.error('[App] Başlatma hatası:', err);
     }

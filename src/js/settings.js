@@ -148,10 +148,9 @@ export const Settings = {
         if (changed) {
           await Storage.set('app_settings', config);
           this.apply();
-          
-          if (e.target.id === 'iconSizeSelect' || e.target.id === 'iconApiSelect') {
-             import('./shortcuts.js').then(m => m.Shortcuts.renderFolders());
-             import('./favorites.js').then(m => m.Favorites.render());
+          // Eğer klasör veya ikon ayarı değiştiyse yeniden renderla
+          if (nIcon !== undefined || nIconApi !== undefined || nCols !== undefined) {
+             window.dispatchEvent(new Event('render_shortcuts_and_favorites'));
           }
           if (e.target.id === 'toggleWeather' || e.target.id === 'themeSelect') {
              import('./weather.js').then(m => m.Weather.fetchAndRender(true));
