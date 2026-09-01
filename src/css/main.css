@@ -2211,3 +2211,7 @@ body[data-cols="1"] .folders-grid {
   font-size: 0.95rem;
 }
 .folder-is-hidden { border: 1px dashed var(--border) !important; }
+
+
+.feedback-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+.feedback-link:hover { color: var(--accent-primary); }

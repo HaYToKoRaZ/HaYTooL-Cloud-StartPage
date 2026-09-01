@@ -514,7 +514,11 @@ export const Shortcuts = {
     const box = document.createElement('div');
     box.className = 'link-fav-icon';
     if (item.icon && (item.icon.startsWith('http') || item.icon.startsWith('data:'))) {
-      box.innerHTML = '<img src="' + item.icon + '" alt="" onerror="this.parentElement.textContent=\'🌐\'">';
+      const img = document.createElement('img');
+      img.src = item.icon;
+      img.alt = '';
+      img.addEventListener('error', () => { box.textContent = '🌐'; });
+      box.appendChild(img);
     } else if (item.icon && item.icon.trim()) {
       box.textContent = item.icon;
     } else {
@@ -530,7 +534,11 @@ export const Shortcuts = {
         else if (api === 'duckduckgo') src = 'https://icons.duckduckgo.com/ip3/' + d + '.ico';
         else src = 'https://www.google.com/s2/favicons?domain=' + d + '&sz=64';
         
-        box.innerHTML = '<img src="' + src + '" alt="" onerror="this.parentElement.textContent=\'🌐\'">';
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = '';
+        img.addEventListener('error', () => { box.textContent = '🌐'; });
+        box.appendChild(img);
       } catch(e) { box.textContent = '🌐'; }
     }
     return box;

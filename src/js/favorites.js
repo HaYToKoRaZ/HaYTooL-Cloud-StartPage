@@ -113,7 +113,11 @@ export const Favorites = {
     iconBox.className = 'fav-icon-box';
 
     if (fav.icon && (fav.icon.startsWith('http') || fav.icon.startsWith('data:'))) {
-      iconBox.innerHTML = '<img src="' + fav.icon + '" alt="" onerror="this.parentElement.textContent=\'🌐\'">';
+      const img = document.createElement('img');
+      img.src = fav.icon;
+      img.alt = '';
+      img.addEventListener('error', () => { iconBox.textContent = '🌐'; });
+      iconBox.appendChild(img);
     } else if (fav.icon && fav.icon.trim()) {
       iconBox.textContent = fav.icon;
     } else {
@@ -129,7 +133,11 @@ export const Favorites = {
         else if (api === 'duckduckgo') src = 'https://icons.duckduckgo.com/ip3/' + domain + '.ico';
         else src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
         
-        iconBox.innerHTML = '<img src="' + src + '" alt="" onerror="this.parentElement.textContent=\'🌐\'">';
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = '';
+        img.addEventListener('error', () => { iconBox.textContent = '🌐'; });
+        iconBox.appendChild(img);
       } catch(e) { iconBox.textContent = '🌐'; }
     }
 
