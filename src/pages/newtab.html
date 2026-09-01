@@ -212,9 +212,12 @@
         <label>Konum / Şehir
           <span style="color:var(--text-dim);font-weight:400;font-size:0.8rem;"> (Boş = GPS otomatik)</span>
         </label>
-        <div class="weather-city-row">
-          <input type="text" id="weatherCityInput" class="form-input" placeholder="Örn: Ankara, İstanbul, London...">
-          <button type="button" id="testWeatherCityBtn" class="btn-secondary" style="flex-shrink:0;padding:0 0.75rem;" title="Test Et">🔍</button>
+        <div class="weather-city-row" style="position:relative;">
+          <input type="text" id="weatherCityInput" class="form-input" placeholder="İl, ilçe veya kasaba arayın..." autocomplete="off">
+          <button type="button" id="clearWeatherCityBtn" class="btn-secondary" style="flex-shrink:0;padding:0 0.75rem;" title="Sıfırla / GPS Kullan">✕</button>
+          
+          <!-- Otomatik tamamlama listesi -->
+          <div id="weatherCityDropdown" class="city-dropdown" style="display:none;"></div>
         </div>
         <div style="margin-top:0.4rem;font-size:0.78rem;color:var(--text-dim);">
           Şehir adı girin — otomatik olarak koordinata çevrilir (Open-Meteo Geocoding, ücretsiz).

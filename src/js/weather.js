@@ -1,10 +1,6 @@
 ﻿import { Storage } from './storage.js';
-import { I18n } from './i18n.js';
+import { Settings } from './settings.js';
 
-/**
- * HaYTooL Cloud StartPage - Hava Durumu (Open-Meteo, ücretsiz)
- * Manuel şehir araması: Open-Meteo Geocoding API
- */
 export const Weather = {
   async init() {
     const badge = document.getElementById('weatherBadge');
@@ -25,28 +21,15 @@ export const Weather = {
 
     badge.innerHTML = '<span class="weather-icon">⏳</span><span>Yükleniyor...</span>';
 
-    // Manuel şehir var mı?
-    const manualCity = await Storage.get('weather_city', '');
-    if (manualCity && manualCity.trim()) {
-      await this.fetchByCity(manualCity.trim());
+    // Settings'den koordinatlı obje alındı mı?
+    // Not: Settings initialize edildiği için Settings.config yüklü
+    const cityObj = Settings.config.weatherCityObj;
+    
+    if (cityObj && cityObj.lat !== undefined && cityObj.lon !== undefined) {
+      // Obje varsa doğrudan koordinatı kullanıyoruz (ekstra API isteğine gerek yok)
+      await this.fetchWeather(cityObj.lat, cityObj.lon, cityObj.name);
     } else {
-      // GPS otomatik konum isteğini kaldırdık. Varsayılan şehir: İstanbul
-      this.fetchWeather(41.0082, 28.9784, 'İstanbul');
-    }
-  },
-
-  /** Şehir adını geocoding ile lat/lon'a çevirir */
-  async fetchByCity(cityName) {
-    try {
-      const geo = await fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(cityName) + '&count=1&language=tr&format=json');
-      if (!geo.ok) throw new Error('Geocoding API hatası');
-      const geoData = await geo.json();
-      if (!geoData.results || geoData.results.length === 0) throw new Error('"' + cityName + '" şehri bulunamadı');
-      const { latitude, longitude, name, country } = geoData.results[0];
-      await this.fetchWeather(latitude, longitude, name + ', ' + country);
-    } catch(e) {
-      console.warn('[Weather] Şehir araması başarısız:', e);
-      // Fallback: İstanbul
+      // Konum yoksa varsayılan (İstanbul)
       await this.fetchWeather(41.0082, 28.9784, 'İstanbul');
     }
   },
@@ -61,7 +44,7 @@ export const Weather = {
       const wd = {
         temp:     Math.round(data.current.temperature_2m),
         code:     data.current.weather_code,
-        city:     cityName || 'Konumunuz',
+        city:     cityName || 'Konum',
         wind:     Math.round(data.current.wind_speed_10m),
         humidity: data.current.relative_humidity_2m
       };
