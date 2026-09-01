@@ -294,6 +294,7 @@ export const Settings = {
         if (userInput !== null) {
           if (userInput.trim() === confirmWord) {
             await Storage.set('shortcuts_v2', []);
+            await Storage.set('shortcut_categories', []);
             await Storage.set('favorites_bar', []);
             this.toast(I18n.t('toast_links_deleted', 'Tüm linkler başarıyla silindi. Yükleniyor...'));
             setTimeout(() => window.location.reload(), 1500);

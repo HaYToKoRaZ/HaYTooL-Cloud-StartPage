@@ -195,7 +195,7 @@
   "ctx_remove_fav": "Remove from Favorites",
   "fav_edit_title": "Edit Favorite",
   "btn_export_html": "Export as Standard HTML Bookmarks",
-  "btn_delete_all_links": "Delete All Links",
+  "btn_delete_all_links": "Delete Links and Categories",
   "delete_all_links_confirm_word": "DELETE",
   "delete_all_links_prompt": "WARNING! All links and folders will be permanently deleted.\nTo proceed, please type this EXACT word:\n\n",
   "toast_links_deleted": "All links deleted successfully. Reloading...",
