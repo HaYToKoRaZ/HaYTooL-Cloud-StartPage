@@ -16,6 +16,8 @@ export const Settings = {
     this.apply();
     this.setupListeners();
     this.setupCityAutocomplete();
+    this.setupBackup();
+    this.setupReset();
   },
 
   apply() {
@@ -133,6 +135,63 @@ export const Settings = {
   },
 
   // === HAVA DURUMU CANLI ARAMA (AUTOCOMPLETE) ===
+  setupBackup() {
+    const expBtn = document.getElementById('exportDataBtn');
+    const impInp = document.getElementById('importDataInput');
+    
+    if (expBtn) {
+      expBtn.addEventListener('click', async () => {
+        const allData = await Storage.getAll();
+        const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'haytool_backup_' + new Date().toISOString().slice(0,10) + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        this.toast('Yedek başarıyla indirildi!');
+      });
+    }
+
+    if (impInp) {
+      impInp.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async (ev) => {
+          try {
+            const data = JSON.parse(ev.target.result);
+            if (typeof data !== 'object') throw new Error('Geçersiz dosya');
+            for (const key of Object.keys(data)) {
+              await Storage.set(key, data[key]);
+            }
+            this.toast('Yedek başarıyla yüklendi! Sayfa yenileniyor...');
+            setTimeout(() => window.location.reload(), 1500);
+          } catch(err) {
+            alert('Yedek yüklenirken hata oluştu: ' + err.message);
+          }
+          impInp.value = '';
+        };
+        reader.readAsText(file);
+      });
+    }
+  },
+
+  setupReset() {
+    const resetBtn = document.getElementById('resetSettingsBtn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', async () => {
+        if (confirm('TÜM verileriniz (klasörler, linkler, ayarlar) silinecek. Emin misiniz?')) {
+          if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+            await chrome.storage.local.clear();
+          }
+          localStorage.clear();
+          window.location.reload();
+        }
+      });
+    }
+  },
+
   setupCityAutocomplete() {
     const input = document.getElementById('weatherCityInput');
     const dropdown = document.getElementById('weatherCityDropdown');
