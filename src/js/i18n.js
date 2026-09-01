@@ -138,11 +138,7 @@ export const I18n = {
     this._updateHtmlLang();
     this.translateDOM();
     this._updatePickers(lang);
-    // Klasör kartlarını yeniden çiz (sağ tıklama menüsü metinleri dahil)
-    if (window.ShortcutsApp && typeof window.ShortcutsApp.renderFolders === 'function') {
-      window.ShortcutsApp.renderFolders();
-    }
-    // Diğer bileşenlere haber ver
+    // Diğer bileşenlere haber ver (app.js dinliyor)
     window.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
   }
 };

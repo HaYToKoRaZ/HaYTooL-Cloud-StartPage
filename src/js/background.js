@@ -9,6 +9,6 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "open_settings") {
     // Open new tab page with #settings hash to automatically trigger settings modal
-    chrome.tabs.create({ url: "chrome://newtab/#settings" });
+    chrome.tabs.create({ url: chrome.runtime.getURL("src/pages/newtab.html#settings") });
   }
 });

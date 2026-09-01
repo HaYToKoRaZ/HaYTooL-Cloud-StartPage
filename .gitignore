@@ -1,4 +1,4 @@
-﻿# Local Working & Secret Directories
+# Local Working & Secret Directories
 0nogithub/
 ornek/
 0no*/
@@ -48,4 +48,6 @@ scratch/
 .env.local
 .env.*.local
 *.pem
-*.keybackup_*
+*.key
+backup_*
+update_locales.js

@@ -26,6 +26,11 @@ class StartPageApp {
         Favorites.render();
       });
       
+      window.addEventListener('langchange', () => {
+        Shortcuts.renderFolders();
+        Favorites.render();
+      });
+      
       console.log('✨ HaYTooL Cloud StartPage v4.0.0 - hazır.');
       
       if (window.location.hash === '#settings') {

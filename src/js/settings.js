@@ -71,6 +71,12 @@ export const Settings = {
 
   vis(id, show) { const el = document.getElementById(id); if (el) el.style.display = show ? '' : 'none'; },
 
+  openModal() {
+    this.populate();
+    const modal = document.getElementById('settingsModal');
+    if (modal) modal.classList.add('active');
+  },
+
   setupListeners() {
     const modal       = document.getElementById('settingsModal');
     const openBtn     = document.getElementById('settingsBtn');
