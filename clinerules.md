@@ -9,7 +9,7 @@ Bu belge, **HaYTooL Cloud StartPage** tarayıcı eklentisi (Browser Extension) p
 > ### 🛑 MUTLAK SİSTEM GÜVENLİK PROTOKOLÜ (ANTI-DESTRUCTION)
 > 1. **Katı Çalışma Alanı (Sandbox):** Sadece ana proje dizini D:\Users\Documents\HaYTooL Cloud StartPage ile ajanın kendi yapılandırma dizinlerinde çalışabilirsin. Bu özel yol dışındaki hiçbir diske veya sistem klasörüne ASLA izinsiz müdahale edemez ve silemezsin.
 > 2. **Harici İşlem Onayı:** Proje dışı global veya sistem ayarı gerekirse KENDİN YAPMA. Kullanıcıya neyi/neden/nasıl yapacağını Türkçe açıkla ve onayı bekle.
-> 3. **0nogithub Yasak Bölgesi:**  nogithub/ klasörü KESİNLİKLE yerel kalacak, Git'e indekslenmeyecek ve asla pushlanmayacaktır.
+> 3. **.agents Yasak Bölgesi:** .agents/ klasörü KESİNLİKLE yerel kalacak, Git'e indekslenmeyecek ve asla pushlanmayacaktır.
 > 4. **Zorunlu Yedekleme Yönetimi (PS1):** Kodda köklü bir değişiklik yapmadan önce D:\Users\Documents\HaYTooL Cloud StartPage\.agents\rules\backup.ps1 scripti çalıştırılmalıdır. Ajan bu scriptin içeriğiyle ilgilenmez, sadece tetikler ve bitmesini bekler.
 > 5. **Özel Not Dosyaları:** yapilacaklar.txt gibi kullanıcının kişisel not dosyaları varsa OKUMA, görev listesi olarak KULLANMA, maps.md'ye ekleme; yokmuş gibi davran.
 
