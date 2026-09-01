@@ -105,16 +105,20 @@ body {
 
 .weather-badge {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.9rem;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
   font-size: 0.85rem;
   font-weight: 500;
   color: var(--text-main);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-lg);
   cursor: pointer;
   user-select: none;
 }
+.weather-badge-top { display: flex; align-items: center; gap: 0.5rem; }
+.weather-badge-bottom { display: flex; align-items: center; gap: 0.75rem; font-size: 0.75rem; color: var(--text-dim); font-weight: 400; }
 
 .weather-badge .weather-icon {
   font-size: 1.1rem;
