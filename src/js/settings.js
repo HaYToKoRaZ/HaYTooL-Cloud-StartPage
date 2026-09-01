@@ -52,6 +52,72 @@ export const Settings = {
     if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
     if (modal)    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
 
+    // === ANINDA KAYDET (AUTO-SAVE) ===
+    if (modal) {
+      modal.addEventListener('change', async (e) => {
+        if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT') return;
+        
+        let changed = false;
+        const config = this.config;
+        
+        const nTheme = document.getElementById('themeSelect').value;
+        if (nTheme !== config.theme) { config.theme = nTheme; changed = true; }
+        
+        const nBg = document.getElementById('bgSelect').value;
+        if (nBg !== config.bgStyle) { config.bgStyle = nBg; changed = true; }
+        
+        const nCustBg = document.getElementById('customBgInput').value.trim();
+        if (nCustBg !== config.customBgUrl) { config.customBgUrl = nCustBg; changed = true; }
+        
+        const nCols = parseInt(document.getElementById('folderColumnsSelect').value) || 3;
+        if (nCols !== config.folderColumns) { config.folderColumns = nCols; changed = true; }
+        
+        const nClk = document.getElementById('toggleClock').checked;
+        if (nClk !== config.showClock) { config.showClock = nClk; changed = true; }
+        
+        const nSec = document.getElementById('toggleSeconds').checked;
+        if (nSec !== config.showSeconds) { config.showSeconds = nSec; changed = true; }
+        
+        const nGreet = document.getElementById('toggleGreeting').checked;
+        if (nGreet !== config.showGreeting) { config.showGreeting = nGreet; changed = true; }
+        
+        const nWea = document.getElementById('toggleWeather').checked;
+        if (nWea !== config.showWeather) { config.showWeather = nWea; changed = true; }
+        
+        const nFav = document.getElementById('toggleFavBar').checked;
+        if (nFav !== config.showFavBar) { config.showFavBar = nFav; changed = true; }
+        
+        const nQuote = document.getElementById('toggleQuote').checked;
+        if (nQuote !== config.showQuote) { config.showQuote = nQuote; changed = true; }
+        
+        const nLang = document.getElementById('langSelect').value;
+        if (nLang !== I18n.currentLang) {
+          await I18n.setLanguage(nLang);
+          changed = true;
+        }
+
+        const tzSel = document.getElementById('timezoneSelect');
+        if (tzSel && tzSel.value !== config.timezone) { config.timezone = tzSel.value; changed = true; }
+
+        if (changed) {
+          await Storage.set('app_settings', config);
+          this.apply();
+          
+          if (e.target.id === 'toggleWeather' || e.target.id === 'themeSelect') {
+             import('./weather.js').then(m => m.Weather.fetchAndRender(true));
+          }
+        }
+      });
+      
+      modal.addEventListener('input', async (e) => {
+         if (e.target.id === 'customBgInput') {
+             this.config.customBgUrl = e.target.value.trim();
+             await Storage.set('app_settings', this.config);
+             this.apply();
+         }
+      });
+    }
+
     // Sütun sayısı anlık önizleme
     if (colSelect) {
       colSelect.addEventListener('change', () => {
@@ -59,32 +125,7 @@ export const Settings = {
       });
     }
 
-    if (saveBtn) {
-      saveBtn.addEventListener('click', async () => {
-        this.config.theme         = document.getElementById('themeSelect').value;
-        this.config.bgStyle       = document.getElementById('bgSelect').value;
-        this.config.customBgUrl   = document.getElementById('customBgInput').value.trim();
-        this.config.folderColumns = parseInt(document.getElementById('folderColumnsSelect').value) || 3;
-        this.config.showClock     = document.getElementById('toggleClock').checked;
-        this.config.showSeconds   = document.getElementById('toggleSeconds').checked;
-        this.config.showGreeting  = document.getElementById('toggleGreeting').checked;
-        this.config.showWeather   = document.getElementById('toggleWeather').checked;
-        this.config.showFavBar    = document.getElementById('toggleFavBar').checked;
-        this.config.showQuote     = document.getElementById('toggleQuote').checked;
-
-        const ls = document.getElementById('langSelect');
-        if (ls && ls.value !== I18n.currentLang) await I18n.setLanguage(ls.value);
-
-        await Storage.set('app_settings', this.config);
-        this.apply();
-        modal.classList.remove('active');
-        this.toast('✅ Ayarlar kaydedildi!');
-        
-        // Hava durumu modülünü yeni ayarlarla yenile
-        const { Weather } = await import('./weather.js');
-        Weather.fetchAndRender(true);
-      });
-    }
+    
   },
 
   // === HAVA DURUMU CANLI ARAMA (AUTOCOMPLETE) ===
