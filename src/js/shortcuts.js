@@ -1,4 +1,5 @@
 ﻿import { Storage } from './storage.js';
+import { Favorites } from './favorites.js';
 
 export const Shortcuts = {
   CAT_KEY:       'shortcut_categories',
@@ -181,6 +182,16 @@ export const Shortcuts = {
 
       a.appendChild(icon);
       a.appendChild(lbl);
+      const favBtn = document.createElement('button');
+      favBtn.className = 'link-fav-add-btn'; favBtn.innerHTML = '⭐'; favBtn.title = 'Üst Favorilere Ekle';
+      favBtn.addEventListener('click', async e => {
+        e.preventDefault(); e.stopPropagation();
+        Favorites.items.push({ id: Date.now().toString(), title: item.title, url: item.url, icon: item.icon });
+        await Storage.set(Favorites.FAV_KEY, Favorites.items);
+        Favorites.render();
+        this._toast('✅ Favorilere Eklendi!');
+      });
+      wrap.appendChild(favBtn);
       const editBtn = document.createElement('button');
       editBtn.className = 'link-edit-btn'; editBtn.innerHTML = '✏️'; editBtn.title = 'Düzenle';
       editBtn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); this.openEditLinkModal(item); });
@@ -215,6 +226,27 @@ export const Shortcuts = {
       a.appendChild(icon);
       a.appendChild(titleSpan);
       a.appendChild(urlSpan);
+      const favBtn = document.createElement('button');
+      favBtn.className = 'link-fav-add-btn'; favBtn.innerHTML = '⭐'; favBtn.title = 'Üst Favorilere Ekle';
+      favBtn.addEventListener('click', async e => {
+        e.preventDefault(); e.stopPropagation();
+        Favorites.items.push({ id: Date.now().toString(), title: item.title, url: item.url, icon: item.icon });
+        await Storage.set(Favorites.FAV_KEY, Favorites.items);
+        Favorites.render();
+        this._toast('✅ Favorilere Eklendi!');
+      });
+      wrap.appendChild(favBtn);
+      const favBtn = document.createElement('button');
+      favBtn.className = 'link-fav-add-btn link-edit-list fav-list-btn'; favBtn.innerHTML = '⭐'; favBtn.title = 'Üst Favorilere Ekle';
+      favBtn.addEventListener('click', async e => {
+        e.preventDefault(); e.stopPropagation();
+        Favorites.items.push({ id: Date.now().toString(), title: item.title, url: item.url, icon: item.icon });
+        await Storage.set(Favorites.FAV_KEY, Favorites.items);
+        Favorites.render();
+        this._toast('✅ Favorilere Eklendi!');
+      });
+      wrap.appendChild(favBtn);
+      
       const editBtn = document.createElement('button');
       editBtn.className = 'link-edit-btn link-edit-list'; editBtn.innerHTML = '✏️'; editBtn.title = 'Düzenle';
       editBtn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); this.openEditLinkModal(item); });

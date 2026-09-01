@@ -1945,3 +1945,31 @@ body[data-cols="10"] .folders-grid { grid-template-columns: repeat(10, 1fr) !imp
 }
 .link-item:hover .link-edit-list { transform: translateY(-50%) scale(1); }
 .link-edit-list:hover { transform: translateY(-50%) scale(1.15) !important; }
+
+.link-fav-add-btn {
+  position: absolute;
+  top: -6px;
+  right: 46px; /* Düzenle butonunun solunda */
+  background: var(--surface-glass-hover);
+  border: 1px solid var(--border-glass);
+  color: #fbbf24; /* Yıldız sarısı */
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all var(--transition-fast);
+  z-index: 10;
+}
+.link-item:hover .link-fav-add-btn { opacity: 1; transform: scale(1); }
+.link-fav-add-btn:hover { background: rgba(251, 191, 36, 0.2); transform: scale(1.15) !important; }
+
+/* Liste görünümü için */
+.fav-list-btn {
+  right: 66px; /* Liste düzenle butonunun solunda */
+}
