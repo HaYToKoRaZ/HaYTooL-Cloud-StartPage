@@ -1,0 +1,26 @@
+﻿{
+  "manifest_version": 3,
+  "name": "HaYTooL Cloud StartPage",
+  "version": "1.0.0",
+  "description": "Modern, ultra fast, aesthetic and modular StartPage with multi-engine search, speed dial, notes, weather and dual theme.",
+  "chrome_url_overrides": {
+    "newtab": "src/pages/newtab.html"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "icons": {
+    "16": "src/assets/icons/icon16.png",
+    "32": "src/assets/icons/icon32.png",
+    "48": "src/assets/icons/icon48.png",
+    "128": "src/assets/icons/icon128.png"
+  },
+  "action": {
+    "default_title": "HaYTooL Cloud StartPage",
+    "default_icon": {
+      "16": "src/assets/icons/icon16.png",
+      "32": "src/assets/icons/icon32.png",
+      "48": "src/assets/icons/icon48.png"
+    }
+  }
+}
