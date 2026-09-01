@@ -254,7 +254,7 @@ export const Shortcuts = {
 
   _makeFolderCard(cat, items) {
     const isCollapsed = this.collapsedFolders.has(cat.id);
-    const view        = this.folderViews[cat.id] || 'icon';
+    const view        = this.folderViews[cat.id] || 'list';
 
     const card = document.createElement('div');
     card.className = 'folder-card' + (isCollapsed ? ' collapsed' : '');
@@ -549,7 +549,7 @@ export const Shortcuts = {
     menu.innerHTML = '';
     menu.style.display = 'block';
 
-    const view = this.folderViews[cat.id] || 'icon';
+    const view = this.folderViews[cat.id] || 'list';
     const check = v => view === v ? '✓ ' : '　';
 
     const opts = [
