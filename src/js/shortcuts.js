@@ -1,4 +1,5 @@
-﻿import { Storage } from './storage.js';
+﻿import { I18n } from './i18n.js';
+import { Storage } from './storage.js';
 import { Favorites } from './favorites.js';
 
 export const Shortcuts = {
@@ -590,7 +591,7 @@ export const Shortcuts = {
           this.collapsedFolders.clear();
           await Storage.set(this.COLLAPSED_KEY, [...this.collapsedFolders]);
           this.renderFolders();
-          this._toast('Bütün klasörler genişletildi.');
+          this._toast(I18n.t('toast_folders_expanded'));
         });
       }
       if (collapseAllBtn) {
@@ -598,7 +599,7 @@ export const Shortcuts = {
           this.categories.forEach(cat => this.collapsedFolders.add(cat.id));
           await Storage.set(this.COLLAPSED_KEY, [...this.collapsedFolders]);
           this.renderFolders();
-          this._toast('Bütün klasörler daraltıldı.');
+          this._toast(I18n.t('toast_folders_collapsed'));
         });
       }
     },
