@@ -659,9 +659,9 @@ body {
   border-color: var(--accent-primary);
 }
 
-.form-select option {
-  background: #0f172a;
-  color: #fff;
+.form-select option, .form-select optgroup {
+  background: var(--bg-base);
+  color: var(--text-main);
 }
 
 .toggle-item {

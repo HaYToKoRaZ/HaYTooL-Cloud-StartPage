@@ -55,35 +55,35 @@
    Açık, beyaz glassmorphism
    ────────────────────────────────────────────── */
 [data-theme="light"] {
-  --bg-base:               #f6f8fa;
-  --bg-gradient:           radial-gradient(ellipse at 20% 20%, rgba(9,105,218,0.07) 0%, transparent 55%),
-                           radial-gradient(ellipse at 80% 80%, rgba(130,80,255,0.06) 0%, transparent 55%),
-                           linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+  --bg-base:               #f1f5f9;
+  --bg-gradient:           radial-gradient(ellipse at 20% 20%, rgba(9,105,218,0.05) 0%, transparent 55%),
+                           radial-gradient(ellipse at 80% 80%, rgba(130,80,255,0.04) 0%, transparent 55%),
+                           linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 
-  --surface-glass:         rgba(255, 255, 255, 0.70);
-  --surface-glass-hover:   rgba(255, 255, 255, 0.90);
-  --surface-glass-active:  rgba(240, 244, 248, 0.96);
+  --surface-glass:         rgba(255, 255, 255, 0.55);
+  --surface-glass-hover:   rgba(255, 255, 255, 0.80);
+  --surface-glass-active:  rgba(255, 255, 255, 0.95);
 
-  --border-glass:          rgba(0, 0, 0, 0.08);
-  --border-glass-hover:    rgba(0, 0, 0, 0.18);
+  --border-glass:          rgba(15, 23, 42, 0.06);
+  --border-glass-hover:    rgba(15, 23, 42, 0.12);
   --border-accent:         rgba(9, 105, 218, 0.50);
 
-  --text-main:             #1c2128;
-  --text-muted:            #57606a;
-  --text-dim:              #8c959f;
+  --text-main:             #334155;
+  --text-muted:            #64748b;
+  --text-dim:              #94a3b8;
 
-  --accent-primary:        #0969da;
-  --accent-primary-hover:  #0550ae;
-  --accent-cyan:           #0284c7;
-  --accent-violet:         #6e40c9;
-  --accent-emerald:        #1a7f37;
-  --accent-rose:           #cf222e;
-  --accent-amber:          #9a6700;
+  --accent-primary:        #0ea5e9;
+  --accent-primary-hover:  #0284c7;
+  --accent-cyan:           #06b6d4;
+  --accent-violet:         #8b5cf6;
+  --accent-emerald:        #10b981;
+  --accent-rose:           #f43f5e;
+  --accent-amber:          #f59e0b;
 
-  --glass-blur:            blur(20px);
-  --glass-shadow:          0 4px 24px rgba(31, 35, 40, 0.08);
-  --glass-shadow-hover:    0 8px 36px rgba(31, 35, 40, 0.14);
-  --glow-accent:           0 0 20px rgba(9, 105, 218, 0.18);
+  --glass-blur:            blur(24px);
+  --glass-shadow:          0 4px 20px rgba(15, 23, 42, 0.05);
+  --glass-shadow-hover:    0 8px 30px rgba(15, 23, 42, 0.08);
+  --glow-accent:           0 0 20px rgba(14, 165, 233, 0.20);
 }
 
 /* ──────────────────────────────────────────────
