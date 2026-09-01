@@ -145,6 +145,13 @@ export const Favorites = {
     optBtn.title = 'Seçenekler';
     optBtn.addEventListener('click', e => {
       e.stopPropagation();
+      e.preventDefault();
+      this._showFavContextMenu(e, fav, idx);
+    });
+
+    wrap.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      e.stopPropagation();
       this._showFavContextMenu(e, fav, idx);
     });
 
