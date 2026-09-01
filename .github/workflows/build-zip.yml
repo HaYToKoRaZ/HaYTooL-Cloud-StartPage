@@ -11,6 +11,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,3 +37,13 @@ jobs:
           name: HaYTooL-StartPage-v${{ steps.get_version.outputs.VERSION }}
           path: HaYTooL-StartPage-v${{ steps.get_version.outputs.VERSION }}.zip
           retention-days: 14
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.VERSION }}
+          name: HaYTooL StartPage v${{ steps.get_version.outputs.VERSION }}
+          files: HaYTooL-StartPage-v${{ steps.get_version.outputs.VERSION }}.zip
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
