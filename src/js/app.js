@@ -83,19 +83,7 @@ class StartPageApp {
     tick(); setInterval(tick, 1000);
   }
 
-  initQuotes() {
-    const qs = [
-      "Gelecek, bugünden hazırlananlara aittir.",
-      "The secret of getting ahead is getting started. – Mark Twain",
-      "Basitlik, verimliliğin ruhudur.",
-      "Her yeni gün, yeni bir başlangıçtır.",
-      "Stay hungry, stay foolish. – Steve Jobs",
-      "Hayal kurmaya cesaret et, büyük düşün.",
-      "Code is poetry."
-    ];
-    const el = document.getElementById('quoteBox');
-    if (el) el.textContent = '"' + qs[Math.floor(Math.random()*qs.length)] + '"';
-  }
+  
 
   initGlobalKeys() {
     document.addEventListener('keydown', e => {
@@ -106,4 +94,3 @@ class StartPageApp {
 }
 
 document.addEventListener('DOMContentLoaded', () => new StartPageApp().init());
-}
