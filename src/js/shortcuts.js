@@ -249,6 +249,7 @@ export const Shortcuts = {
       { separator: true },
       { label: '+ Link Ekle', action: () => this.openAddLinkModal(cat.id) },
       { label: '✏️ Yeniden Adlandır', action: () => this._openRenameModal(cat) },
+      { label: '🔤 Linkleri A-Z Sırala', action: () => this._sortFolderItems(cat.id) },
       { separator: true },
       { label: '🗑 Klasörü Sil', danger: true, action: async () => {
           if (!confirm('"' + cat.name + '" klasörü ve ' + count + ' linki silinecek. Emin misiniz?')) return;
@@ -289,6 +290,19 @@ export const Shortcuts = {
   _closeMenu() {
     const m = document.getElementById('contextMenu');
     if (m) m.style.display = 'none';
+  },
+
+  async _sortFolderItems(catId) {
+    const catItems = this.items.filter(i => i.categoryId === catId);
+    const otherItems = this.items.filter(i => i.categoryId !== catId);
+    
+    // İsimlere göre (Türkçe karakter duyarlı) A'dan Z'ye sırala
+    catItems.sort((a, b) => a.title.localeCompare(b.title, 'tr'));
+    
+    this.items = [...otherItems, ...catItems];
+    await Storage.set(this.ITEMS_KEY, this.items);
+    this.renderFolders();
+    this._toast('✅ Klasör içi A-Z sıralandı');
   },
 
   setupShortcutModal() {
