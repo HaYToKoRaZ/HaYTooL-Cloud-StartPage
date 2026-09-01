@@ -49,7 +49,7 @@ Bu belge, **HaYTooL Cloud StartPage** tarayıcı eklentisi (Browser Extension) p
 3. **i18n Kuralı:** Kod içinde asla statik (hardcoded) metin kullanılmaz; tüm metinler için dinamik anahtarlar oluşturulup dil dosyalarına (	r,  n vb.) eksiksiz eklenir.
 4. **Hata Yönetimi (Error Handling):** Ağ istekleri ve storage okuma/yazma işlemleri 	ry-catch bloklarıyla korunur, sessiz çökme engellenir.
 5. **Ölü Kod Yasağı:** Üretim kodunda kullanılmayan değişken, gereksiz console.log veya test kodu bırakılmaz.
-6. **Proje Haritası Güncellemesi:** Yeni bir dosya oluşturulduğunda veya işlevi değiştiğinde  nogithub/maps.md dosyası güncellenir.
+6. **Proje Haritası Güncellemesi:** Yeni bir dosya oluşturulduğunda veya işlevi değiştiğinde .agents/rules/maps.md dosyası güncellenir.
 
 ---
 
