@@ -204,8 +204,18 @@ export const Shortcuts = {
       { id: genId(), categoryId: 'cat_12', title: 'CNET', url: 'https://www.cnet.com' }
     ];
     
+    const defaultViews = {
+      'cat_1': 'icon', 'cat_2': 'list',
+      'cat_3': 'list', 'cat_4': 'icon',
+      'cat_5': 'icon', 'cat_6': 'list',
+      'cat_7': 'list', 'cat_8': 'icon',
+      'cat_9': 'icon', 'cat_10': 'list',
+      'cat_11': 'list', 'cat_12': 'icon'
+    };
+
     await Storage.set(this.CAT_KEY, cats);
     await Storage.set(this.ITEMS_KEY, items);
+    await Storage.set(this.VIEW_KEY, defaultViews);
   },
 
   async toggleHiddenFolders() {
