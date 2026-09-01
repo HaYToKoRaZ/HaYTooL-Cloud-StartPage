@@ -1,4 +1,5 @@
-﻿import { Storage } from './storage.js';
+import { Storage } from './storage.js';
+import { Settings } from './settings.js';
 
 export const Favorites = {
   FAV_KEY: 'favorites_bar',
@@ -95,7 +96,16 @@ export const Favorites = {
     } else {
       try {
         const domain = new URL(fav.url).hostname;
-        iconBox.innerHTML = '<img src="https://www.google.com/s2/favicons?domain=' + domain + '&sz=64" alt="" onerror="this.parentElement.textContent=\'🌐\'">';
+        const api = Settings.config.iconApi || 'google';
+        let src = '';
+        if (api === 'google') src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
+        else if (api === 'google-hd') src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=128';
+        else if (api === 'iconhorse') src = 'https://icon.horse/icon/' + domain;
+        else if (api === 'clearbit') src = 'https://logo.clearbit.com/' + domain;
+        else if (api === 'duckduckgo') src = 'https://icons.duckduckgo.com/ip3/' + domain + '.ico';
+        else src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
+        
+        iconBox.innerHTML = '<img src="' + src + '" alt="" onerror="this.parentElement.textContent=\'🌐\'">';
       } catch(e) { iconBox.textContent = '🌐'; }
     }
 

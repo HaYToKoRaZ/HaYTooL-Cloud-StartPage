@@ -1,122 +1,239 @@
-﻿/* ==========================================================================
-   HaYTooL Cloud StartPage - Theme Variables & Glassmorphism Design Tokens
+/* ==========================================================================
+   HaYTooL Cloud StartPage — Theme Variables
+   Themes: Dark | Light | YouTube | Discord | Matrix
    ========================================================================== */
 
-:root {
-  /* Default Dark Glass Theme */
-  --bg-base: #0a0f1d;
-  --bg-gradient: radial-gradient(circle at 15% 15%, rgba(30, 41, 59, 0.9) 0%, rgba(10, 15, 29, 0.98) 100%),
-                 radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
-                 radial-gradient(circle at 50% 10%, rgba(6, 182, 212, 0.12) 0%, transparent 50%);
-  
-  --surface-glass: rgba(15, 23, 42, 0.65);
-  --surface-glass-hover: rgba(30, 41, 59, 0.8);
-  --surface-glass-active: rgba(51, 65, 85, 0.9);
-  
-  --border-glass: rgba(255, 255, 255, 0.12);
-  --border-glass-hover: rgba(255, 255, 255, 0.25);
-  --border-accent: rgba(99, 102, 241, 0.6);
-  
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
-  
-  --accent-primary: #6366f1;
-  --accent-primary-hover: #4f46e5;
-  --accent-cyan: #06b6d4;
-  --accent-violet: #8b5cf6;
-  --accent-emerald: #10b981;
-  --accent-rose: #f43f5e;
-  --accent-amber: #f59e0b;
-  
-  --glass-blur: blur(20px);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  --glass-shadow-hover: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
-  --glow-accent: 0 0 25px rgba(99, 102, 241, 0.35);
-  
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
+/* ──────────────────────────────────────────────
+   DARK THEME (Default)
+   Koyu, modern glassmorphism
+   ────────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg-base:               #0d1117;
+  --bg-gradient:           radial-gradient(ellipse at 20% 20%, rgba(88,166,255,0.08) 0%, transparent 55%),
+                           radial-gradient(ellipse at 80% 80%, rgba(139,92,246,0.09) 0%, transparent 55%),
+                           linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+
+  --surface-glass:         rgba(22, 27, 34, 0.72);
+  --surface-glass-hover:   rgba(33, 41, 52, 0.85);
+  --surface-glass-active:  rgba(48, 58, 75, 0.92);
+
+  --border-glass:          rgba(255, 255, 255, 0.10);
+  --border-glass-hover:    rgba(255, 255, 255, 0.22);
+  --border-accent:         rgba(88, 166, 255, 0.55);
+
+  --text-main:             #e6edf3;
+  --text-muted:            #8b949e;
+  --text-dim:              #484f58;
+
+  --accent-primary:        #58a6ff;
+  --accent-primary-hover:  #1f6feb;
+  --accent-cyan:           #39d5e8;
+  --accent-violet:         #8b5cf6;
+  --accent-emerald:        #3fb950;
+  --accent-rose:           #f85149;
+  --accent-amber:          #e3b341;
+
+  --glass-blur:            blur(20px);
+  --glass-shadow:          0 8px 32px rgba(0, 0, 0, 0.45);
+  --glass-shadow-hover:    0 12px 44px rgba(0, 0, 0, 0.60);
+  --glow-accent:           0 0 24px rgba(88, 166, 255, 0.30);
+
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
   --radius-full: 9999px;
-  
-  --font-sans: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --font-sans:         'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --transition-fast:   0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.4s  cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Light Glass Theme */
+/* ──────────────────────────────────────────────
+   LIGHT THEME
+   Açık, beyaz glassmorphism
+   ────────────────────────────────────────────── */
 [data-theme="light"] {
-  --bg-base: #f1f5f9;
-  --bg-gradient: radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.98) 100%),
-                 radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
-                 radial-gradient(circle at 50% 10%, rgba(6, 182, 212, 0.12) 0%, transparent 50%);
-  
-  --surface-glass: rgba(255, 255, 255, 0.65);
-  --surface-glass-hover: rgba(255, 255, 255, 0.85);
-  --surface-glass-active: rgba(241, 245, 249, 0.95);
-  
-  --border-glass: rgba(0, 0, 0, 0.08);
-  --border-glass-hover: rgba(0, 0, 0, 0.16);
-  --border-accent: rgba(99, 102, 241, 0.5);
-  
-  --text-main: #0f172a;
-  --text-muted: #475569;
-  --text-dim: #94a3b8;
-  
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-  --glass-shadow-hover: 0 12px 40px 0 rgba(31, 38, 135, 0.12);
-  --glow-accent: 0 0 25px rgba(99, 102, 241, 0.2);
+  --bg-base:               #f6f8fa;
+  --bg-gradient:           radial-gradient(ellipse at 20% 20%, rgba(9,105,218,0.07) 0%, transparent 55%),
+                           radial-gradient(ellipse at 80% 80%, rgba(130,80,255,0.06) 0%, transparent 55%),
+                           linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+
+  --surface-glass:         rgba(255, 255, 255, 0.70);
+  --surface-glass-hover:   rgba(255, 255, 255, 0.90);
+  --surface-glass-active:  rgba(240, 244, 248, 0.96);
+
+  --border-glass:          rgba(0, 0, 0, 0.08);
+  --border-glass-hover:    rgba(0, 0, 0, 0.18);
+  --border-accent:         rgba(9, 105, 218, 0.50);
+
+  --text-main:             #1c2128;
+  --text-muted:            #57606a;
+  --text-dim:              #8c959f;
+
+  --accent-primary:        #0969da;
+  --accent-primary-hover:  #0550ae;
+  --accent-cyan:           #0284c7;
+  --accent-violet:         #6e40c9;
+  --accent-emerald:        #1a7f37;
+  --accent-rose:           #cf222e;
+  --accent-amber:          #9a6700;
+
+  --glass-blur:            blur(20px);
+  --glass-shadow:          0 4px 24px rgba(31, 35, 40, 0.08);
+  --glass-shadow-hover:    0 8px 36px rgba(31, 35, 40, 0.14);
+  --glow-accent:           0 0 20px rgba(9, 105, 218, 0.18);
 }
 
-/* OLED Pure Black Theme */
-[data-theme="oled"] {
-  --bg-base: #000000;
-  --bg-gradient: #000000;
-  --surface-glass: rgba(18, 18, 18, 0.8);
-  --surface-glass-hover: rgba(28, 28, 28, 0.9);
-  --border-glass: rgba(255, 255, 255, 0.15);
-  --text-main: #ffffff;
-  --text-muted: #a3a3a3;
-  --text-dim: #737373;
-  --glass-shadow: 0 4px 20px rgba(0,0,0,0.8);
+/* ──────────────────────────────────────────────
+   YOUTUBE THEME
+   Siyah arka plan, kırmızı YouTube aksanları
+   ────────────────────────────────────────────── */
+[data-theme="youtube"] {
+  --bg-base:               #0f0f0f;
+  --bg-gradient:           radial-gradient(ellipse at 15% 25%, rgba(255,0,0,0.12) 0%, transparent 50%),
+                           radial-gradient(ellipse at 85% 75%, rgba(180,0,0,0.08) 0%, transparent 50%),
+                           linear-gradient(160deg, #0f0f0f 0%, #1a0000 100%);
+
+  --surface-glass:         rgba(24, 24, 24, 0.80);
+  --surface-glass-hover:   rgba(36, 36, 36, 0.90);
+  --surface-glass-active:  rgba(48, 12, 12, 0.92);
+
+  --border-glass:          rgba(255, 255, 255, 0.08);
+  --border-glass-hover:    rgba(255, 0, 0, 0.40);
+  --border-accent:         rgba(255, 0, 0, 0.70);
+
+  --text-main:             #f1f1f1;
+  --text-muted:            #aaaaaa;
+  --text-dim:              #717171;
+
+  --accent-primary:        #ff0000;
+  --accent-primary-hover:  #cc0000;
+  --accent-cyan:           #ff4444;
+  --accent-violet:         #ff6666;
+  --accent-emerald:        #00c853;
+  --accent-rose:           #ff1744;
+  --accent-amber:          #ffd600;
+
+  --glass-blur:            blur(18px);
+  --glass-shadow:          0 8px 32px rgba(0, 0, 0, 0.70);
+  --glass-shadow-hover:    0 12px 44px rgba(255, 0, 0, 0.20);
+  --glow-accent:           0 0 28px rgba(255, 0, 0, 0.35);
 }
 
-/* Cyberpunk Neon Theme */
-[data-theme="cyber"] {
-  --bg-base: #090014;
-  --bg-gradient: radial-gradient(circle at 10% 20%, rgba(255, 0, 128, 0.2) 0%, transparent 50%),
-                 radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.2) 0%, transparent 50%),
-                 radial-gradient(circle at 50% 50%, #090014 0%, #05000a 100%);
-  --surface-glass: rgba(20, 5, 35, 0.7);
-  --surface-glass-hover: rgba(35, 10, 60, 0.85);
-  --border-glass: rgba(0, 242, 254, 0.25);
-  --border-accent: #ff007f;
-  --accent-primary: #00f2fe;
-  --accent-cyan: #ff007f;
-  --text-main: #fcfcfc;
-  --text-muted: #c084fc;
-  --glow-accent: 0 0 30px rgba(0, 242, 254, 0.4);
+/* ──────────────────────────────────────────────
+   DISCORD THEME
+   Discord koyu arayüz renkleri + blurple
+   ────────────────────────────────────────────── */
+[data-theme="discord"] {
+  --bg-base:               #313338;
+  --bg-gradient:           radial-gradient(ellipse at 20% 30%, rgba(88,101,242,0.12) 0%, transparent 55%),
+                           radial-gradient(ellipse at 80% 70%, rgba(88,101,242,0.07) 0%, transparent 55%),
+                           linear-gradient(155deg, #1e1f22 0%, #313338 60%, #2b2d31 100%);
+
+  --surface-glass:         rgba(43, 45, 49, 0.88);
+  --surface-glass-hover:   rgba(57, 60, 67, 0.94);
+  --surface-glass-active:  rgba(70, 73, 82, 0.96);
+
+  --border-glass:          rgba(255, 255, 255, 0.07);
+  --border-glass-hover:    rgba(88, 101, 242, 0.50);
+  --border-accent:         rgba(88, 101, 242, 0.75);
+
+  --text-main:             #dbdee1;
+  --text-muted:            #96989d;
+  --text-dim:              #5c5f66;
+
+  --accent-primary:        #5865f2;
+  --accent-primary-hover:  #4752c4;
+  --accent-cyan:           #00b0f4;
+  --accent-violet:         #9b84ec;
+  --accent-emerald:        #57f287;
+  --accent-rose:           #ed4245;
+  --accent-amber:          #faa61a;
+
+  --glass-blur:            blur(16px);
+  --glass-shadow:          0 8px 32px rgba(0, 0, 0, 0.50);
+  --glass-shadow-hover:    0 12px 40px rgba(88, 101, 242, 0.25);
+  --glow-accent:           0 0 24px rgba(88, 101, 242, 0.40);
 }
 
-/* Background Presets */
+/* ──────────────────────────────────────────────
+   MATRIX THEME
+   Tam siyah + neon yeşil, terminal hissi
+   ────────────────────────────────────────────── */
+[data-theme="matrix"] {
+  --bg-base:               #000000;
+  --bg-gradient:           radial-gradient(ellipse at 50% 0%,  rgba(0,255,65,0.10) 0%, transparent 55%),
+                           radial-gradient(ellipse at 20% 80%, rgba(0,200,50,0.07) 0%, transparent 50%),
+                           linear-gradient(180deg, #000000 0%, #001a00 100%);
+
+  --surface-glass:         rgba(0, 18, 0, 0.82);
+  --surface-glass-hover:   rgba(0, 30, 0, 0.90);
+  --surface-glass-active:  rgba(0, 45, 0, 0.95);
+
+  --border-glass:          rgba(0, 255, 65, 0.15);
+  --border-glass-hover:    rgba(0, 255, 65, 0.45);
+  --border-accent:         rgba(0, 255, 65, 0.70);
+
+  --text-main:             #00ff41;
+  --text-muted:            #00cc33;
+  --text-dim:              #007a1f;
+
+  --accent-primary:        #00ff41;
+  --accent-primary-hover:  #00cc33;
+  --accent-cyan:           #00ffcc;
+  --accent-violet:         #39ff14;
+  --accent-emerald:        #00ff41;
+  --accent-rose:           #ff0040;
+  --accent-amber:          #ccff00;
+
+  --glass-blur:            blur(16px);
+  --glass-shadow:          0 4px 24px rgba(0, 0, 0, 0.90);
+  --glass-shadow-hover:    0 8px 36px rgba(0, 255, 65, 0.20);
+  --glow-accent:           0 0 30px rgba(0, 255, 65, 0.45);
+}
+
+/* ──────────────────────────────────────────────
+   BACKGROUND PRESETS
+   ────────────────────────────────────────────── */
 .bg-preset-aurora {
-  background: radial-gradient(circle at 20% 20%, #0f172a 0%, #020617 100%),
-              radial-gradient(ellipse at 80% 0%, rgba(16, 185, 129, 0.25), transparent 70%),
-              radial-gradient(ellipse at 20% 100%, rgba(6, 182, 212, 0.25), transparent 70%),
-              radial-gradient(ellipse at 70% 60%, rgba(99, 102, 241, 0.2), transparent 70%) !important;
+  background:
+    radial-gradient(ellipse at 15% 0%,   rgba(16,185,129,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 100%, rgba(6,182,212,0.18)  0%, transparent 60%),
+    radial-gradient(ellipse at 60% 50%,  rgba(99,102,241,0.14) 0%, transparent 60%),
+    #0d1117 !important;
 }
 
 .bg-preset-nebula {
-  background: radial-gradient(circle at 50% 50%, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
+  background:
+    radial-gradient(ellipse at 40% 30%, rgba(139,92,246,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 70%, rgba(236,72,153,0.18) 0%, transparent 60%),
+    linear-gradient(135deg, #0f0c29 0%, #302b63 60%, #24243e 100%) !important;
 }
 
 .bg-preset-cyber {
-  background: radial-gradient(circle at top right, #ff007f33, transparent 50%),
-              radial-gradient(circle at bottom left, #7928ca33, transparent 50%),
-              #05050d !important;
+  background:
+    radial-gradient(ellipse at 90% 10%, rgba(255,0,128,0.22)  0%, transparent 55%),
+    radial-gradient(ellipse at 10% 90%, rgba(121,40,202,0.22) 0%, transparent 55%),
+    #050510 !important;
 }
 
 .bg-preset-minimal {
   background: #0b0f19 !important;
+}
+
+/* Auto-bg for Light theme */
+.bg-preset-light {
+  background:
+    radial-gradient(ellipse at 25% 20%, rgba(9,105,218,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 80%, rgba(130,80,255,0.05) 0%, transparent 55%),
+    linear-gradient(155deg, #ffffff 0%, #f0f4f8 60%, #e8eef5 100%) !important;
+}
+
+/* Auto-bg for Matrix theme */
+.bg-preset-matrix-bg {
+  background:
+    radial-gradient(ellipse at 50% 0%,  rgba(0,255,65,0.07) 0%, transparent 50%),
+    #000000 !important;
 }

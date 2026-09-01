@@ -1,6 +1,7 @@
-﻿import { I18n } from './i18n.js';
+import { I18n } from './i18n.js';
 import { Storage } from './storage.js';
 import { Favorites } from './favorites.js';
+import { Settings } from './settings.js';
 
 export const Shortcuts = {
   CAT_KEY:       'shortcut_categories',
@@ -98,13 +99,13 @@ export const Shortcuts = {
       grid.appendChild(this._makeFolderCard(cat, grouped[cat.id] || []));
     });
     if (grouped['__other__'].length > 0) {
-      const other = { id: '__other__', name: 'Diğer', icon: '📁', color: '#64748b' };
+      const other = { id: '__other__', name: I18n.t('folder_other', 'Other'), icon: '📁', color: '#64748b' };
       grid.appendChild(this._makeFolderCard(other, grouped['__other__']));
     }
 
     const addCard = document.createElement('div');
     addCard.className = 'folder-card folder-add-card';
-    addCard.innerHTML = '<button class="folder-add-btn" id="globalAddLinkBtn"><span style="font-size:1.5rem">+</span><span>Link Ekle</span></button>';
+    addCard.innerHTML = '<button class="folder-add-btn" id="globalAddLinkBtn"><span style="font-size:1.5rem">+</span><span>' + I18n.t('add_shortcut', 'Add Link') + '</span></button>';
     grid.appendChild(addCard);
     document.getElementById('globalAddLinkBtn')?.addEventListener('click', () => this.openAddLinkModal());
     this.applyMasonry();
@@ -221,7 +222,7 @@ export const Shortcuts = {
     const optBtn = document.createElement('button');
     optBtn.className = 'folder-opt-btn';
     optBtn.innerHTML = '⋯';
-    optBtn.title = 'Klasör Seçenekleri';
+    optBtn.title = I18n.t('folder_options_title', 'Folder Options');
     optBtn.addEventListener('click', e => {
       e.stopPropagation();
       this._showFolderMenu(e, cat, items.length, card);
@@ -263,7 +264,7 @@ export const Shortcuts = {
     if (isShortlist && items.length > limit) {
       const moreBtn = document.createElement('button');
       moreBtn.className = 'show-more-btn';
-      moreBtn.textContent = 'Daha fazla göster (' + (items.length - limit) + ') ▾';
+      moreBtn.textContent = I18n.t('show_more', 'Show more') + ' (' + (items.length - limit) + ') ▾';
       moreBtn.addEventListener('click', () => {
         body.querySelectorAll('.shortlist-hidden').forEach(el => el.style.display = 'flex');
         moreBtn.style.display = 'none';
@@ -273,7 +274,7 @@ export const Shortcuts = {
 
     const addLinkBtn = document.createElement('button');
     addLinkBtn.className = 'add-to-folder-btn';
-    addLinkBtn.innerHTML = view === 'icon' ? '<span>+</span>' : '<span>+</span><span>Link Ekle</span>';
+    addLinkBtn.innerHTML = view === 'icon' ? '<span>+</span>' : '<span>+</span><span>' + I18n.t('add_shortcut', 'Add Link') + '</span>';
     addLinkBtn.addEventListener('click', () => this.openAddLinkModal(cat.id));
     body.appendChild(addLinkBtn);
 
@@ -289,52 +290,36 @@ export const Shortcuts = {
     const icon = this._iconEl(item);
 
     if (view === 'icon') {
+      // Wrapper: flex column, icon + action bar ayrı ayrı
+      wrap.className = 'link-item link-item-icon';
+
       const a = document.createElement('a');
       a.href = item.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
       a.className = 'link-icon-card';
       a.title = item.title;
-
-      const del = document.createElement('button');
-      del.className = 'link-del-btn';
-      del.innerHTML = '✕';
-      del.addEventListener('click', async e => {
-        e.preventDefault(); e.stopPropagation();
-        this.items = this.items.filter(i => i.id !== item.id);
-        await Storage.set(this.ITEMS_KEY, this.items);
-        this.renderFolders();
-      });
-
-      const lbl = document.createElement('div');
-      lbl.className = 'link-icon-label';
-      lbl.textContent = item.title;
-
       a.appendChild(icon);
-      a.appendChild(lbl);
-      
-      const favBtn = document.createElement('button');
-      favBtn.className = 'link-fav-add-btn'; favBtn.innerHTML = '⭐'; favBtn.title = 'Üst Favorilere Ekle';
-      favBtn.addEventListener('click', async e => {
-        e.preventDefault(); e.stopPropagation();
-        Favorites.items.push({ id: Date.now().toString(), title: item.title, url: item.url, icon: item.icon });
-        await Storage.set(Favorites.FAV_KEY, Favorites.items);
-        Favorites.render();
-        this._toast('✅ Favorilere Eklendi!');
+
+      a.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        this._showItemMenu(e, item);
       });
-      
-      const editBtn = document.createElement('button');
-      editBtn.className = 'link-edit-btn'; editBtn.innerHTML = '✏️'; editBtn.title = I18n.t('edit_shortcut');
-      editBtn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); this.openEditLinkModal(item); });
-      
+
+
       wrap.appendChild(a);
-      wrap.appendChild(favBtn);
-      wrap.appendChild(editBtn);
-      wrap.appendChild(del);
 
     } else {
       const a = document.createElement('a');
       a.href = item.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
       a.className = 'link-list-row';
       a.title = item.url;
+
+      a.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        this._showItemMenu(e, item);
+      });
+
 
       const urlSpan = document.createElement('span');
       urlSpan.className = 'link-list-url';
@@ -359,13 +344,13 @@ export const Shortcuts = {
       a.appendChild(urlSpan);
       
       const favBtn = document.createElement('button');
-      favBtn.className = 'link-fav-add-btn link-edit-list fav-list-btn'; favBtn.innerHTML = '⭐'; favBtn.title = 'Üst Favorilere Ekle';
+      favBtn.className = 'link-fav-add-btn link-edit-list fav-list-btn'; favBtn.innerHTML = '⭐'; favBtn.title = I18n.t('add_to_favbar', 'Add to Favorites Bar');
       favBtn.addEventListener('click', async e => {
         e.preventDefault(); e.stopPropagation();
         Favorites.items.push({ id: Date.now().toString(), title: item.title, url: item.url, icon: item.icon });
         await Storage.set(Favorites.FAV_KEY, Favorites.items);
         Favorites.render();
-        this._toast('✅ Favorilere Eklendi!');
+        this._toast('✅ ' + I18n.t('add_to_favbar', 'Added to Favorites!'));
       });
       
       const editBtn = document.createElement('button');
@@ -390,7 +375,16 @@ export const Shortcuts = {
     } else {
       try {
         const d = new URL(item.url).hostname;
-        box.innerHTML = '<img src="https://www.google.com/s2/favicons?domain=' + d + '&sz=64" alt="" onerror="this.parentElement.textContent=\'🌐\'">';
+        const api = Settings.config.iconApi || 'google';
+        let src = '';
+        if (api === 'google') src = 'https://www.google.com/s2/favicons?domain=' + d + '&sz=64';
+        else if (api === 'google-hd') src = 'https://www.google.com/s2/favicons?domain=' + d + '&sz=128';
+        else if (api === 'iconhorse') src = 'https://icon.horse/icon/' + d;
+        else if (api === 'clearbit') src = 'https://logo.clearbit.com/' + d;
+        else if (api === 'duckduckgo') src = 'https://icons.duckduckgo.com/ip3/' + d + '.ico';
+        else src = 'https://www.google.com/s2/favicons?domain=' + d + '&sz=64';
+        
+        box.innerHTML = '<img src="' + src + '" alt="" onerror="this.parentElement.textContent=\'🌐\'">';
       } catch(e) { box.textContent = '🌐'; }
     }
     return box;
@@ -406,17 +400,17 @@ export const Shortcuts = {
     const check = v => view === v ? '✓ ' : '　';
 
     const opts = [
-      { label: check('icon') + '⊞ İkon Görünümü', action: () => this._setView(cat.id, 'icon') },
-      { label: check('list') + '📋 Tam Liste Görünümü', action: () => this._setView(cat.id, 'list') },
-      { label: check('shortlist') + '📃 Kısa Liste (10 Link)', action: () => this._setView(cat.id, 'shortlist') },
+      { label: check('icon') + '⊞ ' + I18n.t('view_icon', 'Icon View'), action: () => this._setView(cat.id, 'icon') },
+      { label: check('list') + '📋 ' + I18n.t('view_list', 'Full List View'), action: () => this._setView(cat.id, 'list') },
+      { label: check('shortlist') + '📃 ' + I18n.t('menu_shortlist', 'Short List (10 Links)'), action: () => this._setView(cat.id, 'shortlist') },
       { separator: true },
-      { label: I18n.t('add_shortcut'), action: () => this.openAddLinkModal(cat.id) },
-      { label: '✏️ Yeniden Adlandır', action: () => this._openRenameModal(cat) },
-      { label: '🔤 Linkleri A-Z Sırala', action: () => this._sortFolderItems(cat.id) },
-      { label: '🔄 İkonları Toplu Güncelle', action: () => this._bulkUpdateFavicons(cat.id) },
+      { label: '➕ ' + I18n.t('add_shortcut', 'Add Link'), action: () => this.openAddLinkModal(cat.id) },
+      { label: '✏️ ' + I18n.t('menu_rename', 'Rename'), action: () => this._openRenameModal(cat) },
+      { label: '🔤 ' + I18n.t('menu_sort', 'Sort Links A–Z'), action: () => this._sortFolderItems(cat.id) },
+      { label: '🔄 ' + I18n.t('menu_update_icons', 'Bulk Update Icons'), action: () => this._bulkUpdateFavicons(cat.id) },
       { separator: true },
-      { label: '🗑 Klasörü Sil', danger: true, action: async () => {
-          if (!confirm('"' + cat.name + '" klasörü ve ' + count + ' linki silinecek. Emin misiniz?')) return;
+      { label: '🗑 ' + I18n.t('menu_delete_folder', 'Delete Folder'), danger: true, action: async () => {
+          if (!confirm('"' + cat.name + '" ' + I18n.t('confirm_delete_folder', 'folder and its links will be deleted. Are you sure?'))) return;
           this.categories = this.categories.filter(c => c.id !== cat.id);
           this.items      = this.items.filter(i => i.categoryId !== cat.id);
           await Storage.set(this.CAT_KEY, this.categories);
@@ -445,6 +439,49 @@ export const Shortcuts = {
     setTimeout(() => document.addEventListener('click', () => this._closeMenu(), { once: true }), 50);
   },
 
+  _showItemMenu(e, item) {
+    const menu = document.getElementById('contextMenu');
+    if (!menu) return;
+    menu.innerHTML = '';
+    menu.style.display = 'block';
+
+    const opts = [
+      { label: '✏️ ' + I18n.t('edit_shortcut', 'Edit'), action: () => this.openEditLinkModal(item) },
+      { label: '⭐ ' + I18n.t('add_to_favbar', 'Add to Favorites Bar'), action: async () => {
+          Favorites.items.push({ id: Date.now().toString(), title: item.title, url: item.url, icon: item.icon });
+          await Storage.set(Favorites.FAV_KEY, Favorites.items);
+          Favorites.render();
+          this._toast('✅ ' + I18n.t('add_to_favbar', 'Added to Favorites!'));
+        }
+      },
+      { separator: true },
+      { label: '✕ ' + I18n.t('delete_shortcut', 'Delete'), danger: true, action: async () => {
+          this.items = this.items.filter(i => i.id !== item.id);
+          await Storage.set(this.ITEMS_KEY, this.items);
+          this.renderFolders();
+        }
+      }
+    ];
+
+    opts.forEach(opt => {
+      if (opt.separator) {
+        const sep = document.createElement('div');
+        sep.className = 'ctx-sep'; menu.appendChild(sep); return;
+      }
+      const btn = document.createElement('button');
+      btn.className = 'ctx-item' + (opt.danger ? ' ctx-danger' : '');
+      btn.textContent = opt.label;
+      btn.addEventListener('click', () => { this._closeMenu(); opt.action(); });
+      menu.appendChild(btn);
+    });
+
+    const x = Math.min(e.clientX, window.innerWidth - 185);
+    const y = Math.min(e.clientY + 8, window.innerHeight - menu.offsetHeight - 20);
+    menu.style.left = x + 'px'; menu.style.top = y + 'px';
+
+    setTimeout(() => document.addEventListener('click', () => this._closeMenu(), { once: true }), 50);
+  },
+
   async _setView(catId, viewType) {
     this.folderViews[catId] = viewType;
     await Storage.set(this.VIEW_KEY, this.folderViews);
@@ -457,7 +494,7 @@ export const Shortcuts = {
   },
 
   async _bulkUpdateFavicons(catId) {
-    if (!confirm('Bu klasördeki tüm linklerin ikonları sitelerin güncel ikonlarıyla değiştirilecek. Emin misiniz?')) return;
+    if (!confirm(I18n.t('confirm_bulk_icons', 'All icons in this folder will be replaced with the latest site icons. Are you sure?'))) return;
     
     let updated = 0;
     this.items = this.items.map(item => {
@@ -473,20 +510,18 @@ export const Shortcuts = {
     
     await Storage.set(this.ITEMS_KEY, this.items);
     this.renderFolders();
-    this._toast('✅ ' + updated + ' linkin ikonu güncellendi!');
+    this._toast('✅ ' + updated + ' ' + I18n.t('toast_icons_updated', 'icons updated!'));
   },
 
   async _sortFolderItems(catId) {
     const catItems = this.items.filter(i => i.categoryId === catId);
     const otherItems = this.items.filter(i => i.categoryId !== catId);
-    
-    // İsimlere göre (Türkçe karakter duyarlı) A'dan Z'ye sırala
-    catItems.sort((a, b) => a.title.localeCompare(b.title, 'tr'));
-    
+    const locale = I18n.currentLang === 'tr' ? 'tr' : 'en';
+    catItems.sort((a, b) => a.title.localeCompare(b.title, locale));
     this.items = [...otherItems, ...catItems];
     await Storage.set(this.ITEMS_KEY, this.items);
     this.renderFolders();
-    this._toast('✅ Klasör içi A-Z sıralandı');
+    this._toast('✅ ' + I18n.t('menu_sort', 'Sort Links A–Z'));
   },
 
   setupShortcutModal() {
@@ -527,7 +562,7 @@ export const Shortcuts = {
     const title   = document.getElementById('shortcutModalTitle');
     const catInput= document.getElementById('shortcutTargetCatId');
     const cat     = catId ? this.categories.find(c => c.id === catId) : null;
-    if (title)    title.textContent = cat ? '"' + cat.name + '" klasörüne Link Ekle' : 'Link Ekle';
+    if (title)    title.textContent = cat ? '"' + cat.name + '" — ' + I18n.t('add_shortcut', 'Add Link') : I18n.t('modal_add_link_title', 'Add Link');
     if (catInput) catInput.value = catId || (this.categories[0]?.id || '');
     modal.removeAttribute('data-edit-id');
     document.getElementById('shortcutForm').reset();
@@ -537,7 +572,7 @@ export const Shortcuts = {
 
   openEditLinkModal(item) {
     const modal = document.getElementById('shortcutModal');
-    document.getElementById('shortcutModalTitle').textContent = 'Bağlantıyı Düzenle';
+    document.getElementById('shortcutModalTitle').textContent = I18n.t('modal_edit_link_title', 'Edit Link');
     document.getElementById('shortcutTitleInput').value = item.title;
     document.getElementById('shortcutUrlInput').value = item.url;
     document.getElementById('shortcutIconInput').value = item.icon || '';
@@ -614,7 +649,7 @@ export const Shortcuts = {
       const r = new FileReader();
       r.onload = async ev => {
         try { await this.showImportPreview(this.parseBookmarkHtml(ev.target.result)); }
-        catch(err) { alert('Dosya okunamadı:\n' + err.message); }
+        catch(err) { alert(I18n.t('import_backup_error', 'Error loading file: ') + err.message); }
         input.value = '';
       };
       r.readAsText(file, 'UTF-8');
@@ -662,7 +697,7 @@ export const Shortcuts = {
     if (!modal || !list) return;
 
     const total = folders.reduce((a, f) => a + f.items.length, 0);
-    if (sumEl) sumEl.textContent = folders.length + ' klasör • ' + total + ' link. İçe aktarılacakları seçin:';
+    if (sumEl) sumEl.textContent = folders.length + ' ' + I18n.t('add_category', 'Folders') + ' • ' + total + ' ' + I18n.t('add_shortcut', 'Links') + '. ' + I18n.t('import_select_folders', 'Select folders to import') + ':';
 
     list.innerHTML = '';
     const sel = new Set(folders.map((_, i) => i));
@@ -706,7 +741,7 @@ export const Shortcuts = {
       await Storage.set(this.CAT_KEY, this.categories);
       await Storage.set(this.ITEMS_KEY, this.items);
       this.renderFolders();
-      this._toast('✅ ' + added + ' favori aktarıldı!');
+      this._toast('✅ ' + added + ' ' + I18n.t('import_bookmarks', 'Bookmarks') + ' ' + I18n.t('toast_imported', 'imported successfully!'));
     };
 
     cfBtn.addEventListener('click', doImport);
@@ -735,7 +770,13 @@ export const Shortcuts = {
     const el = document.createElement('div');
     el.className = 'empty-state-main';
     el.style.gridColumn = '1 / -1';
-    el.innerHTML = '<div class="empty-icon">⭐</div><div class="empty-title">Henüz klasör yok</div><div class="empty-desc">Tarayıcı favorilerinizi içe aktarın — klasörler otomatik oluşur.</div><div class="empty-actions"><button class="btn-primary" id="emptyImportBtn">⭐ Favori İçe Aktar</button><button class="btn-secondary" id="emptyAddBtn">+ Link Ekle</button></div>';
+    el.innerHTML = '<div class="empty-icon">⭐</div>' +
+      '<div class="empty-title">' + I18n.t('shortcuts_title', 'Speed Dial') + '</div>' +
+      '<div class="empty-desc">' + I18n.t('import_bookmarks_desc', 'Import your browser bookmarks — folders will be created automatically.') + '</div>' +
+      '<div class="empty-actions">' +
+        '<button class="btn-primary" id="emptyImportBtn">⭐ ' + I18n.t('import_bookmarks', 'Import Bookmarks') + '</button>' +
+        '<button class="btn-secondary" id="emptyAddBtn">+ ' + I18n.t('add_shortcut', 'Add Link') + '</button>' +
+      '</div>';
     setTimeout(() => {
       document.getElementById('emptyImportBtn')?.addEventListener('click', () => document.getElementById('bookmarkFileInput')?.click());
       document.getElementById('emptyAddBtn')?.addEventListener('click', () => this.openAddLinkModal());

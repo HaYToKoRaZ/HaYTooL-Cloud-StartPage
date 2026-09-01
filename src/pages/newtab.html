@@ -1,5 +1,5 @@
-﻿<!DOCTYPE html>
-<html lang="tr" data-theme="dark">
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,10 +24,10 @@
           </div>
         </div>
         <div id="headerDateWidget" class="header-widget glass-card">
-          <div id="dateText" class="header-date" style="text-align:center; font-size: 0.8rem; line-height: 1.2;" data-i18n="weather_loading">Yükleniyor...</div>
+          <div id="dateText" class="header-date" style="text-align:center; font-size: 0.8rem; line-height: 1.2;" data-i18n="weather_loading">Loading...</div>
         </div>
-      <button id="weatherBadge" class="weather-badge glass-card" title="Hava Durumu – yenilemek için tıkla">
-        <span class="weather-icon">⏳</span><span data-i18n="weather_loading">Yükleniyor...</span>
+      <button id="weatherBadge" class="weather-badge glass-card" data-i18n-title="weather_tooltip">
+        <span class="weather-icon">⏳</span><span data-i18n="weather_loading">Loading...</span>
       </button>
     </div>
     <div class="top-bar-center" id="topSearchBarContainer">
@@ -35,14 +35,14 @@
         <button type="submit" class="top-search-btn" data-i18n-title="search_btn_title">&#128269;</button>
         <input type="text" id="topSearchInput" data-i18n-placeholder="search_placeholder_ai" autocomplete="off">
         <select id="topSearchEngineSelect" class="top-search-engine" data-i18n-title="search_engine_title">
-          <optgroup label="Arama Motorları" data-i18n-label="search_group_engines">
+          <optgroup label="Search Engines" data-i18n-label="search_group_engines">
             <option value="google">Google</option>
             <option value="yandex">Yandex</option>
             <option value="bing">Bing</option>
             <option value="duckduckgo">DuckDuckGo</option>
             <option value="youtube">YouTube</option>
           </optgroup>
-          <optgroup label="Yapay Zeka (AI)" data-i18n-label="search_group_ai">
+          <optgroup label="Artificial Intelligence (AI)" data-i18n-label="search_group_ai">
             <option value="chatgpt">ChatGPT</option>
             <option value="perplexity">Perplexity</option>
             <option value="gemini">Google Gemini</option>
@@ -53,17 +53,28 @@
     </div>
     <div class="top-bar-right">
       <div id="greetingText" class="header-greeting"></div>
-      <select id="topLangSelect" class="form-select top-lang-select" style="padding:0.2rem 0.5rem; height: 32px; background: rgba(255,255,255,0.05); border:none; border-radius:8px; color:var(--text-main); font-size: 0.9rem; cursor:pointer;" title="Arayüz Dili / Language">
-        <option value="tr">&#127481;&#127479; TR</option>
-        <option value="en">&#127468;&#127463; EN</option>
-      </select>
+      <button id="topThemeBtn" class="icon-btn" data-i18n-title="theme_toggle">🎨</button>
+      <div class="lang-picker" id="topLangPicker" data-lang="en">
+        <button type="button" class="lang-picker-btn" title="Interface Language / Arayüz Dili">
+          <img class="lang-flag" src="https://flagcdn.com/20x15/gb.png" alt="EN">
+          <span class="lang-code">EN</span>
+        </button>
+        <div class="lang-picker-menu">
+          <button type="button" class="lang-picker-item" data-lang="en">
+            <img class="lang-flag" src="https://flagcdn.com/20x15/gb.png" alt=""> English
+          </button>
+          <button type="button" class="lang-picker-item" data-lang="tr">
+            <img class="lang-flag" src="https://flagcdn.com/20x15/tr.png" alt=""> Türkçe
+          </button>
+        </div>
+      </div>
       <button id="expandAllBtn" class="icon-btn" data-i18n-title="expand_all_folders">&#128194;</button>
       <button id="collapseAllBtn" class="icon-btn" data-i18n-title="collapse_all_folders">&#128193;</button>
       <button id="bookmarkImportBtn" class="bookmark-import-btn">
-        <span>⭐</span><span data-i18n="import_bookmarks">Favori İçe Aktar</span>
+        <span>⭐</span><span data-i18n="import_bookmarks">Import Bookmarks</span>
       </button>
       <input type="file" id="bookmarkFileInput" accept=".html,.htm" style="display:none;">
-      <button id="settingsBtn" class="icon-btn" title="Ayarlar">⚙️</button>
+      <button id="settingsBtn" class="icon-btn" data-i18n-title="settings_title">⚙️</button>
     </div>
   </header>
 
@@ -82,32 +93,32 @@
   <!-- ====== FOOTER ====== -->
   <footer class="bottom-bar">
     <div id="quoteBox" class="quote-box"></div>
-    <div class="footer-brand">HaYTooL StartPage v2.0.0</div>
+    <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage" target="_blank" rel="noopener noreferrer" class="footer-brand" style="text-decoration:none; color:inherit; transition: color 0.2s;">HaYTooL StartPage v3.0.0</a>
   </footer>
 
   <!-- ====== FAVORİ EKLE MODAL ====== -->
   <div id="favAddModal" class="modal-overlay">
     <div class="modal-content" style="max-width:400px;">
       <div class="modal-header">
-        <h3 id="favModalTitle">✨ Favori Ekle</h3>
+        <h3 id="favModalTitle" data-i18n="modal_add_fav_title">✨ Add Favorite</h3>
         <button id="closeFavModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
       </div>
       <form id="favAddForm">
         <div class="form-group">
-          <label>Site Adı</label>
-          <input type="text" id="favTitleInput" class="form-input" placeholder="Örn: GitHub" required>
+          <label data-i18n="modal_fav_name">Site Name</label>
+          <input type="text" id="favTitleInput" class="form-input" data-i18n-placeholder="modal_fav_name_placeholder" required>
         </div>
         <div class="form-group">
-          <label>Web Adresi (URL)</label>
+          <label data-i18n="modal_fav_url">Web Address (URL)</label>
           <input type="text" id="favUrlInput" class="form-input" placeholder="https://github.com" required>
         </div>
         <div class="form-group">
-          <label>İkon / Emoji <span style="color:var(--text-dim);font-weight:400;">(opsiyonel)</span></label>
-          <input type="text" id="favIconInput" class="form-input" placeholder="🐙 (boş = favicon otomatik)">
+          <label><span data-i18n="modal_fav_icon">Icon / Emoji</span> <span style="color:var(--text-dim);font-weight:400;" data-i18n="modal_fav_icon_hint">(optional)</span></label>
+          <input type="text" id="favIconInput" class="form-input" data-i18n-placeholder="modal_fav_icon_placeholder">
         </div>
         <div class="modal-actions">
-          <button type="button" id="cancelFavModal" class="btn-secondary">İptal</button>
-          <button type="submit" class="btn-primary">Ekle</button>
+          <button type="button" id="cancelFavModal" class="btn-secondary" data-i18n="btn_cancel">Cancel</button>
+          <button type="submit" class="btn-primary" data-i18n="btn_add">Add</button>
         </div>
       </form>
     </div>
@@ -117,26 +128,26 @@
   <div id="shortcutModal" class="modal-overlay">
     <div class="modal-content" style="max-width:420px;">
       <div class="modal-header">
-        <h3 id="shortcutModalTitle">Link Ekle</h3>
+        <h3 id="shortcutModalTitle" data-i18n="modal_add_link_title">Add Link</h3>
         <button id="closeShortcutModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
       </div>
       <form id="shortcutForm">
         <div class="form-group">
-          <label>Başlık</label>
-          <input type="text" id="shortcutTitleInput" class="form-input" placeholder="Örn: GitHub" required>
+          <label data-i18n="modal_shortcut_title_label">Title</label>
+          <input type="text" id="shortcutTitleInput" class="form-input" data-i18n-placeholder="modal_shortcut_title_placeholder" required>
         </div>
         <div class="form-group">
-          <label>URL</label>
+          <label data-i18n="modal_shortcut_url_label">URL</label>
           <input type="text" id="shortcutUrlInput" class="form-input" placeholder="https://github.com" required>
         </div>
         <div class="form-group">
-          <label>İkon / Emoji <span style="color:var(--text-dim);font-weight:400;">(opsiyonel)</span></label>
-          <input type="text" id="shortcutIconInput" class="form-input" placeholder="🐙">
+          <label><span data-i18n="modal_shortcut_icon_label">Icon / Emoji</span> <span style="color:var(--text-dim);font-weight:400;" data-i18n="modal_shortcut_icon_hint">(optional)</span></label>
+          <input type="text" id="shortcutIconInput" class="form-input" data-i18n-placeholder="modal_shortcut_icon_placeholder">
         </div>
         <input type="hidden" id="shortcutTargetCatId">
         <div class="modal-actions">
-          <button type="button" id="closeShortcutModalFooter" class="btn-secondary">İptal</button>
-          <button type="submit" class="btn-primary">Kaydet</button>
+          <button type="button" id="closeShortcutModalFooter" class="btn-secondary" data-i18n="btn_cancel">Cancel</button>
+          <button type="submit" class="btn-primary" data-i18n="btn_save">Save</button>
         </div>
       </form>
     </div>
@@ -146,20 +157,20 @@
   <div id="renameModal" class="modal-overlay">
     <div class="modal-content" style="max-width:380px;">
       <div class="modal-header">
-        <h3>✏️ Klasörü Yeniden Adlandır</h3>
+        <h3 data-i18n="modal_rename_title">✏️ Rename Folder</h3>
         <button id="closeRenameModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
       </div>
       <div class="form-group">
-        <label>Klasör Adı</label>
-        <input type="text" id="renameInput" class="form-input" placeholder="Yeni ad">
+        <label data-i18n="modal_rename_folder_name">Folder Name</label>
+        <input type="text" id="renameInput" class="form-input" data-i18n-placeholder="modal_rename_folder_placeholder">
       </div>
       <div class="form-group">
-        <label>İkon (Emoji)</label>
-        <input type="text" id="renameIconInput" class="form-input" placeholder="📁">
+        <label data-i18n="modal_rename_icon">Icon (Emoji)</label>
+        <input type="text" id="renameIconInput" class="form-input" data-i18n-placeholder="modal_rename_icon_placeholder">
       </div>
       <div class="modal-actions">
-        <button type="button" id="cancelRenameModal" class="btn-secondary">İptal</button>
-        <button type="button" id="confirmRenameModal" class="btn-primary">Kaydet</button>
+        <button type="button" id="cancelRenameModal" class="btn-secondary" data-i18n="btn_cancel">Cancel</button>
+        <button type="button" id="confirmRenameModal" class="btn-primary" data-i18n="btn_save">Save</button>
       </div>
     </div>
   </div>
@@ -168,23 +179,23 @@
   <div id="importPreviewModal" class="modal-overlay">
     <div class="modal-content" style="max-width:540px;">
       <div class="modal-header">
-        <h3>⭐ Favori İçe Aktar</h3>
+        <h3 data-i18n="modal_import_title">⭐ Import Bookmarks</h3>
         <button id="cancelImportBtnHeader" class="icon-btn" style="width:28px;height:28px;">✕</button>
       </div>
       <details style="cursor:pointer;margin-bottom:1rem;">
-        <summary style="font-size:0.85rem;color:var(--text-muted);font-weight:600;padding:0.4rem 0;">📖 Nasıl dışa aktarırım?</summary>
+        <summary style="font-size:0.85rem;color:var(--text-muted);font-weight:600;padding:0.4rem 0;" data-i18n="import_how_to">📖 How do I export?</summary>
         <div style="margin-top:0.5rem;display:flex;flex-direction:column;gap:0.35rem;">
-          <div class="import-hint">🔵 <strong>Chrome:</strong> Yer İşaretleri Yöneticisi (Ctrl+Shift+O) → ⋮ → Dışa Aktar</div>
-          <div class="import-hint">🟠 <strong>Firefox:</strong> Yer İşaretleri → Tüm Yer İşaretlerini Göster → İçe ve Dışa Aktar → HTML</div>
-          <div class="import-hint">🔷 <strong>Edge:</strong> Favoriler → Yönet → ⋯ → Dışa Aktar</div>
-          <div class="import-hint">🔴 <strong>Opera:</strong> Yer İşaretleri → HTML'ye Aktar</div>
+          <div class="import-hint" data-i18n="import_chrome">🔵 <strong>Chrome:</strong> Bookmark Manager (Ctrl+Shift+O) → ⋮ → Export</div>
+          <div class="import-hint" data-i18n="import_firefox">🟠 <strong>Firefox:</strong> Bookmarks → Show All → Import &amp; Backup → HTML</div>
+          <div class="import-hint" data-i18n="import_edge">🔷 <strong>Edge:</strong> Favorites → Manage → ⋯ → Export</div>
+          <div class="import-hint" data-i18n="import_opera">🔴 <strong>Opera:</strong> Bookmarks → Export to HTML</div>
         </div>
       </details>
       <div id="importSummaryText" class="import-summary"></div>
       <div class="import-list-scroll"><div id="importFolderList"></div></div>
       <div class="modal-actions">
-        <button type="button" id="cancelImportBtn" class="btn-secondary">Vazgeç</button>
-        <button type="button" id="confirmImportBtn" class="btn-primary">İçe Aktar</button>
+        <button type="button" id="cancelImportBtn" class="btn-secondary" data-i18n="btn_cancel">Cancel</button>
+        <button type="button" id="confirmImportBtn" class="btn-primary" data-i18n="import_confirm">Import Selected</button>
       </div>
     </div>
   </div>
@@ -193,157 +204,213 @@
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 data-i18n="settings_title">Ayarlar & Özelleştirme</h3>
+        <h3 data-i18n="settings_title">Settings &amp; Customization</h3>
         <button id="closeSettingsModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
       </div>
-      <div class="form-group"><label data-i18n="theme_label">Tema</label>
+
+      <!-- Tema -->
+      <div class="form-group">
+        <label data-i18n="theme_label">Theme</label>
         <select id="themeSelect" class="form-select">
-          <option value="dark" data-i18n="theme_dark">Koyu Glass</option>
-          <option value="light" data-i18n="theme_light">Açık Glass</option>
-          <option value="oled" data-i18n="theme_oled">OLED Siyah</option>
-          <option value="cyber" data-i18n="theme_cyber">Cyberpunk Neon</option>
+          <option value="dark"    data-i18n="theme_dark">Dark</option>
+          <option value="light"   data-i18n="theme_light">Light</option>
+          <option value="youtube" data-i18n="theme_youtube">YouTube</option>
+          <option value="discord" data-i18n="theme_discord">Discord</option>
+          <option value="matrix"  data-i18n="theme_matrix">Matrix</option>
         </select>
       </div>
-      <div class="form-group"><label data-i18n="bg_label">Arka Plan</label>
-        <select id="bgSelect" class="form-select">
-          <option value="aurora" data-i18n="bg_aurora">Kuzey Işıkları</option>
-          <option value="nebula" data-i18n="bg_nebula">Kozmik Nebula</option>
-          <option value="cyber" data-i18n="bg_cyber">Cyber Glow</option>
-          <option value="minimal" data-i18n="bg_minimal">Minimalist</option>
-        </select>
-      </div>
-      <div class="form-group"><label data-i18n="bg_custom_url">Özel Arka Plan URL</label>
+
+      <!-- Özel Arka Plan URL -->
+      <div class="form-group">
+        <label data-i18n="bg_custom_url">Custom Image URL</label>
         <input type="url" id="customBgInput" class="form-input" placeholder="https://...">
       </div>
-      <div class="form-group"><div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
-            <label data-i18n="settings_show_lang_selector">Dil Seçiciyi Göster (Üst Bar)</label>
-            <label class="switch">
-              <input type="checkbox" id="toggleTopLang" checked>
-              <span class="slider"></span>
-            </label>
+
+
+
+      <div class="form-group">
+        <!-- Arayüz Dili -->
+        <label data-i18n="language_label">Interface Language</label>
+        <div class="lang-picker settings-lang-picker" id="settingsLangPicker" data-lang="en">
+          <button type="button" class="lang-picker-btn">
+            <img class="lang-flag" src="https://flagcdn.com/20x15/gb.png" alt="EN">
+            <span class="lang-code">EN</span>
+          </button>
+          <div class="lang-picker-menu">
+            <button type="button" class="lang-picker-item" data-lang="en">
+              <img class="lang-flag" src="https://flagcdn.com/20x15/gb.png" alt=""> English
+            </button>
+            <button type="button" class="lang-picker-item" data-lang="tr">
+              <img class="lang-flag" src="https://flagcdn.com/20x15/tr.png" alt=""> Türkçe
+            </button>
           </div>
-          <label data-i18n="language_label">Arayüz Dili</label>
-        <select id="langSelect" class="form-select">
-          <option value="tr">Türkçe</option>
-          <option value="en">English</option>
-        </select>
+        </div>
       </div>
-      <div class="form-group"><label>Zaman Dilimi</label>
+
+      <!-- Zaman Dilimi -->
+      <div class="form-group">
+        <label data-i18n="settings_timezone">Timezone</label>
         <select id="timezoneSelect" class="form-select">
-          <option value="auto">Otomatik (Yerel)</option>
-          <optgroup label="Avrupa (Europe)">
+          <option value="auto" data-i18n="settings_timezone_auto">Auto (Local)</option>
+          <optgroup label="Europe" data-i18n-label="timezone_europe">
             <option value="Europe/Istanbul">Türkiye (İstanbul)</option>
-            <option value="Europe/London">İngiltere (Londra)</option>
-            <option value="Europe/Berlin">Almanya (Berlin)</option>
-            <option value="Europe/Paris">Fransa (Paris)</option>
-            <option value="Europe/Moscow">Rusya (Moskova)</option>
-            <option value="Europe/Rome">İtalya (Roma)</option>
-            <option value="Europe/Madrid">İspanya (Madrid)</option>
-            <option value="Europe/Kiev">Ukrayna (Kiev)</option>
+            <option value="Europe/London">United Kingdom (London)</option>
+            <option value="Europe/Berlin">Germany (Berlin)</option>
+            <option value="Europe/Paris">France (Paris)</option>
+            <option value="Europe/Moscow">Russia (Moscow)</option>
+            <option value="Europe/Rome">Italy (Rome)</option>
+            <option value="Europe/Madrid">Spain (Madrid)</option>
+            <option value="Europe/Kiev">Ukraine (Kyiv)</option>
           </optgroup>
-          <optgroup label="Asya (Asia)">
-            <option value="Asia/Dubai">BAE (Dubai)</option>
-            <option value="Asia/Tokyo">Japonya (Tokyo)</option>
-            <option value="Asia/Shanghai">Çin (Şanghay)</option>
-            <option value="Asia/Seoul">Güney Kore (Seul)</option>
-            <option value="Asia/Singapore">Singapur</option>
-            <option value="Asia/Kolkata">Hindistan (Kalküta)</option>
-            <option value="Asia/Bangkok">Tayland (Bangkok)</option>
-            <option value="Asia/Jakarta">Endonezya (Cakarta)</option>
+          <optgroup label="Asia" data-i18n-label="timezone_asia">
+            <option value="Asia/Dubai">UAE (Dubai)</option>
+            <option value="Asia/Tokyo">Japan (Tokyo)</option>
+            <option value="Asia/Shanghai">China (Shanghai)</option>
+            <option value="Asia/Seoul">South Korea (Seoul)</option>
+            <option value="Asia/Singapore">Singapore</option>
+            <option value="Asia/Kolkata">India (Kolkata)</option>
+            <option value="Asia/Bangkok">Thailand (Bangkok)</option>
+            <option value="Asia/Jakarta">Indonesia (Jakarta)</option>
           </optgroup>
-          <optgroup label="Amerika (America)">
-            <option value="America/New_York">ABD - Doğu (New York)</option>
-            <option value="America/Chicago">ABD - Merkez (Chicago)</option>
-            <option value="America/Los_Angeles">ABD - Pasifik (Los Angeles)</option>
-            <option value="America/Toronto">Kanada (Toronto)</option>
-            <option value="America/Sao_Paulo">Brezilya (Sao Paulo)</option>
-            <option value="America/Mexico_City">Meksika (Mexico City)</option>
-            <option value="America/Buenos_Aires">Arjantin (Buenos Aires)</option>
+          <optgroup label="America" data-i18n-label="timezone_america">
+            <option value="America/New_York">USA – East (New York)</option>
+            <option value="America/Chicago">USA – Central (Chicago)</option>
+            <option value="America/Los_Angeles">USA – Pacific (Los Angeles)</option>
+            <option value="America/Toronto">Canada (Toronto)</option>
+            <option value="America/Sao_Paulo">Brazil (Sao Paulo)</option>
+            <option value="America/Mexico_City">Mexico (Mexico City)</option>
+            <option value="America/Buenos_Aires">Argentina (Buenos Aires)</option>
           </optgroup>
-          <optgroup label="Okyanusya (Oceania)">
-            <option value="Australia/Sydney">Avustralya (Sidney)</option>
-            <option value="Pacific/Auckland">Yeni Zelanda (Auckland)</option>
+          <optgroup label="Oceania" data-i18n-label="timezone_oceania">
+            <option value="Australia/Sydney">Australia (Sydney)</option>
+            <option value="Pacific/Auckland">New Zealand (Auckland)</option>
             <option value="Pacific/Honolulu">Hawaii (Honolulu)</option>
           </optgroup>
-          <optgroup label="Afrika (Africa)">
-            <option value="Africa/Cairo">Mısır (Kahire)</option>
-            <option value="Africa/Johannesburg">Güney Afrika (Johannesburg)</option>
-            <option value="Africa/Lagos">Nijerya (Lagos)</option>
+          <optgroup label="Africa" data-i18n-label="timezone_africa">
+            <option value="Africa/Cairo">Egypt (Cairo)</option>
+            <option value="Africa/Johannesburg">South Africa (Johannesburg)</option>
+            <option value="Africa/Lagos">Nigeria (Lagos)</option>
           </optgroup>
         </select>
       </div>
 
+      <!-- Klasör Sütun Sayısı -->
       <div class="form-group">
-        <label data-i18n="settings_folder_cols">Klasör Sütun Sayısı</label>
+        <label data-i18n="settings_folder_cols">Folder Column Count</label>
         <div class="col-selector" id="colSelectorGroup">
           <select id="folderColumnsSelect" class="form-select">
-            <option value="1" data-i18n="col_1">1 Sütun</option>
-            <option value="2" data-i18n="col_2">2 Sütun</option>
-            <option value="3" data-i18n="col_3">3 Sütun</option>
-            <option value="4" data-i18n="col_4">4 Sütun</option>
-            <option value="5" data-i18n="col_5">5 Sütun</option>
-          <option value="6" selected data-i18n="col_6">6 Sütun</option>
-          <option value="7" data-i18n="col_7">7 Sütun</option>
-          <option value="8">8 Sütun</option>
-          <option value="9">9 Sütun</option>
-          <option value="10">10 Sütun</option>
+            <option value="1"  data-i18n="col_1">1 Column</option>
+            <option value="2"  data-i18n="col_2">2 Columns</option>
+            <option value="3"  data-i18n="col_3">3 Columns</option>
+            <option value="4"  data-i18n="col_4">4 Columns</option>
+            <option value="5"  data-i18n="col_5">5 Columns</option>
+            <option value="6" selected data-i18n="col_6">6 Columns</option>
+            <option value="7"  data-i18n="col_7">7 Columns</option>
+            <option value="8">8 Columns</option>
+            <option value="9">9 Columns</option>
+            <option value="10">10 Columns</option>
           </select>
         </div>
       </div>
+
+      <!-- İkon Boyutu -->
       <div class="form-group" style="margin-top: 1rem;">
-        <label>Klasör İçi İkon Boyutu</label>
+        <label data-i18n="settings_folder_icon_size">Folder Icon Size</label>
         <select id="iconSizeSelect" class="form-select" style="margin-top:0.3rem;">
-          <option value="32" data-i18n="size_32">Çok Küçük (32px)</option>
-          <option value="48" data-i18n="size_48">Küçük (48px)</option>
-          <option value="64" data-i18n="size_64">Orta - Varsayılan (64px)</option>
-          <option value="80">Büyük (80px)</option>
-          <option value="96">Çok Büyük (96px)</option>
-          <option value="128" data-i18n="size_128">Devasa (128px)</option>
+          <option value="32" selected data-i18n="size_32">Tiny (32px)</option>
+          <option value="48"  data-i18n="size_48">Small (48px)</option>
+          <option value="64"  data-i18n="size_64">Medium (64px)</option>
+          <option value="80">Large (80px)</option>
+          <option value="96">Huge (96px)</option>
+          <option value="128" data-i18n="size_128">Massive (128px)</option>
         </select>
       </div>
 
-      <div class="settings-section-title">🌤️ Hava Durumu</div>
-      <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
-          <label>Arama Çubuğunu Göster</label>
-          <label class="switch">
-            <input type="checkbox" id="toggleSearchBar" checked>
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div class="form-group">
-          <label>Konum / Şehir
-            <span style="color:var(--text-dim);font-weight:400;font-size:0.8rem;"> (Boş = GPS otomatik)</span>
-          </label>
-          <div class="weather-city-row" style="position:relative;">
-          <input type="text" id="weatherCityInput" class="form-input" placeholder="İl, ilçe veya kasaba arayın..." autocomplete="off">
+      <!-- İkon API -->
+      <div class="form-group" style="margin-top: 1rem;">
+        <label data-i18n="settings_icon_api">Icon Source (API)</label>
+        <select id="iconApiSelect" class="form-select" style="margin-top:0.3rem;">
+          <option value="google">Google API (64px - Fast)</option>
+          <option value="google-hd" selected>Google API (128px - HD)</option>
+          <option value="iconhorse">Icon Horse (High Res)</option>
+          <option value="clearbit">Clearbit (Company Logos)</option>
+          <option value="duckduckgo">DuckDuckGo API</option>
+        </select>
+      </div>
+
+      <!-- Hava Durumu Bölümü -->
+      <div class="settings-section-title" data-i18n="settings_weather_section">🌤️ Weather</div>
+      <div class="form-group">
+        <label data-i18n="settings_weather_city">Location / City
+          <span style="color:var(--text-dim);font-weight:400;font-size:0.8rem;" data-i18n="settings_weather_gps_hint">(Empty = Auto GPS)</span>
+        </label>
+        <div class="weather-city-row" style="position:relative;">
+          <input type="text" id="weatherCityInput" class="form-input" data-i18n-placeholder="settings_weather_city_placeholder" autocomplete="off">
           <button type="button" id="clearWeatherCityBtn" class="btn-secondary" style="flex-shrink:0;padding:0 0.75rem;" data-i18n-title="settings_weather_city_reset">✕</button>
-          
           <!-- Otomatik tamamlama listesi -->
           <div id="weatherCityDropdown" class="city-dropdown" style="display:none;"></div>
         </div>
-        <div style="margin-top:0.4rem;font-size:0.78rem;color:var(--text-dim);">
-          Şehir adı girin — otomatik olarak koordinata çevrilir (Open-Meteo Geocoding, ücretsiz).
-        </div>
+        <div style="margin-top:0.4rem;font-size:0.78rem;color:var(--text-dim);" data-i18n="settings_weather_gps_hint">(Empty = Auto GPS)</div>
       </div>
+
+      <!-- Widget Görünürlüğü -->
       <div style="margin-top:1rem;">
-        <h4 style="font-size:0.88rem;margin-bottom:0.6rem;color:var(--text-muted);">Widget Görünürlüğü</h4>
-        <div class="toggle-item"><span>Saat & Tarih</span><label class="switch"><input type="checkbox" id="toggleClock" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>Saniye</span><label class="switch"><input type="checkbox" id="toggleSeconds" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>Karşılama</span><label class="switch"><input type="checkbox" id="toggleGreeting" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>Hava Durumu</span><label class="switch"><input type="checkbox" id="toggleWeather" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>Favoriler Barı</span><label class="switch"><input type="checkbox" id="toggleFavBar" checked><span class="slider"></span></label></div>
+        <h4 style="font-size:0.88rem;margin-bottom:0.6rem;color:var(--text-muted);" data-i18n="settings_widget_visibility">Widget Visibility</h4>
+        <div class="toggle-item">
+          <span data-i18n="settings_search_bar">Show Search Bar</span>
+          <label class="switch"><input type="checkbox" id="toggleSearchBar" checked><span class="slider"></span></label>
         </div>
+        <div class="toggle-item">
+          <span data-i18n="settings_show_lang_selector">Language Selector (Top Bar)</span>
+          <label class="switch"><input type="checkbox" id="toggleTopLang" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-item">
+          <span data-i18n="settings_show_theme_btn">Theme Selector (Top Bar)</span>
+          <label class="switch"><input type="checkbox" id="toggleThemeBtn" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-item">
+          <span data-i18n="settings_clock">Clock &amp; Date</span>
+          <label class="switch"><input type="checkbox" id="toggleClock" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-item">
+          <span data-i18n="settings_seconds">Seconds</span>
+          <label class="switch"><input type="checkbox" id="toggleSeconds" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-item">
+          <span data-i18n="settings_greeting">Greeting</span>
+          <label class="switch"><input type="checkbox" id="toggleGreeting" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-item">
+          <span data-i18n="show_weather">Show Weather Widget</span>
+          <label class="switch"><input type="checkbox" id="toggleWeather" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-item">
+          <span data-i18n="show_fav_bar">Favorites Bar</span>
+          <label class="switch"><input type="checkbox" id="toggleFavBar" checked><span class="slider"></span></label>
+        </div>
+      </div>
+
+      <!-- Yedekleme -->
       <div style="margin-top:1.25rem;">
-        <h4 style="font-size:0.88rem;margin-bottom:0.6rem;color:var(--text-muted);">Yedekleme</h4>
+        <h4 style="font-size:0.88rem;margin-bottom:0.6rem;color:var(--text-muted);" data-i18n="settings_backup">Backup</h4>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
-          <button type="button" id="exportDataBtn" class="btn-secondary" style="flex:1;">Yedek İndir</button>
-          <label class="btn-secondary" style="flex:1;text-align:center;cursor:pointer;">Yedek Yükle<input type="file" id="importDataInput" accept=".json" style="display:none;"></label>
+          <button type="button" id="exportDataBtn" class="btn-secondary" style="flex:1;" data-i18n="btn_download_backup">Download Backup</button>
+          <label class="btn-secondary" style="flex:1;text-align:center;cursor:pointer;">
+            <span data-i18n="btn_upload_backup">Upload Backup</span>
+            <input type="file" id="importDataInput" accept=".json" style="display:none;">
+          </label>
         </div>
-        <button type="button" id="resetSettingsBtn" class="btn-secondary" style="width:100%;color:var(--accent-rose);border-color:rgba(244,63,94,0.3);">Tüm Verileri Sıfırla</button>
+        <button type="button" id="resetSettingsBtn" class="btn-secondary" style="width:100%;color:var(--accent-rose);border-color:rgba(244,63,94,0.3);" data-i18n="btn_reset_all">Reset All Data</button>
       </div>
-      <div class="modal-actions">
-        
+
+      <!-- İletişim / Developer -->
+      <div style="margin-top:1.5rem; text-align:center;">
+        <a href="mailto:korazhayto@gmail.com" style="color:var(--text-muted); text-decoration:none; font-size:0.85rem; display:inline-flex; align-items:center; gap:0.4rem; transition: color 0.2s;" onmouseover="this.style.color='var(--accent-primary)'" onmouseout="this.style.color='var(--text-muted)'">
+          📧 <span data-i18n="settings_feedback">Öneri, Şikayet ve Geri Bildirim</span>
+        </a>
       </div>
+
+      <div class="modal-actions"></div>
     </div>
   </div>
 

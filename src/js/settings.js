@@ -1,4 +1,4 @@
-﻿import { Storage } from './storage.js';
+import { Storage } from './storage.js';
 import { I18n } from './i18n.js';
 
 export const Settings = {
@@ -6,13 +6,17 @@ export const Settings = {
     theme: 'dark', bgStyle: 'aurora', customBgUrl: '', 
     showClock: true, showSeconds: true, showGreeting: true, 
     showWeather: true, showFavBar: true, showQuote: true,
-    folderColumns: 6, folderIconSize: 32, showSearchBar: true, showTopLangSelector: true, 
+    folderColumns: 6, folderIconSize: 32, showSearchBar: true, showTopLangSelector: true, showThemeBtn: true,
+    timezone: 'auto', iconApi: 'google-hd',
     weatherCityObj: null // { name: "Kadıköy", country: "Türkiye", lat: 40.9, lon: 29.0 }
   },
   
   async init() {
     const saved = await Storage.get('app_settings', {});
     this.config = { ...this.config, ...saved };
+    // Eski tema isimlerini yeni sisteme migrasyon (oled/cyber → dark)
+    const themeMap = { oled: 'dark', cyber: 'dark' };
+    if (themeMap[this.config.theme]) this.config.theme = themeMap[this.config.theme];
     this.apply();
     this.setupListeners();
     this.setupCityAutocomplete();
@@ -25,8 +29,22 @@ export const Settings = {
     document.body.className = '';
     const bg = document.getElementById('bgLayer');
     if (bg) {
-      if (this.config.customBgUrl) { bg.style.backgroundImage = 'url("' + this.config.customBgUrl + '")'; bg.style.opacity = '0.85'; }
-      else { bg.style.backgroundImage = 'none'; document.body.classList.add('bg-preset-' + this.config.bgStyle); }
+      if (this.config.customBgUrl) {
+        bg.style.backgroundImage = 'url("' + this.config.customBgUrl + '")';
+        bg.style.opacity = '0.85';
+      } else {
+        bg.style.backgroundImage = 'none';
+        bg.style.opacity = '';
+        // Tema→Arka plan otomatik eşleştirme
+        const THEME_BG = {
+          dark:    'aurora',
+          light:   'light',
+          youtube: 'cyber',
+          discord: 'nebula',
+          matrix:  'matrix-bg'
+        };
+        document.body.classList.add('bg-preset-' + (THEME_BG[this.config.theme] || 'aurora'));
+      }
     }
     
     // Widget visibility
@@ -34,8 +52,9 @@ export const Settings = {
     this.vis('digitalSeconds',    this.config.showSeconds);
     this.vis('greetingText',      this.config.showGreeting);
     this.vis('weatherBadge',      this.config.showWeather);
-      this.vis('topSearchBarContainer', this.config.showSearchBar);
-      this.vis('topLangSelect', this.config.showTopLangSelector !== false);
+    this.vis('topSearchBarContainer', this.config.showSearchBar);
+    this.vis('topLangPicker', this.config.showTopLangSelector !== false);
+    this.vis('topThemeBtn', this.config.showThemeBtn !== false);
     this.vis('favBarSection',     this.config.showFavBar);
     
 
@@ -58,6 +77,21 @@ export const Settings = {
     if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
     if (modal)    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
 
+    const topThemeBtn = document.getElementById('topThemeBtn');
+    if (topThemeBtn) {
+      topThemeBtn.addEventListener('click', async () => {
+        const themes = ['dark', 'light', 'youtube', 'discord', 'matrix'];
+        let idx = themes.indexOf(this.config.theme);
+        idx = (idx + 1) % themes.length;
+        this.config.theme = themes[idx];
+        const themeSelect = document.getElementById('themeSelect');
+        if (themeSelect) themeSelect.value = this.config.theme;
+        await Storage.set('app_settings', this.config);
+        this.apply();
+        import('./weather.js').then(m => m.Weather.fetchAndRender(true));
+      });
+    }
+
     // === ANINDA KAYDET (AUTO-SAVE) ===
     if (modal) {
       modal.addEventListener('change', async (e) => {
@@ -69,17 +103,17 @@ export const Settings = {
         const nTheme = document.getElementById('themeSelect').value;
         if (nTheme !== config.theme) { config.theme = nTheme; changed = true; }
         
-        const nBg = document.getElementById('bgSelect').value;
-        if (nBg !== config.bgStyle) { config.bgStyle = nBg; changed = true; }
-        
         const nCustBg = document.getElementById('customBgInput').value.trim();
         if (nCustBg !== config.customBgUrl) { config.customBgUrl = nCustBg; changed = true; }
-        
+
         const nCols = parseInt(document.getElementById('folderColumnsSelect').value) || 6;
         if (nCols !== config.folderColumns) { config.folderColumns = nCols; changed = true; }
         
         const nIcon = parseInt(document.getElementById('iconSizeSelect')?.value) || 32;
         if (nIcon !== config.folderIconSize) { config.folderIconSize = nIcon; changed = true; }
+        
+        const nIconApi = document.getElementById('iconApiSelect')?.value || 'google-hd';
+        if (nIconApi !== config.iconApi) { config.iconApi = nIconApi; changed = true; }
         
         const nClk = document.getElementById('toggleClock').checked;
         if (nClk !== config.showClock) { config.showClock = nClk; changed = true; }
@@ -94,20 +128,15 @@ export const Settings = {
         if (nWea !== config.showWeather) { config.showWeather = nWea; changed = true; }
         
         const nSearch = document.getElementById('toggleSearchBar').checked;
-          const nTopLang = document.getElementById('toggleTopLang').checked;
-          if (nTopLang !== config.showTopLangSelector) { config.showTopLangSelector = nTopLang; changed = true; }
-          if (nSearch !== config.showSearchBar) { config.showSearchBar = nSearch; changed = true; }
+        const nTopLang = document.getElementById('toggleTopLang').checked;
+        const nThemeBtnToggle = document.getElementById('toggleThemeBtn')?.checked;
+        
+        if (nTopLang !== config.showTopLangSelector) { config.showTopLangSelector = nTopLang; changed = true; }
+        if (nSearch !== config.showSearchBar) { config.showSearchBar = nSearch; changed = true; }
+        if (nThemeBtnToggle !== undefined && nThemeBtnToggle !== config.showThemeBtn) { config.showThemeBtn = nThemeBtnToggle; changed = true; }
           
-          const nFav = document.getElementById('toggleFavBar').checked;
+        const nFav = document.getElementById('toggleFavBar').checked;
         if (nFav !== config.showFavBar) { config.showFavBar = nFav; changed = true; }
-        
-        
-        
-        const nLang = document.getElementById('langSelect').value;
-        if (nLang !== I18n.currentLang) {
-          await I18n.setLanguage(nLang);
-          changed = true;
-        }
 
         const tzSel = document.getElementById('timezoneSelect');
         if (tzSel && tzSel.value !== config.timezone) { config.timezone = tzSel.value; changed = true; }
@@ -116,6 +145,10 @@ export const Settings = {
           await Storage.set('app_settings', config);
           this.apply();
           
+          if (e.target.id === 'iconSizeSelect' || e.target.id === 'iconApiSelect') {
+             import('./shortcuts.js').then(m => m.Shortcuts.renderFolders());
+             import('./favorites.js').then(m => m.Favorites.render());
+          }
           if (e.target.id === 'toggleWeather' || e.target.id === 'themeSelect') {
              import('./weather.js').then(m => m.Weather.fetchAndRender(true));
           }
@@ -138,7 +171,12 @@ export const Settings = {
       });
     }
 
-    
+    // Dil değiştiğinde uygula (i18n.js zaten picker'ları günceller)
+    window.addEventListener('langchange', () => {
+      // toggleTopLang'ın görünürlüğünü korumak için apply'ı tetikle
+      this.vis('topLangPicker', this.config.showTopLangSelector !== false);
+    });
+
   },
 
   // === HAVA DURUMU CANLI ARAMA (AUTOCOMPLETE) ===
@@ -188,7 +226,7 @@ export const Settings = {
     const resetBtn = document.getElementById('resetSettingsBtn');
     if (resetBtn) {
       resetBtn.addEventListener('click', async () => {
-        if (confirm('TÜM verileriniz (klasörler, linkler, ayarlar) silinecek. Emin misiniz?')) {
+        if (confirm(I18n.t('confirm_reset_all', 'ALL your data (folders, links, settings) will be deleted. Are you sure?'))) {
           if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
             await chrome.storage.local.clear();
           }
@@ -214,8 +252,9 @@ export const Settings = {
         dropdown.style.display = 'none';
         return;
       }
+      dropdown.innerHTML = '';
       dropdown.style.display = 'flex';
-      dropdown.innerHTML = '<div class="city-dropdown-msg">⏳ Aranıyor...</div>';
+      dropdown.innerHTML = '<div class="city-dropdown-msg">' + I18n.t('weather_searching', '⏳ Searching...') + '</div>';
       
       timer = setTimeout(async () => {
         try {
@@ -224,7 +263,7 @@ export const Settings = {
           dropdown.innerHTML = '';
           
           if (!data.results || data.results.length === 0) {
-            dropdown.innerHTML = '<div class="city-dropdown-msg">Sonuç bulunamadı</div>';
+            dropdown.innerHTML = '<div class="city-dropdown-msg">' + I18n.t('weather_no_results', 'No results found') + '</div>';
             return;
           }
 
@@ -249,7 +288,7 @@ export const Settings = {
             dropdown.appendChild(item);
           });
         } catch(e) {
-          dropdown.innerHTML = '<div class="city-dropdown-msg">Bağlantı hatası</div>';
+          dropdown.innerHTML = '<div class="city-dropdown-msg">' + I18n.t('weather_connection_error', 'Connection error') + '</div>';
         }
       }, 500);
     });
@@ -277,11 +316,19 @@ export const Settings = {
     const f = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
     const t = (id, v) => { const el = document.getElementById(id); if (el) el.checked = !!v; };
     f('themeSelect',          this.config.theme);
-    f('bgSelect',             this.config.bgStyle);
     f('customBgInput',        this.config.customBgUrl);
-    f('langSelect',           I18n.currentLang);
     f('folderColumnsSelect',  String(this.config.folderColumns || 6));
     f('iconSizeSelect',       String(this.config.folderIconSize || 32));
+    f('iconApiSelect',        this.config.iconApi || 'google-hd');
+    f('timezoneSelect',       this.config.timezone || 'auto');
+    t('toggleThemeBtn',       this.config.showThemeBtn !== false);
+    t('toggleClock',          this.config.showClock);
+    t('toggleSeconds',        this.config.showSeconds);
+    t('toggleGreeting',       this.config.showGreeting);
+    t('toggleWeather',        this.config.showWeather);
+    t('toggleFavBar',         this.config.showFavBar);
+    t('toggleSearchBar',      this.config.showSearchBar);
+    t('toggleTopLang',        this.config.showTopLangSelector !== false);
     
     const input = document.getElementById('weatherCityInput');
     if (input && this.config.weatherCityObj) {

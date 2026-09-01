@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    HaYTooL Cloud StartPage - Core Styles & Layout
    ========================================================================== */
 
@@ -1462,11 +1462,15 @@ body {
   text-decoration: none;
   padding: 0.35rem 0.5rem 0.25rem;
   border-radius: var(--radius-md);
-  transition: background var(--transition-fast);
+  transition: transform 0.18s ease-out, background var(--transition-fast);
   cursor: pointer;
   min-width: 56px;
 }
-.fav-item-link:hover { background: rgba(255,255,255,0.08); }
+.fav-item-link:hover { 
+  background: rgba(255,255,255,0.08); 
+  transform: scale(1.30);
+  z-index: 5;
+}
 
 .fav-icon-box {
   width: 28px; height: 28px;
@@ -1628,10 +1632,14 @@ body {
   display: flex; align-items: center; justify-content: center;
   padding: 0; border-radius: 12px;
   text-decoration: none; position: relative;
-  transition: all 0.2s;
+  transition: transform 0.18s ease-out, background 0.15s ease;
   overflow: hidden;
 }
-.link-icon-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+.link-icon-card:hover {
+  background: rgba(255,255,255,0.08);
+  transform: scale(1.30);
+  z-index: 5;
+}
 .link-fav-icon {
   width: 24px; height: 24px; border-radius: 6px;
   background: transparent; display: flex; align-items: center; justify-content: center;
@@ -1649,6 +1657,8 @@ body {
 }
 
 .link-icon-label { display: none; }
+
+
 /* Liste Görünümü */
 .folder-body.view-list { display: flex; flex-direction: column; gap: 0; }
 .folder-body.view-list .link-item {
@@ -2085,3 +2095,116 @@ body[data-cols="1"] .folders-grid {
 }
 .top-search-engine option { background: #1a1a1a; color: #fff; }
 .top-search-engine:hover, .top-search-engine:focus { color: var(--text-main); background: rgba(255,255,255,0.1); }
+
+/* ── Custom Language Picker ─────────────────────── */
+.lang-picker {
+  position: relative;
+  display: inline-flex;
+}
+
+.lang-picker-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  height: 32px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  font-size: 0.88rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.lang-picker-btn:hover {
+  background: var(--surface-glass-hover);
+  border-color: var(--border-glass-hover);
+}
+
+.lang-flag {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.lang-picker-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow-hover);
+  min-width: 140px;
+  overflow: hidden;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.lang-picker.open .lang-picker-menu {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+.lang-picker-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.8rem;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-size: 0.88rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.lang-picker-item:hover {
+  background: var(--surface-glass-hover);
+}
+
+.lang-picker-item.active {
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.lang-picker-item .lang-flag { margin-right: 2px; }
+
+/* Settings modal lang picker styling */
+.settings-lang-picker .lang-picker-btn {
+  width: 100%;
+  height: 40px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.95rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-glass);
+  background: var(--surface-glass);
+  justify-content: flex-start;
+}
+
+.settings-lang-picker .lang-picker-menu {
+  left: 0;
+  right: 0;
+  min-width: unset;
+}
+
+.settings-lang-picker .lang-picker-item {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.95rem;
+}
