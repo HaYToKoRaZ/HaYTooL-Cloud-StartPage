@@ -73,6 +73,9 @@ export const Settings = {
         const nCols = parseInt(document.getElementById('folderColumnsSelect').value) || 3;
         if (nCols !== config.folderColumns) { config.folderColumns = nCols; changed = true; }
         
+        const nIcon = parseInt(document.getElementById('iconSizeSelect')?.value) || 64;
+        if (nIcon !== config.folderIconSize) { config.folderIconSize = nIcon; changed = true; }
+        
         const nClk = document.getElementById('toggleClock').checked;
         if (nClk !== config.showClock) { config.showClock = nClk; changed = true; }
         
