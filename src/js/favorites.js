@@ -19,7 +19,8 @@ export const Favorites = {
         { id: genId(), title: 'Wikipedia', url: 'https://www.wikipedia.org' },
         { id: genId(), title: 'Reddit', url: 'https://www.reddit.com' },
         { id: genId(), title: 'Pinterest', url: 'https://www.pinterest.com' },
-        { id: genId(), title: 'Outlook', url: 'https://outlook.live.com' }
+        { id: genId(), title: 'Outlook', url: 'https://outlook.live.com' },
+        { id: genId(), title: 'Gmail', url: 'https://mail.google.com' }
       ];
       await Storage.set(this.FAV_KEY, defaultFavs);
       await Storage.set('is_fav_first_run_v3', false);
