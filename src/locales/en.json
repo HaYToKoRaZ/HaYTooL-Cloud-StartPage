@@ -1,4 +1,4 @@
-﻿{
+{
   "greeting_morning": "Good Morning",
   "greeting_afternoon": "Good Afternoon",
   "greeting_evening": "Good Evening",
@@ -61,5 +61,18 @@
   "reset_confirm": "All settings and shortcuts will be reset. Are you sure?",
   "toast_saved": "Settings saved successfully!",
   "toast_imported": "Data imported successfully!",
-  "toast_copied": "Link copied to clipboard!"
+  "toast_copied": "Link copied to clipboard!",
+  "import_bookmarks": "Import Bookmarks",
+  "import_bookmarks_desc": "Import browser bookmarks (.html)",
+  "category_icon": "Icon (Emoji)",
+  "import_instructions_chrome": "Chrome: Bookmarks > Bookmark Manager > Export",
+  "import_cancel": "Cancel",
+  "category_name": "Category Name",
+  "shortcuts_all": "All",
+  "import_instructions_firefox": "Firefox: Bookmarks > Show All Bookmarks > Import & Backup > Export HTML",
+  "import_select_folders": "Select folders to import",
+  "import_instructions_edge": "Edge: Favorites > Manage favorites > More > Export favorites",
+  "add_category": "Add Category",
+  "import_confirm": "Import Selected",
+  "manage_categories": "Manage Categories"
 }

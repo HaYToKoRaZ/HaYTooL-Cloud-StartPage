@@ -1,4 +1,4 @@
-﻿{
+{
   "greeting_morning": "Günaydın",
   "greeting_afternoon": "İyi Günler",
   "greeting_evening": "İyi Akşamlar",
@@ -61,5 +61,18 @@
   "reset_confirm": "Tüm ayarlar ve kısayollar sıfırlanacak. Emin misiniz?",
   "toast_saved": "Ayarlar başarıyla kaydedildi!",
   "toast_imported": "Veriler başarıyla içe aktarıldı!",
-  "toast_copied": "Bağlantı kopyalandı!"
+  "toast_copied": "Bağlantı kopyalandı!",
+  "import_bookmarks": "Favori İçe Aktar",
+  "import_bookmarks_desc": "Tarayıcı favorilerini (.html) içe aktarın",
+  "category_icon": "İkon (Emoji)",
+  "import_instructions_chrome": "Chrome: Yer işaretleri > Yer işaretlerini yönet > Dışa aktar",
+  "import_cancel": "Vazgeç",
+  "category_name": "Kategori Adı",
+  "shortcuts_all": "Tümü",
+  "import_instructions_firefox": "Firefox: Yer işaretleri > Tüm yer işaretlerini göster > İçe ve dışa aktar > HTML olarak dışa aktar",
+  "import_select_folders": "İçe aktarılacak klasörleri seçin",
+  "import_instructions_edge": "Edge: Favoriler > Favorileri yönet > Diğer > Favori dışa aktar",
+  "add_category": "Kategori Ekle",
+  "import_confirm": "İçe Aktar",
+  "manage_categories": "Kategorileri Yönet"
 }

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HaYTooL Cloud StartPage</title>
+  <meta name="description" content="Modern, hızlı ve estetik yeni sekme deneyimi – HaYTooL Cloud StartPage">
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <link rel="alternate icon" type="image/png" href="../assets/icons/favicon.png">
   <link rel="stylesheet" href="../css/theme.css">
@@ -13,33 +14,40 @@
   <!-- Dynamic Background Layer -->
   <div id="bgLayer"></div>
 
-  <!-- Top Header Bar -->
+  <!-- ===================== TOP HEADER BAR ===================== -->
   <header class="top-bar">
     <div class="top-bar-left">
       <div class="app-brand" title="HaYTooL Cloud StartPage">
         <img src="../assets/icons/favicon.svg" alt="HaYTooL Logo">
         <span>HaYTooL</span>
       </div>
-      <div id="weatherBadge" class="weather-badge glass-card" title="Hava Durumu">
+
+      <!-- Weather Badge -->
+      <button id="weatherBadge" class="weather-badge glass-card" title="Hava Durumu – Yenilemek için tıklayın">
         <span class="weather-icon">⏳</span>
         <span data-i18n="weather_loading">Yükleniyor...</span>
-      </div>
+      </button>
     </div>
 
     <div class="top-bar-right">
+      <!-- Bookmark Import Button -->
+      <button id="bookmarkImportBtn" class="bookmark-import-btn" title="Tarayıcı favorilerini içe aktar">
+        <span>⭐</span>
+        <span data-i18n="import_bookmarks">Favori İçe Aktar</span>
+      </button>
+      <input type="file" id="bookmarkFileInput" accept=".html,.htm" style="display:none;">
+
       <!-- Notes & Tasks Toggle -->
-      <button id="notesToggleBtn" class="icon-btn" title="Hızlı Notlar & Görevler">
-        📝
-      </button>
-      <!-- Settings Modal Button -->
-      <button id="settingsBtn" class="icon-btn" title="Ayarlar & Özelleştirme">
-        ⚙️
-      </button>
+      <button id="notesToggleBtn" class="icon-btn" title="Hızlı Notlar & Görevler" data-i18n-title="notes_title">📝</button>
+
+      <!-- Settings -->
+      <button id="settingsBtn" class="icon-btn" title="Ayarlar & Özelleştirme" data-i18n-title="settings_title">⚙️</button>
     </div>
   </header>
 
-  <!-- Center Main Section -->
+  <!-- ===================== MAIN CENTER ===================== -->
   <main class="main-container">
+
     <!-- Clock & Greeting -->
     <section id="heroClock" class="hero-clock-section">
       <div id="greetingText" class="greeting-text">...</div>
@@ -50,57 +58,63 @@
       <div id="dateText" class="date-text">...</div>
     </section>
 
-    <!-- Smart Multi-Engine Search -->
+    <!-- Smart Multi-Engine Search Bar -->
     <section id="searchWrapper" class="search-wrapper">
       <form id="searchForm" class="search-box">
         <div class="engine-selector">
-          <button type="button" id="engineSelectBtn" class="engine-btn" title="Arama Motoru Seç">
-            <span>🔍</span> <span>▾</span>
+          <button type="button" id="engineSelectBtn" class="engine-btn" title="Arama Motoru">
+            <span>🔍</span><span>▾</span>
           </button>
           <div id="engineDropdown" class="engine-dropdown">
-            <div class="engine-option" data-engine="google"><span>🔍</span> Google</div>
+            <div class="engine-option" data-engine="google">   <span>🔍</span> Google</div>
             <div class="engine-option" data-engine="duckduckgo"><span>🦆</span> DuckDuckGo</div>
-            <div class="engine-option" data-engine="bing"><span>🅱️</span> Bing</div>
-            <div class="engine-option" data-engine="youtube"><span>📺</span> YouTube</div>
-            <div class="engine-option" data-engine="github"><span>🐙</span> GitHub</div>
-            <div class="engine-option" data-engine="yandex"><span>🟡</span> Yandex</div>
-            <div class="engine-option" data-engine="brave"><span>🦁</span> Brave</div>
+            <div class="engine-option" data-engine="bing">     <span>🅱️</span> Bing</div>
+            <div class="engine-option" data-engine="youtube">  <span>📺</span> YouTube</div>
+            <div class="engine-option" data-engine="github">   <span>🐙</span> GitHub</div>
+            <div class="engine-option" data-engine="yandex">   <span>🟡</span> Yandex</div>
+            <div class="engine-option" data-engine="brave">    <span>🦁</span> Brave</div>
           </div>
         </div>
-
-        <input type="text" id="searchInput" class="search-input" placeholder="Web'de ara veya URL girin..." data-i18n-placeholder="search_placeholder" autofocus autocomplete="off">
+        <input type="text" id="searchInput" class="search-input"
+          placeholder="Web'de ara veya URL girin..."
+          data-i18n-placeholder="search_placeholder"
+          autofocus autocomplete="off">
         <button type="submit" class="search-submit-btn" title="Ara">➜</button>
       </form>
     </section>
 
-    <!-- Speed Dial Shortcuts -->
+    <!-- Speed Dial: Category Tabs + Grid -->
     <section id="shortcutsSection" class="shortcuts-section">
-      <div id="shortcutsGrid" class="shortcuts-grid">
-        <!-- Rendered dynamically by shortcuts.js -->
-      </div>
+      <!-- Category Tab Bar -->
+      <div id="categoryTabBar" class="category-tab-bar"></div>
+      <!-- Shortcut Cards Grid -->
+      <div id="shortcutsGrid"></div>
     </section>
+
   </main>
 
-  <!-- Bottom Bar -->
+  <!-- ===================== BOTTOM FOOTER ===================== -->
   <footer class="bottom-bar">
-    <div id="quoteBox" class="quote-box">“Gelecek, bugünden hazırlananlara aittir.”</div>
-    <div class="footer-brand">HaYTooL StartPage • v1.0.0</div>
+    <div id="quoteBox" class="quote-box"></div>
+    <div class="footer-brand">HaYTooL StartPage v1.0.0</div>
   </footer>
 
-  <!-- Quick Notes & Tasks Drawer -->
+  <!-- ===================== NOTES DRAWER ===================== -->
   <div id="notesDrawer" class="drawer-panel">
     <div class="drawer-header">
       <div class="drawer-tabs">
-        <button id="tabNotes" class="drawer-tab active" data-i18n="notes_tab_notes">Not Defteri</button>
-        <button id="tabTodos" class="drawer-tab" data-i18n="notes_tab_todos">Yapılacaklar</button>
+        <button id="tabNotes"  class="drawer-tab active" data-i18n="notes_tab_notes">Not Defteri</button>
+        <button id="tabTodos" class="drawer-tab"        data-i18n="notes_tab_todos">Yapılacaklar</button>
       </div>
-      <button id="closeNotesDrawer" class="icon-btn" style="width:28px; height:28px; font-size:0.8rem;">✕</button>
+      <button id="closeNotesDrawer" class="icon-btn" style="width:28px;height:28px;font-size:0.8rem;">✕</button>
     </div>
     <div class="drawer-body">
       <div id="notesView">
-        <textarea id="notesTextarea" class="notes-textarea" placeholder="Düşüncelerinizi buraya not alın... (Otomatik kaydedilir)" data-i18n-placeholder="notes_placeholder"></textarea>
+        <textarea id="notesTextarea" class="notes-textarea"
+          placeholder="Düşüncelerinizi buraya not alın... (Otomatik kaydedilir)"
+          data-i18n-placeholder="notes_placeholder"></textarea>
       </div>
-      <div id="todosView" style="display: none;">
+      <div id="todosView" style="display:none;">
         <div class="todo-input-box">
           <input type="text" id="todoInput" placeholder="Yeni görev ekle..." data-i18n-placeholder="todo_placeholder">
           <button id="addTodoBtn" class="btn-primary" style="padding:0.4rem 0.8rem;">+</button>
@@ -110,11 +124,12 @@
     </div>
   </div>
 
-  <!-- Add / Edit Shortcut Modal -->
+  <!-- ===================== ADD SHORTCUT MODAL ===================== -->
   <div id="shortcutModal" class="modal-overlay">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width:420px;">
       <div class="modal-header">
         <h3 data-i18n="add_shortcut">Kısayol Ekle</h3>
+        <button id="closeShortcutModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
       </div>
       <form id="shortcutForm">
         <div class="form-group">
@@ -126,32 +141,79 @@
           <input type="text" id="shortcutUrlInput" class="form-input" placeholder="https://github.com" required>
         </div>
         <div class="form-group">
-          <label data-i18n="shortcut_icon">İkon / Emoji</label>
-          <input type="text" id="shortcutIconInput" class="form-input" placeholder="🐙 veya resim linki (opsiyonel)">
+          <label data-i18n="shortcut_icon">İkon / Emoji (opsiyonel)</label>
+          <input type="text" id="shortcutIconInput" class="form-input" placeholder="🐙  veya boş bırakın (favicon otomatik alınır)">
+        </div>
+        <div class="form-group">
+          <label data-i18n="shortcut_category">Kategori</label>
+          <select id="shortcutCategorySelect" class="form-select"></select>
         </div>
         <div class="modal-actions">
-          <button type="button" id="closeShortcutModal" class="btn-secondary" data-i18n="cancel">İptal</button>
+          <button type="button" id="closeShortcutModalFooter" class="btn-secondary" data-i18n="cancel">İptal</button>
           <button type="submit" class="btn-primary" data-i18n="save">Kaydet</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Settings Modal -->
+  <!-- ===================== BOOKMARK IMPORT PREVIEW MODAL ===================== -->
+  <div id="importPreviewModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:520px;">
+      <div class="modal-header">
+        <h3>⭐ <span data-i18n="import_bookmarks">Favori İçe Aktar</span></h3>
+        <button id="cancelImportBtnHeader" class="icon-btn" style="width:28px;height:28px;">✕</button>
+      </div>
+
+      <!-- Import Instructions -->
+      <div style="margin-bottom:1rem;">
+        <details style="cursor:pointer;">
+          <summary style="font-size:0.85rem;color:var(--text-muted);font-weight:600;padding:0.4rem 0;">
+            📖 Favorileri nasıl dışa aktarırım?
+          </summary>
+          <div style="margin-top:0.6rem;display:flex;flex-direction:column;gap:0.4rem;">
+            <div style="font-size:0.82rem;color:var(--text-dim);padding:0.4rem 0.6rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);">
+              🔵 <strong>Chrome:</strong> Yer işaretleri → Yer İşaretleri Yöneticisi → ⋮ → Dışa Aktar
+            </div>
+            <div style="font-size:0.82rem;color:var(--text-dim);padding:0.4rem 0.6rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);">
+              🟠 <strong>Firefox:</strong> Yer İşaretleri → Tüm Yer İşaretlerini Göster → İçe ve Dışa Aktar → HTML Olarak Dışa Aktar
+            </div>
+            <div style="font-size:0.82rem;color:var(--text-dim);padding:0.4rem 0.6rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);">
+              🔷 <strong>Edge:</strong> Favoriler → Favorileri Yönet → ⋯ → Favorileri Dışa Aktar
+            </div>
+            <div style="font-size:0.82rem;color:var(--text-dim);padding:0.4rem 0.6rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);">
+              🔴 <strong>Opera:</strong> Yer İşaretleri → HTML'ye Aktar
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div id="importSummaryText" class="import-summary"></div>
+
+      <div class="import-list-scroll">
+        <div id="importFolderList"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" id="cancelImportBtn" class="btn-secondary" data-i18n="import_cancel">Vazgeç</button>
+        <button type="button" id="confirmImportBtn" class="btn-primary" data-i18n="import_confirm">İçe Aktar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SETTINGS MODAL ===================== -->
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
         <h3 data-i18n="settings_title">Ayarlar & Özelleştirme</h3>
-        <button id="closeSettingsModal" class="icon-btn" style="width:28px; height:28px;">✕</button>
+        <button id="closeSettingsModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
       </div>
 
-      <!-- Theme & Appearance -->
       <div class="form-group">
         <label data-i18n="theme_label">Tema Modu</label>
         <select id="themeSelect" class="form-select">
-          <option value="dark" data-i18n="theme_dark">Koyu Glass (Varsayılan)</option>
+          <option value="dark"  data-i18n="theme_dark" >Koyu Glass (Varsayılan)</option>
           <option value="light" data-i18n="theme_light">Açık Glass</option>
-          <option value="oled" data-i18n="theme_oled">OLED Siyah</option>
+          <option value="oled"  data-i18n="theme_oled" >OLED Siyah</option>
           <option value="cyber" data-i18n="theme_cyber">Cyberpunk Neon</option>
         </select>
       </div>
@@ -159,16 +221,18 @@
       <div class="form-group">
         <label data-i18n="bg_label">Arka Plan Stili</label>
         <select id="bgSelect" class="form-select">
-          <option value="aurora" data-i18n="bg_aurora">Kuzey Işıkları (Aurora)</option>
-          <option value="nebula" data-i18n="bg_nebula">Kozmik Nebula</option>
-          <option value="cyber" data-i18n="bg_cyber">Cyber Glow</option>
+          <option value="aurora"  data-i18n="bg_aurora" >Kuzey Işıkları (Aurora)</option>
+          <option value="nebula"  data-i18n="bg_nebula" >Kozmik Nebula</option>
+          <option value="cyber"   data-i18n="bg_cyber"  >Cyber Glow</option>
           <option value="minimal" data-i18n="bg_minimal">Minimalist Derinlik</option>
         </select>
       </div>
 
       <div class="form-group">
         <label data-i18n="bg_custom_url">Özel Arka Plan Görseli URL</label>
-        <input type="text" id="customBgInput" class="form-input" placeholder="https://..." data-i18n-placeholder="bg_custom_placeholder">
+        <input type="url" id="customBgInput" class="form-input"
+          placeholder="https://images.unsplash.com/..."
+          data-i18n-placeholder="bg_custom_placeholder">
       </div>
 
       <div class="form-group">
@@ -180,54 +244,39 @@
       </div>
 
       <!-- Widget Toggles -->
-      <div style="margin-top: 1.25rem;">
-        <h4 style="font-size:0.95rem; margin-bottom:0.6rem; color:var(--text-muted);" data-i18n="settings_tab_widgets">Widget Görünürlüğü</h4>
-        
-        <div class="toggle-item">
-          <span data-i18n="show_clock">Saat & Tarih</span>
-          <label class="switch"><input type="checkbox" id="toggleClock" checked><span class="slider"></span></label>
-        </div>
-        <div class="toggle-item">
-          <span data-i18n="show_seconds">Saniye Göstergesi</span>
-          <label class="switch"><input type="checkbox" id="toggleSeconds" checked><span class="slider"></span></label>
-        </div>
-        <div class="toggle-item">
-          <span data-i18n="show_greeting">Karşılama Mesajı</span>
-          <label class="switch"><input type="checkbox" id="toggleGreeting" checked><span class="slider"></span></label>
-        </div>
-        <div class="toggle-item">
-          <span data-i18n="show_weather">Hava Durumu</span>
-          <label class="switch"><input type="checkbox" id="toggleWeather" checked><span class="slider"></span></label>
-        </div>
-        <div class="toggle-item">
-          <span data-i18n="show_search">Arama Çubuğu</span>
-          <label class="switch"><input type="checkbox" id="toggleSearch" checked><span class="slider"></span></label>
-        </div>
-        <div class="toggle-item">
-          <span data-i18n="show_shortcuts">Hızlı Kısayollar</span>
-          <label class="switch"><input type="checkbox" id="toggleShortcuts" checked><span class="slider"></span></label>
-        </div>
-        <div class="toggle-item">
-          <span data-i18n="show_notes">Hızlı Notlar Butonu</span>
-          <label class="switch"><input type="checkbox" id="toggleNotes" checked><span class="slider"></span></label>
-        </div>
-        <div class="toggle-item">
-          <span data-i18n="show_quote">İlham Sözü</span>
-          <label class="switch"><input type="checkbox" id="toggleQuote" checked><span class="slider"></span></label>
-        </div>
+      <div style="margin-top:1.25rem;">
+        <h4 style="font-size:0.88rem;margin-bottom:0.75rem;color:var(--text-muted);" data-i18n="settings_tab_widgets">Widget Görünürlüğü</h4>
+        <div class="toggle-item"><span data-i18n="show_clock">Saat & Tarih</span>
+          <label class="switch"><input type="checkbox" id="toggleClock" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span data-i18n="show_seconds">Saniye</span>
+          <label class="switch"><input type="checkbox" id="toggleSeconds" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span data-i18n="show_greeting">Karşılama Mesajı</span>
+          <label class="switch"><input type="checkbox" id="toggleGreeting" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span data-i18n="show_weather">Hava Durumu</span>
+          <label class="switch"><input type="checkbox" id="toggleWeather" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span data-i18n="show_search">Arama Çubuğu</span>
+          <label class="switch"><input type="checkbox" id="toggleSearch" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span data-i18n="show_shortcuts">Kısayollar</span>
+          <label class="switch"><input type="checkbox" id="toggleShortcuts" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span data-i18n="show_notes">Notlar Paneli</span>
+          <label class="switch"><input type="checkbox" id="toggleNotes" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span data-i18n="show_quote">İlham Sözü</span>
+          <label class="switch"><input type="checkbox" id="toggleQuote" checked><span class="slider"></span></label></div>
       </div>
 
       <!-- Backup & Restore -->
-      <div style="margin-top: 1.5rem; display:flex; flex-direction:column; gap:0.6rem;">
-        <h4 style="font-size:0.95rem; color:var(--text-muted);" data-i18n="settings_tab_backup">Yedekleme & Senkron</h4>
-        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+      <div style="margin-top:1.5rem;">
+        <h4 style="font-size:0.88rem;margin-bottom:0.75rem;color:var(--text-muted);" data-i18n="settings_tab_backup">Yedekleme & Senkron</h4>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
           <button type="button" id="exportDataBtn" class="btn-secondary" style="flex:1;" data-i18n="export_data">Yedek İndir (JSON)</button>
-          <label class="btn-secondary" style="flex:1; text-align:center; cursor:pointer;">
+          <label class="btn-secondary" style="flex:1;text-align:center;cursor:pointer;">
             <span data-i18n="import_data">Yedek Yükle</span>
             <input type="file" id="importDataInput" accept=".json" style="display:none;">
           </label>
         </div>
-        <button type="button" id="resetSettingsBtn" class="btn-secondary" style="color:var(--accent-rose); border-color:rgba(244,63,94,0.3);" data-i18n="reset_default">Sıfırla</button>
+        <button type="button" id="resetSettingsBtn" class="btn-secondary"
+          style="width:100%;color:var(--accent-rose);border-color:rgba(244,63,94,0.3);"
+          data-i18n="reset_default">Sıfırla</button>
       </div>
 
       <div class="modal-actions">
@@ -239,7 +288,7 @@
   <!-- Toast Notification -->
   <div id="toast"></div>
 
-  <!-- Main Module Entry Point -->
+  <!-- App Entry Point -->
   <script type="module" src="../js/app.js"></script>
 </body>
 </html>
