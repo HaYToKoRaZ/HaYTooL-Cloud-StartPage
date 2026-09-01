@@ -193,6 +193,33 @@
           <option value="en">English</option>
         </select>
       </div>
+
+      <div class="form-group">
+        <label>Klasör Sütun Sayısı</label>
+        <div class="col-selector" id="colSelectorGroup">
+          <select id="folderColumnsSelect" class="form-select">
+            <option value="1">1 Sütun</option>
+            <option value="2">2 Sütun</option>
+            <option value="3" selected>3 Sütun (Varsayılan)</option>
+            <option value="4">4 Sütun</option>
+            <option value="5">5 Sütun</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-section-title">🌤️ Hava Durumu</div>
+      <div class="form-group">
+        <label>Konum / Şehir
+          <span style="color:var(--text-dim);font-weight:400;font-size:0.8rem;"> (Boş = GPS otomatik)</span>
+        </label>
+        <div class="weather-city-row">
+          <input type="text" id="weatherCityInput" class="form-input" placeholder="Örn: Ankara, İstanbul, London...">
+          <button type="button" id="testWeatherCityBtn" class="btn-secondary" style="flex-shrink:0;padding:0 0.75rem;" title="Test Et">🔍</button>
+        </div>
+        <div style="margin-top:0.4rem;font-size:0.78rem;color:var(--text-dim);">
+          Şehir adı girin — otomatik olarak koordinata çevrilir (Open-Meteo Geocoding, ücretsiz).
+        </div>
+      </div>
       <div style="margin-top:1rem;">
         <h4 style="font-size:0.88rem;margin-bottom:0.6rem;color:var(--text-muted);">Widget Görünürlüğü</h4>
         <div class="toggle-item"><span>Saat & Tarih</span><label class="switch"><input type="checkbox" id="toggleClock" checked><span class="slider"></span></label></div>

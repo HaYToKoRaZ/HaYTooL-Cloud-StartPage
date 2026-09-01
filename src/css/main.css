@@ -1746,3 +1746,25 @@ body {
 
 /* Empty state grid span */
 .empty-state-main { grid-column: 1 / -1; min-height: 40vh; }
+/* ==========================================================================
+   SETTINGS MODAL - Ek Stiller
+   ========================================================================== */
+.settings-section-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin: 1.25rem 0 0.65rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border-glass);
+  letter-spacing: 0.03em;
+}
+
+.weather-city-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.weather-city-row .form-input { flex: 1; }
+
+/* Hava durumu badge'inde şehir küçük text */
+#weatherBadge small { font-size: 0.72em; opacity: 0.7; }
