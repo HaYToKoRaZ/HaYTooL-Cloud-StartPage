@@ -6,7 +6,7 @@ export const Settings = {
     theme: 'dark', bgStyle: 'aurora', customBgUrl: '', 
     showClock: true, showSeconds: true, showGreeting: true, 
     showWeather: true, showFavBar: true, showQuote: true,
-    folderColumns: 3, 
+    folderColumns: 5, 
     weatherCityObj: null // { name: "Kadıköy", country: "Türkiye", lat: 40.9, lon: 29.0 }
   },
   
@@ -39,8 +39,8 @@ export const Settings = {
     
 
     // Folder cols CSS Variable ile çözüldü
-    document.body.setAttribute('data-cols', this.config.folderColumns || 3);
-    document.documentElement.style.setProperty('--folder-icon-size', (this.config.folderIconSize || 32) + 'px'); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', this.config.folderColumns || 3);
+    document.body.setAttribute('data-cols', this.config.folderColumns || 5);
+    document.documentElement.style.setProperty('--folder-icon-size', (this.config.folderIconSize || 32) + 'px'); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', this.config.folderColumns || 5);
     window.dispatchEvent(new Event('resize'));
   },
 
@@ -74,7 +74,7 @@ export const Settings = {
         const nCustBg = document.getElementById('customBgInput').value.trim();
         if (nCustBg !== config.customBgUrl) { config.customBgUrl = nCustBg; changed = true; }
         
-        const nCols = parseInt(document.getElementById('folderColumnsSelect').value) || 3;
+        const nCols = parseInt(document.getElementById('folderColumnsSelect').value) || 5;
         if (nCols !== config.folderColumns) { config.folderColumns = nCols; changed = true; }
         
         const nIcon = parseInt(document.getElementById('iconSizeSelect')?.value) || 32;
@@ -277,7 +277,7 @@ export const Settings = {
     f('bgSelect',             this.config.bgStyle);
     f('customBgInput',        this.config.customBgUrl);
     f('langSelect',           I18n.currentLang);
-    f('folderColumnsSelect',  String(this.config.folderColumns || 3));
+    f('folderColumnsSelect',  String(this.config.folderColumns || 5));
     f('iconSizeSelect',       String(this.config.folderIconSize || 32));
     
     const input = document.getElementById('weatherCityInput');
