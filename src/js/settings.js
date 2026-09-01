@@ -36,7 +36,7 @@ export const Settings = {
     this.vis('quoteBox',          this.config.showQuote);
 
     // Folder cols CSS Variable ile çözüldü
-    const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', this.config.folderColumns || 3);
+    document.body.setAttribute('data-cols', this.config.folderColumns || 3); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', this.config.folderColumns || 3);
   },
 
   vis(id, show) { const el = document.getElementById(id); if (el) el.style.display = show ? '' : 'none'; },
@@ -55,7 +55,7 @@ export const Settings = {
     // Sütun sayısı anlık önizleme
     if (colSelect) {
       colSelect.addEventListener('change', () => {
-        const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', colSelect.value);
+        document.body.setAttribute('data-cols', colSelect.value); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', colSelect.value);
       });
     }
 
