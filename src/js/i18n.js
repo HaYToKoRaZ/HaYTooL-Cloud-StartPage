@@ -45,6 +45,10 @@ export const I18n = {
       const key = el.getAttribute('data-i18n-placeholder');
       if (key && this.translations[key]) el.setAttribute('placeholder', this.translations[key]);
     });
+    document.querySelectorAll('[data-i18n-label]').forEach(el => {
+      const key = el.getAttribute('data-i18n-label');
+      if (key && this.translations[key]) el.setAttribute('label', this.translations[key]);
+    });
     document.querySelectorAll('[data-i18n-title]').forEach(el => {
       const key = el.getAttribute('data-i18n-title');
       if (key && this.translations[key]) el.setAttribute('title', this.translations[key]);
