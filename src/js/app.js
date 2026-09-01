@@ -27,27 +27,51 @@ class StartPageApp {
 
   initClock() {
     const tick = () => {
-      const now = new Date();
-      const h   = String(now.getHours()).padStart(2,'0');
-      const m   = String(now.getMinutes()).padStart(2,'0');
-      const s   = String(now.getSeconds()).padStart(2,'0');
-      const timeEl  = document.getElementById('digitalTime');
-      const secEl   = document.getElementById('digitalSeconds');
-      const dateEl  = document.getElementById('dateText');
-      const greetEl = document.getElementById('greetingText');
-      if (timeEl) timeEl.textContent = h + ':' + m;
+      const lang = I18n.currentLang === "tr" ? "tr-TR" : "en-US";
+      let tz = undefined;
+      if (Settings.config && Settings.config.timezone && Settings.config.timezone !== "auto") {
+        tz = Settings.config.timezone;
+      }
+      
+      let now;
+      try {
+        if (tz) {
+          const dateStr = new Date().toLocaleString("en-US", { timeZone: tz });
+          now = new Date(dateStr);
+        } else {
+          now = new Date();
+        }
+      } catch(e) {
+        now = new Date();
+      }
+
+      const h   = String(now.getHours()).padStart(2,"0");
+      const m   = String(now.getMinutes()).padStart(2,"0");
+      const s   = String(now.getSeconds()).padStart(2,"0");
+      
+      const timeEl  = document.getElementById("digitalTime");
+      const secEl   = document.getElementById("digitalSeconds");
+      const dateEl  = document.getElementById("dateText");
+      const greetEl = document.getElementById("greetingText");
+      
+      if (timeEl) timeEl.textContent = h + ":" + m;
       if (secEl)  secEl.textContent  = s;
       if (dateEl) {
-        const loc = I18n.currentLang === 'tr' ? 'tr-TR' : 'en-US';
-        dateEl.textContent = now.toLocaleDateString(loc, { weekday:'short', year:'numeric', month:'short', day:'numeric' });
+        // İki satır olması için tarih ve ay ayırıyoruz
+        const dayName = now.toLocaleDateString(lang, { weekday: "short" });
+        const dayNum = now.toLocaleDateString(lang, { day: "numeric" });
+        const monthName = now.toLocaleDateString(lang, { month: "short" });
+        const year = now.toLocaleDateString(lang, { year: "numeric" });
+        dateEl.innerHTML = `${dayName}, ${dayNum} ${monthName}<br>${year}`;
       }
+      
       if (greetEl) {
         const hr = now.getHours();
-        let key  = 'greeting_morning';
-        if (hr>=12&&hr<17) key='greeting_afternoon';
-        else if (hr>=17&&hr<22) key='greeting_evening';
-        else if (hr>=22||hr<6) key='greeting_night';
-        greetEl.textContent = I18n.t(key,'Hoş Geldiniz') + ' 👋';
+        let key  = "greeting_morning";
+        if (hr>=12&&hr<17) key="greeting_afternoon";
+        else if (hr>=17&&hr<22) key="greeting_evening";
+        else if (hr>=22||hr<6) key="greeting_night";
+        greetEl.textContent = I18n.t(key,"Hoş Geldiniz") + " 👋";
       }
     };
     tick(); setInterval(tick, 1000);
