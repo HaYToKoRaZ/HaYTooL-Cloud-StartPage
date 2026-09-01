@@ -1976,3 +1976,21 @@ body[data-cols="10"] .folders-grid { grid-template-columns: repeat(10, 1fr) !imp
   right: 66px; /* Liste düzenle butonunun solunda */
 }
 .fav-bar-container.view-icon .fav-item-label { display: none; }
+
+
+/* Saat, Tarih ve Hava Durumu kartlarını aynı boyutta tutma */
+.header-widget {
+  min-width: 140px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border-radius: var(--radius-lg);
+  margin: 0;
+}
+.header-clock-widget { display: none; } /* Eskiyi gizle */
+.header-time { font-size: 1.6rem; display: flex; align-items: baseline; gap: 0.2rem; }
+.header-date { margin-top: 0; opacity: 0.9; }
