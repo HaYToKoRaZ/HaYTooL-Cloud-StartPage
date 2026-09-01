@@ -69,10 +69,19 @@ export const Weather = {
   },
 
   render(data) {
-    const badge = document.getElementById('weatherBadge');
+    const badge = document.getElementById("weatherBadge");
     if (!badge) return;
     const icon = this.getIcon(data.code);
-    badge.innerHTML = '<span class="weather-icon">' + icon + '</span><span>' + data.temp + '°C <small style="opacity:.6;font-size:.8em">' + data.city + '</small></span>';
-    badge.setAttribute('title', data.city + ' • 💧 %' + data.humidity + ' • 💨 ' + data.wind + ' km/s • Yenilemek için tıkla');
+    badge.innerHTML = `
+      <div class="weather-badge-top">
+        <span class="weather-icon">${icon}</span>
+        <span>${data.temp}°C <small style="opacity:.6;font-size:.8em">${data.city}</small></span>
+      </div>
+      <div class="weather-badge-bottom">
+        <span>💧 %${data.humidity}</span>
+        <span>🌬️ ${data.wind} km/s</span>
+      </div>
+    `;
+    badge.setAttribute("title", "Yenilemek için tıkla");
   }
 };
