@@ -1813,19 +1813,19 @@ body {
   .folders-grid[data-cols="4"],
   .folders-grid[data-cols="5"],
   .folders-grid:not([data-cols]) {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, 1fr) !important; } @media (max-width: 1000px) { .folder-card { grid-column: auto !important; }
   }
 }
 @media (max-width: 600px) {
   .folders-grid[data-cols],
   .folders-grid:not([data-cols]) {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr !important; } @media (max-width: 600px) { .folder-card { grid-column: auto !important; }
   }
 }
 
 /* BODY LEVEL FALLBACK SÜTUNLARI */
-body[data-cols="1"] .folders-grid { grid-template-columns: 1fr !important; }
-body[data-cols="2"] .folders-grid { grid-template-columns: repeat(2, 1fr) !important; }
+body[data-cols="1"] .folders-grid { grid-template-columns: 1fr !important; } @media (max-width: 600px) { .folder-card { grid-column: auto !important; } }
+body[data-cols="2"] .folders-grid { grid-template-columns: repeat(2, 1fr) !important; } @media (max-width: 1000px) { .folder-card { grid-column: auto !important; } }
 body[data-cols="3"] .folders-grid { grid-template-columns: repeat(3, 1fr) !important; }
 body[data-cols="4"] .folders-grid { grid-template-columns: repeat(4, 1fr) !important; }
 body[data-cols="5"] .folders-grid { grid-template-columns: repeat(5, 1fr) !important; }

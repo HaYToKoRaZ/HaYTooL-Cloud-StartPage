@@ -23,10 +23,51 @@ export const Shortcuts = {
     this.folderViews      = await Storage.get(this.VIEW_KEY, {});
     this.colorIdx         = this.categories.length % this.COLORS.length;
 
+    const numCols = parseInt(document.body.getAttribute('data-cols')) || 3;
+    this.categories.forEach((cat, idx) => {
+      if (typeof cat.col !== 'number') cat.col = (idx % numCols) + 1;
+      if (typeof cat.order !== 'number') cat.order = idx;
+    });
+    this.categories.sort((a, b) => {
+      if (a.col !== b.col) return a.col - b.col;
+      return a.order - b.order;
+    });
+
     this.renderFolders();
     this.setupShortcutModal();
     this.setupBookmarkImport();
     this.setupRenameModal();
+    
+    const grid = document.getElementById('shortcutsGrid');
+    if (grid) {
+      grid.addEventListener('dragover', e => {
+        if (!e.target.closest('.folder-card')) e.preventDefault();
+      });
+      grid.addEventListener('drop', async e => {
+        if (e.target.closest('.folder-card')) return; // Zaten card iinde hllediliyor
+        e.preventDefault();
+        const draggedId = e.dataTransfer.getData('text/plain');
+        if (!draggedId) return;
+        
+        const rect = grid.getBoundingClientRect();
+        const numCols = parseInt(document.body.getAttribute('data-cols')) || 3;
+        const colWidth = rect.width / numCols;
+        const targetCol = Math.min(numCols, Math.max(1, Math.ceil((e.clientX - rect.left) / colWidth)));
+        
+        const cat = this.categories.find(c => c.id === draggedId);
+        if (cat) {
+          cat.col = targetCol;
+          cat.order = Date.now(); // En sona at
+          this.categories.sort((a, b) => {
+            if (a.col !== b.col) return a.col - b.col;
+            return a.order - b.order;
+          });
+          this.categories.forEach((c, i) => c.order = i);
+          await Storage.set(this.CAT_KEY, this.categories);
+          this.renderFolders();
+        }
+      });
+    }
     window.addEventListener('resize', () => {
       clearTimeout(this._resizeTimer);
       this._resizeTimer = setTimeout(() => this.applyMasonry(), 100);
@@ -75,6 +116,10 @@ export const Shortcuts = {
     card.className = 'folder-card' + (isCollapsed ? ' collapsed' : '');
     card.setAttribute('data-folder-id', cat.id);
     card.style.setProperty('--fc', cat.color || '#6366f1');
+    if (cat.id !== '__other__') {
+      const numCols = parseInt(document.body.getAttribute('data-cols')) || 3;
+      card.style.gridColumn = Math.min(cat.col || 1, numCols);
+    }
 
     // --- Srkle brak mant (Drag & Drop) ---
     if (cat.id !== '__other__') {
@@ -132,12 +177,19 @@ export const Shortcuts = {
         const offset = bounding.y + (bounding.height / 2);
         const insertAfter = (e.clientY - offset > 0);
 
-        const [movedCat] = this.categories.splice(draggedIdx, 1);
-        let adjustedDropIdx = this.categories.findIndex(c => c.id === cat.id);
-        const targetIdx = insertAfter ? adjustedDropIdx + 1 : adjustedDropIdx;
+        const draggedCat = this.categories[draggedIdx];
+        const dropCat = this.categories[dropIdx];
+
+        draggedCat.col = dropCat.col;
+        draggedCat.order = dropCat.order + (insertAfter ? 0.5 : -0.5);
+
+        this.categories.sort((a, b) => {
+          if (a.col !== b.col) return a.col - b.col;
+          return a.order - b.order;
+        });
         
-        this.categories.splice(targetIdx, 0, movedCat);
-        
+        this.categories.forEach((c, i) => c.order = i);
+
         await Storage.set(this.CAT_KEY, this.categories);
         this.renderFolders();
       });
