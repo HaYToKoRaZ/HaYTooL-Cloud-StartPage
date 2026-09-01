@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <link rel="alternate icon" type="image/png" href="../assets/icons/favicon.png">
   <link rel="stylesheet" href="../css/theme.css">
-  <link rel="stylesheet" href="../css/main.css?v=56feca09">
+  <link rel="stylesheet" href="../css/main.css?v=0508fed1">
 </head>
 <body class="bg-preset-aurora">
   <div id="bgLayer"></div>
@@ -18,31 +18,31 @@
       <div class="app-brand" title="HaYTooL Cloud StartPage">
         <img src="../assets/icons/favicon.svg" alt="HaYTooL">
       </div>
-      <div id="headerTimeWidget" class="header-widget glass-card" title="Ayarlar için sağa tıklayın">
+      <div id="headerTimeWidget" class="header-widget glass-card" data-i18n-title="header_settings_title">
           <div class="header-time">
             <span id="digitalTime">00:00</span><span id="digitalSeconds" class="header-seconds">00</span>
           </div>
         </div>
         <div id="headerDateWidget" class="header-widget glass-card">
-          <div id="dateText" class="header-date" style="text-align:center; font-size: 0.8rem; line-height: 1.2;">Yükleniyor...</div>
+          <div id="dateText" class="header-date" style="text-align:center; font-size: 0.8rem; line-height: 1.2;" data-i18n="weather_loading">Yükleniyor...</div>
         </div>
       <button id="weatherBadge" class="weather-badge glass-card" title="Hava Durumu – yenilemek için tıkla">
-        <span class="weather-icon">⏳</span><span>Yükleniyor...</span>
+        <span class="weather-icon">⏳</span><span data-i18n="weather_loading">Yükleniyor...</span>
       </button>
     </div>
     <div class="top-bar-center" id="topSearchBarContainer">
       <form id="topSearchForm" class="glass-card top-search-form">
-        <button type="submit" class="top-search-btn" title="Ara/Sor">&#128269;</button>
-        <input type="text" id="topSearchInput" placeholder="Web'de arayın veya AI'a sorun..." autocomplete="off">
-        <select id="topSearchEngineSelect" class="top-search-engine" title="Kaynak">
-          <optgroup label="Arama Motorları">
+        <button type="submit" class="top-search-btn" data-i18n-title="search_btn_title">&#128269;</button>
+        <input type="text" id="topSearchInput" data-i18n-placeholder="search_placeholder_ai" autocomplete="off">
+        <select id="topSearchEngineSelect" class="top-search-engine" data-i18n-title="search_engine_title">
+          <optgroup label="Arama Motorları" data-i18n-label="search_group_engines">
             <option value="google">Google</option>
             <option value="yandex">Yandex</option>
             <option value="bing">Bing</option>
             <option value="duckduckgo">DuckDuckGo</option>
             <option value="youtube">YouTube</option>
           </optgroup>
-          <optgroup label="Yapay Zeka (AI)">
+          <optgroup label="Yapay Zeka (AI)" data-i18n-label="search_group_ai">
             <option value="chatgpt">ChatGPT</option>
             <option value="perplexity">Perplexity</option>
             <option value="gemini">Google Gemini</option>
@@ -53,10 +53,14 @@
     </div>
     <div class="top-bar-right">
       <div id="greetingText" class="header-greeting"></div>
-      <button id="expandAllBtn" class="icon-btn" title="Tüm Klasörleri Genişlet">&#128194;</button>
-      <button id="collapseAllBtn" class="icon-btn" title="Tüm Klasörleri Daralt">&#128193;</button>
+      <select id="topLangSelect" class="form-select top-lang-select" style="padding:0.2rem 0.5rem; height: 32px; background: rgba(255,255,255,0.05); border:none; border-radius:8px; color:var(--text-main); font-size: 0.9rem; cursor:pointer;" title="Arayüz Dili / Language">
+        <option value="tr">&#127481;&#127479; TR</option>
+        <option value="en">&#127468;&#127463; EN</option>
+      </select>
+      <button id="expandAllBtn" class="icon-btn" data-i18n-title="expand_all_folders">&#128194;</button>
+      <button id="collapseAllBtn" class="icon-btn" data-i18n-title="collapse_all_folders">&#128193;</button>
       <button id="bookmarkImportBtn" class="bookmark-import-btn">
-        <span>⭐</span><span>Favori İçe Aktar</span>
+        <span>⭐</span><span data-i18n="import_bookmarks">Favori İçe Aktar</span>
       </button>
       <input type="file" id="bookmarkFileInput" accept=".html,.htm" style="display:none;">
       <button id="settingsBtn" class="icon-btn" title="Ayarlar">⚙️</button>
@@ -263,16 +267,16 @@
       </div>
 
       <div class="form-group">
-        <label>Klasör Sütun Sayısı</label>
+        <label data-i18n="settings_folder_cols">Klasör Sütun Sayısı</label>
         <div class="col-selector" id="colSelectorGroup">
           <select id="folderColumnsSelect" class="form-select">
-            <option value="1">1 Sütun</option>
-            <option value="2">2 Sütun</option>
-            <option value="3" selected>3 Sütun (Varsayılan)</option>
-            <option value="4">4 Sütun</option>
-            <option value="5">5 Sütun</option>
-          <option value="6">6 Sütun</option>
-          <option value="7">7 Sütun</option>
+            <option value="1" data-i18n="col_1">1 Sütun</option>
+            <option value="2" data-i18n="col_2">2 Sütun</option>
+            <option value="3" data-i18n="col_3">3 Sütun</option>
+            <option value="4" data-i18n="col_4">4 Sütun</option>
+            <option value="5" data-i18n="col_5">5 Sütun</option>
+          <option value="6" selected data-i18n="col_6">6 Sütun</option>
+          <option value="7" data-i18n="col_7">7 Sütun</option>
           <option value="8">8 Sütun</option>
           <option value="9">9 Sütun</option>
           <option value="10">10 Sütun</option>
@@ -282,12 +286,12 @@
       <div class="form-group" style="margin-top: 1rem;">
         <label>Klasör İçi İkon Boyutu</label>
         <select id="iconSizeSelect" class="form-select" style="margin-top:0.3rem;">
-          <option value="32">Çok Küçük (32px)</option>
-          <option value="48">Küçük (48px)</option>
-          <option value="64">Orta - Varsayılan (64px)</option>
+          <option value="32" data-i18n="size_32">Çok Küçük (32px)</option>
+          <option value="48" data-i18n="size_48">Küçük (48px)</option>
+          <option value="64" data-i18n="size_64">Orta - Varsayılan (64px)</option>
           <option value="80">Büyük (80px)</option>
           <option value="96">Çok Büyük (96px)</option>
-          <option value="128">Devasa (128px)</option>
+          <option value="128" data-i18n="size_128">Devasa (128px)</option>
         </select>
       </div>
 
@@ -305,7 +309,7 @@
           </label>
           <div class="weather-city-row" style="position:relative;">
           <input type="text" id="weatherCityInput" class="form-input" placeholder="İl, ilçe veya kasaba arayın..." autocomplete="off">
-          <button type="button" id="clearWeatherCityBtn" class="btn-secondary" style="flex-shrink:0;padding:0 0.75rem;" title="Sıfırla / GPS Kullan">✕</button>
+          <button type="button" id="clearWeatherCityBtn" class="btn-secondary" style="flex-shrink:0;padding:0 0.75rem;" data-i18n-title="settings_weather_city_reset">✕</button>
           
           <!-- Otomatik tamamlama listesi -->
           <div id="weatherCityDropdown" class="city-dropdown" style="display:none;"></div>

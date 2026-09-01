@@ -9,6 +9,18 @@ export const I18n = {
     this.currentLang = await Storage.get('lang', 'tr');
     await this.loadLocale(this.currentLang);
     this.translateDOM();
+    
+    // Bind top language selector
+    const topLang = document.getElementById('topLangSelect');
+    if (topLang) {
+      topLang.value = this.currentLang;
+      topLang.addEventListener('change', async (e) => {
+        await this.setLanguage(e.target.value);
+        // Also update the settings modal langSelect to match
+        const setLang = document.getElementById('langSelect');
+        if (setLang) setLang.value = e.target.value;
+      });
+    }
   },
   async loadLocale(lang) {
     try {

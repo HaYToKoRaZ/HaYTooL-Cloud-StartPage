@@ -6,7 +6,7 @@ export const Settings = {
     theme: 'dark', bgStyle: 'aurora', customBgUrl: '', 
     showClock: true, showSeconds: true, showGreeting: true, 
     showWeather: true, showFavBar: true, showQuote: true,
-    folderColumns: 6, folderIconSize: 32, showSearchBar: true, 
+    folderColumns: 6, folderIconSize: 32, showSearchBar: true, showTopLangSelector: true, 
     weatherCityObj: null // { name: "Kadıköy", country: "Türkiye", lat: 40.9, lon: 29.0 }
   },
   
@@ -35,6 +35,7 @@ export const Settings = {
     this.vis('greetingText',      this.config.showGreeting);
     this.vis('weatherBadge',      this.config.showWeather);
       this.vis('topSearchBarContainer', this.config.showSearchBar);
+      this.vis('topLangSelect', this.config.showTopLangSelector !== false);
     this.vis('favBarSection',     this.config.showFavBar);
     
 
@@ -93,6 +94,8 @@ export const Settings = {
         if (nWea !== config.showWeather) { config.showWeather = nWea; changed = true; }
         
         const nSearch = document.getElementById('toggleSearchBar').checked;
+          const nTopLang = document.getElementById('toggleTopLang').checked;
+          if (nTopLang !== config.showTopLangSelector) { config.showTopLangSelector = nTopLang; changed = true; }
           if (nSearch !== config.showSearchBar) { config.showSearchBar = nSearch; changed = true; }
           
           const nFav = document.getElementById('toggleFavBar').checked;
