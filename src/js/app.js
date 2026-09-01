@@ -27,6 +27,10 @@ class StartPageApp {
       });
       
       console.log('✨ HaYTooL Cloud StartPage v4.0.0 - hazır.');
+      
+      if (window.location.hash === '#settings') {
+        setTimeout(() => Settings.openModal(), 300);
+      }
     } catch (err) {
       console.error('[App] Başlatma hatası:', err);
     }

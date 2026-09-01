@@ -186,5 +186,12 @@
   "import_backup_error": "Error loading backup: ",
   "weather_searching": "⏳ Searching...",
   "weather_no_results": "No results found",
-  "weather_connection_error": "Connection error"
+  "weather_connection_error": "Connection error",
+  "ctx_view_icon": "Icon View",
+  "ctx_view_list": "List View",
+  "ctx_edit": "Edit",
+  "ctx_move_left": "Move Left",
+  "ctx_move_right": "Move Right",
+  "ctx_remove_fav": "Remove from Favorites",
+  "fav_edit_title": "Edit Favorite"
 }

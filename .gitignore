@@ -48,4 +48,4 @@ scratch/
 .env.local
 .env.*.local
 *.pem
-*.key
+*.keybackup_*

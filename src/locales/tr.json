@@ -187,5 +187,12 @@
   "import_backup_error": "Yedek yüklenirken hata oluştu: ",
   "weather_searching": "⏳ Aranıyor...",
   "weather_no_results": "Sonuç bulunamadı",
-  "weather_connection_error": "Bağlantı hatası"
+  "weather_connection_error": "Bağlantı hatası",
+  "ctx_view_icon": "İkon Görünümü",
+  "ctx_view_list": "Liste Görünümü",
+  "ctx_edit": "Düzenle",
+  "ctx_move_left": "Sola Taşı",
+  "ctx_move_right": "Sağa Taşı",
+  "ctx_remove_fav": "Favoriden Çıkar",
+  "fav_edit_title": "Favoriyi Düzenle"
 }

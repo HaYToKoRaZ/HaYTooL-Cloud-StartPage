@@ -176,8 +176,8 @@ export const Favorites = {
 
     const check = v => this.view === v ? '✓ ' : '　';
     const items = [
-      { label: check('icon') + '⊞ İkon Görünümü', action: () => this._setView('icon') },
-      { label: check('list') + '📋 Liste Görünümü', action: () => this._setView('list') }
+      { label: check('icon') + '⊞ ' + I18n.t('ctx_view_icon', 'İkon Görünümü'), action: () => this._setView('icon') },
+      { label: check('list') + '📋 ' + I18n.t('ctx_view_list', 'Liste Görünümü'), action: () => this._setView('list') }
     ];
 
     items.forEach(it => {
@@ -202,10 +202,10 @@ export const Favorites = {
     menu.style.display = 'block';
 
     const items = [
-      { label: '✏️ Düzenle', action: () => this._openEditModal(fav, idx) },
-      { label: '⬅ Sola Taşı', action: () => this._moveItem(idx, -1) },
-      { label: '➡ Sağa Taşı', action: () => this._moveItem(idx, +1) },
-      { label: '🗑 Favoriden Çıkar', action: () => this._remove(idx), danger: true },
+      { label: '✏️ ' + I18n.t('ctx_edit', 'Düzenle'), action: () => this._openEditModal(fav, idx) },
+      { label: '⬅ ' + I18n.t('ctx_move_left', 'Sola Taşı'), action: () => this._moveItem(idx, -1) },
+      { label: '➡ ' + I18n.t('ctx_move_right', 'Sağa Taşı'), action: () => this._moveItem(idx, +1) },
+      { label: '🗑 ' + I18n.t('ctx_remove_fav', 'Favoriden Çıkar'), action: () => this._remove(idx), danger: true },
     ];
 
     items.forEach(it => {
@@ -227,7 +227,7 @@ export const Favorites = {
   _openEditModal(fav, idx) {
     const m = document.getElementById('favAddModal');
     m.setAttribute('data-edit-idx', idx);
-    document.getElementById('favModalTitle').textContent = 'Favoriyi Düzenle';
+    document.getElementById('favModalTitle').textContent = I18n.t('fav_edit_title', 'Favoriyi Düzenle');
     document.getElementById('favTitleInput').value = fav.title;
     document.getElementById('favUrlInput').value = fav.url;
     document.getElementById('favIconInput').value = fav.icon || '';
