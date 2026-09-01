@@ -1,0 +1,32 @@
+name: Build Extension ZIP
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create ZIP file
+        run: |
+          # Exclude git, github files, and markdown docs from the final store zip
+          zip -r HaYTooL-StartPage.zip . -x "*.git*" -x ".github/*" -x "*.md" -x "LICENSE"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HaYTooL-StartPage-Extension
+          path: HaYTooL-StartPage.zip
+          retention-days: 14
