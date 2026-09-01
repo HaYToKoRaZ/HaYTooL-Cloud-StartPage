@@ -9,12 +9,13 @@
 **Modern, ultra-fast, aesthetic, modular, and privacy-focused Browser StartPage & New Tab Extension.**
 
 [![Status](https://img.shields.io/badge/Status-Active%20%26%20Maintained-brightgreen?style=for-the-badge&logo=git)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage)
-[![Platform](https://img.shields.io/badge/Platform-Chrome%20%7C%20Brave%20%7C%20Edge%20%7C%20Opera-blue?style=for-the-badge&logo=googlechrome)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage)
+[![Platform](https://img.shields.io/badge/Platform-Chrome%20%7C%20Brave%20%7C%20Edge%20%7C%20Opera%20%7C%20Helium-blue?style=for-the-badge&logo=googlechrome)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage)
 [![Manifest](https://img.shields.io/badge/Manifest-MV3-orange?style=for-the-badge&logo=google-chrome)](https://developer.chrome.com/docs/extensions/mv3/intro/)
 [![Language](https://img.shields.io/badge/Language-JavaScript%20ESNext-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![UI](https://img.shields.io/badge/UI-Vanilla%20CSS%20%7C%20Glassmorphism-264de4?style=for-the-badge&logo=css3&logoColor=white)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage)
 [![Database](https://img.shields.io/badge/Storage-chrome.storage.local-4285F4?style=for-the-badge&logo=google)](https://developer.chrome.com/docs/extensions/reference/storage/)
 [![Version](https://img.shields.io/badge/Version-v4.0.0-informational?style=for-the-badge&logo=semver)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases)
+[![Downloads](https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Cloud-StartPage/total?style=for-the-badge&logo=github&color=blueviolet)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases)
 [![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)](LICENSE)
 
 <br/>
@@ -31,15 +32,9 @@
 ### 🌟 Overview
 **HaYTooL Cloud StartPage** is a lightning-fast, ultra-lightweight, and fully customizable browser start page and new tab extension built with **Manifest V3**. Designed with clean glassmorphism aesthetics, modular widgets, live weather forecasts, smart search integration, and robust bookmarks & speed dial management.
 
-### 📸 Screenshots
+### 📸 Screenshot Preview
 <div align="center">
-  <h4>English Interface Preview</h4>
-  <img src="src/assets/screenshots/eng.png" alt="English UI Preview" width="90%">
-  
-  <br/><br/>
-  
-  <h4>Turkish Interface Preview</h4>
-  <img src="src/assets/screenshots/tr.png" alt="Turkish UI Preview" width="90%">
+  <img src="src/assets/screenshots/eng.png" alt="HaYTooL Cloud StartPage English UI" width="95%">
 </div>
 
 ---
@@ -62,18 +57,38 @@
 
 ---
 
-### 🚀 Installation & Usage
+### 🌐 Supported Browsers & Icons
+
+<div align="center">
+
+| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="32" /><br/>**Chrome** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="32" /><br/>**Brave** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="32" /><br/>**Edge** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="32" /><br/>**Opera** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chromium/chromium_48x48.png" width="32" /><br/>**Helium** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="32" /><br/>**Vivaldi** |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| `chrome://extensions` | `brave://extensions` | `edge://extensions` | `opera://extensions` | `helium://extensions` | `vivaldi://extensions` |
+
+</div>
+
+---
+
+### 🚀 Installation & Usage Guide
 
 1. **Download / Clone** the repository:
    ```bash
    git clone https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage.git
    ```
-2. Open your Chromium-based browser (Google Chrome, Brave, Microsoft Edge, Opera).
-3. Navigate to `chrome://extensions/` (or `edge://extensions/`, `brave://extensions/`).
-4. Enable **Developer mode** toggle in the top-right corner.
-5. Click **Load unpacked** (*Paketlenmemiş öge yükle*).
-6. Select the cloned `HaYTooL Cloud StartPage` directory.
-7. Open a new tab and enjoy! 🎉
+   *Alternatively, download the `.zip` from the [Latest Release](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases) and extract it.*
+
+2. Open your browser and navigate to the Extensions management page:
+   - 🌐 **Google Chrome:** `chrome://extensions/`
+   - 🦁 **Brave Browser:** `brave://extensions/`
+   - 🎈 **Helium Browser:** `helium://extensions/` or `chrome://extensions/`
+   - 🌊 **Microsoft Edge:** `edge://extensions/`
+   - 🎭 **Opera / Opera GX:** `opera://extensions/`
+   - 🔴 **Vivaldi:** `vivaldi://extensions/`
+
+3. Turn ON the **Developer mode** toggle in the top-right corner.
+4. Click **Load unpacked** (*Paketlenmemiş öge yükle*).
+5. Select the `HaYTooL Cloud StartPage` folder.
+6. Open a new tab and enjoy your new homepage! 🎉
 
 ---
 
@@ -100,15 +115,9 @@
 ### 🌟 Genel Bakış
 **HaYTooL Cloud StartPage**, modern **Manifest V3** mimarisiyle geliştirilmiş; ultra hızlı, hafif, tamamen kişiselleştirilebilir ve gizlilik odaklı bir yeni sekme (New Tab / StartPage) tarayıcı eklentisidir. Buzlu cam (glassmorphism) efektleri, canlı hava durumu göstergesi, zengin arama motorları, gelişmiş klasör ve favori yönetimi ile tarayıcınıza şık bir başlangıç sayfası deneyimi sunar.
 
-### 📸 Ekran Görüntüleri
+### 📸 Ekran Görüntüsü Önizlemesi
 <div align="center">
-  <h4>Türkçe Arayüz Önizlemesi</h4>
-  <img src="src/assets/screenshots/tr.png" alt="Türkçe Arayüz Önizlemesi" width="90%">
-
-  <br/><br/>
-
-  <h4>İngilizce Arayüz Önizlemesi</h4>
-  <img src="src/assets/screenshots/eng.png" alt="İngilizce Arayüz Önizlemesi" width="90%">
+  <img src="src/assets/screenshots/tr.png" alt="HaYTooL Cloud StartPage Türkçe Arayüzü" width="95%">
 </div>
 
 ---
@@ -131,18 +140,38 @@
 
 ---
 
+### 🌐 Desteklenen Tarayıcılar ve Simgeleri
+
+<div align="center">
+
+| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="32" /><br/>**Chrome** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="32" /><br/>**Brave** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="32" /><br/>**Edge** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="32" /><br/>**Opera** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chromium/chromium_48x48.png" width="32" /><br/>**Helium** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="32" /><br/>**Vivaldi** |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| `chrome://extensions` | `brave://extensions` | `edge://extensions` | `opera://extensions` | `helium://extensions` | `vivaldi://extensions` |
+
+</div>
+
+---
+
 ### 🚀 Kurulum ve Geliştirici Modunda Çalıştırma
 
 1. Projeyi bilgisayarınıza indirin veya klonlayın:
    ```bash
    git clone https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage.git
    ```
-2. Chromium tabanlı tarayıcınızı açın (Google Chrome, Brave, Microsoft Edge, Opera).
-3. Adres çubuğuna `chrome://extensions/` (Edge için `edge://extensions/`, Brave için `brave://extensions/`) yazın.
-4. Sağ üst köşedeki **Geliştirici Modu**'nu (Developer mode) aktif hale getirin.
-5. Sol üstteki **Paketlenmemiş öge yükle** (Load unpacked) butonuna tıklayın.
-6. Klonladığınız `HaYTooL Cloud StartPage` klasörünü seçin.
-7. Yeni bir sekme açarak kullanmaya başlayın! 🎉
+   *Veya [Son Sürüm (Releases)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases) sayfasından `.zip` indirip bir klasöre çıkartın.*
+
+2. Kullandığınız tarayıcının Eklentiler sayfasına gidin:
+   - 🌐 **Google Chrome:** `chrome://extensions/`
+   - 🦁 **Brave Browser:** `brave://extensions/`
+   - 🎈 **Helium Browser:** `helium://extensions/` veya `chrome://extensions/`
+   - 🌊 **Microsoft Edge:** `edge://extensions/`
+   - 🎭 **Opera / Opera GX:** `opera://extensions/`
+   - 🔴 **Vivaldi:** `vivaldi://extensions/`
+
+3. Sağ üst köşedeki **Geliştirici Modu**'nu (Developer mode) açık konuma getirin.
+4. Sol üstteki **Paketlenmemiş öge yükle** (Load unpacked) butonuna tıklayın.
+5. `HaYTooL Cloud StartPage` klasörünü seçin.
+6. Yeni bir sekme açarak başlangıç sayfanızın keyfini çıkarın! 🎉
 
 ---
 
