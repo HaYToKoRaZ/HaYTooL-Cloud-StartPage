@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <link rel="alternate icon" type="image/png" href="../assets/icons/favicon.png">
   <link rel="stylesheet" href="../css/theme.css">
-  <link rel="stylesheet" href="../css/main.css?v=827fadeb">
+  <link rel="stylesheet" href="../css/main.css?v=56feca09">
 </head>
 <body class="bg-preset-aurora">
   <div id="bgLayer"></div>
@@ -292,11 +292,18 @@
       </div>
 
       <div class="settings-section-title">🌤️ Hava Durumu</div>
-      <div class="form-group">
-        <label>Konum / Şehir
-          <span style="color:var(--text-dim);font-weight:400;font-size:0.8rem;"> (Boş = GPS otomatik)</span>
-        </label>
-        <div class="weather-city-row" style="position:relative;">
+      <div class="form-group" style="display:flex; justify-content:space-between; align-items:center;">
+          <label>Arama Çubuğunu Göster</label>
+          <label class="switch">
+            <input type="checkbox" id="toggleSearchBar" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label>Konum / Şehir
+            <span style="color:var(--text-dim);font-weight:400;font-size:0.8rem;"> (Boş = GPS otomatik)</span>
+          </label>
+          <div class="weather-city-row" style="position:relative;">
           <input type="text" id="weatherCityInput" class="form-input" placeholder="İl, ilçe veya kasaba arayın..." autocomplete="off">
           <button type="button" id="clearWeatherCityBtn" class="btn-secondary" style="flex-shrink:0;padding:0 0.75rem;" title="Sıfırla / GPS Kullan">✕</button>
           

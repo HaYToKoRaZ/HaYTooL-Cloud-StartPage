@@ -6,7 +6,7 @@ export const Settings = {
     theme: 'dark', bgStyle: 'aurora', customBgUrl: '', 
     showClock: true, showSeconds: true, showGreeting: true, 
     showWeather: true, showFavBar: true, showQuote: true,
-    folderColumns: 5, 
+    folderColumns: 5, folderIconSize: 32, showSearchBar: true, 
     weatherCityObj: null // { name: "Kadıköy", country: "Türkiye", lat: 40.9, lon: 29.0 }
   },
   
