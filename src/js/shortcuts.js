@@ -258,6 +258,7 @@ export const Shortcuts = {
       { label: '+ Link Ekle', action: () => this.openAddLinkModal(cat.id) },
       { label: '✏️ Yeniden Adlandır', action: () => this._openRenameModal(cat) },
       { label: '🔤 Linkleri A-Z Sırala', action: () => this._sortFolderItems(cat.id) },
+      { label: '🔄 İkonları Toplu Güncelle', action: () => this._bulkUpdateFavicons(cat.id) },
       { separator: true },
       { label: '🗑 Klasörü Sil', danger: true, action: async () => {
           if (!confirm('"' + cat.name + '" klasörü ve ' + count + ' linki silinecek. Emin misiniz?')) return;
@@ -298,6 +299,26 @@ export const Shortcuts = {
   _closeMenu() {
     const m = document.getElementById('contextMenu');
     if (m) m.style.display = 'none';
+  },
+
+  async _bulkUpdateFavicons(catId) {
+    if (!confirm('Bu klasördeki tüm linklerin ikonları sitelerin güncel ikonlarıyla değiştirilecek. Emin misiniz?')) return;
+    
+    let updated = 0;
+    this.items = this.items.map(item => {
+      if (item.categoryId === catId) {
+        try {
+          const domain = new URL(item.url).hostname;
+          item.icon = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
+          updated++;
+        } catch(e) {}
+      }
+      return item;
+    });
+    
+    await Storage.set(this.ITEMS_KEY, this.items);
+    this.renderFolders();
+    this._toast('✅ ' + updated + ' linkin ikonu güncellendi!');
   },
 
   async _sortFolderItems(catId) {
