@@ -14,12 +14,12 @@ export const Favorites = {
     if (isFirstRun) {
       const genId = () => Date.now().toString() + Math.random().toString(36).substr(2, 5);
       const defaultFavs = [
-        { id: genId(), title: 'YouTube', url: 'https://www.youtube.com' },
-        { id: genId(), title: 'ChatGPT', url: 'https://chat.openai.com' },
-        { id: genId(), title: 'GitHub', url: 'https://github.com' },
-        { id: genId(), title: 'Gmail', url: 'https://mail.google.com' },
-        { id: genId(), title: 'Spotify', url: 'https://open.spotify.com' },
-        { id: genId(), title: 'Google', url: 'https://www.google.com' }
+        { id: genId(), title: 'Google', url: 'https://www.google.com' },
+        { id: genId(), title: 'WhatsApp', url: 'https://web.whatsapp.com' },
+        { id: genId(), title: 'Wikipedia', url: 'https://www.wikipedia.org' },
+        { id: genId(), title: 'Reddit', url: 'https://www.reddit.com' },
+        { id: genId(), title: 'Pinterest', url: 'https://www.pinterest.com' },
+        { id: genId(), title: 'Outlook', url: 'https://outlook.live.com' }
       ];
       await Storage.set(this.FAV_KEY, defaultFavs);
       await Storage.set('is_fav_first_run_v3', false);
