@@ -1442,6 +1442,7 @@ body {
 .fav-bar {
   display: flex;
   align-items: flex-start;
+  justify-content: center;
   gap: 0.2rem;
   overflow-x: auto;
   scrollbar-width: none;
@@ -1889,7 +1890,7 @@ body[data-cols="10"] .folders-grid { grid-template-columns: repeat(10, 1fr) !imp
 .fav-bar-container.view-shortlist {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 0.5rem;
 }
 .fav-bar-container.view-list .fav-item,
