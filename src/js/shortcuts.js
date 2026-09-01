@@ -27,6 +27,10 @@ export const Shortcuts = {
     this.setupShortcutModal();
     this.setupBookmarkImport();
     this.setupRenameModal();
+    window.addEventListener('resize', () => {
+      clearTimeout(this._resizeTimer);
+      this._resizeTimer = setTimeout(() => this.applyMasonry(), 100);
+    });
   },
 
   renderFolders() {
@@ -60,6 +64,7 @@ export const Shortcuts = {
     addCard.innerHTML = '<button class="folder-add-btn" id="globalAddLinkBtn"><span style="font-size:1.5rem">+</span><span>Link Ekle</span></button>';
     grid.appendChild(addCard);
     document.getElementById('globalAddLinkBtn')?.addEventListener('click', () => this.openAddLinkModal());
+    this.applyMasonry();
   },
 
   _makeFolderCard(cat, items) {
@@ -180,6 +185,7 @@ export const Shortcuts = {
       if (card.classList.contains('collapsed')) this.collapsedFolders.add(cat.id);
       else this.collapsedFolders.delete(cat.id);
       await Storage.set(this.COLLAPSED_KEY, [...this.collapsedFolders]);
+      this.applyMasonry();
     });
 
     /* --- Body --- */
@@ -631,6 +637,22 @@ export const Shortcuts = {
     caBtn.addEventListener('click', doCancel);
     if (caHdr) caHdr.addEventListener('click', doCancel);
     modal.addEventListener('click', e => { if (e.target === modal) doCancel(); }, { once: true });
+  },
+
+  applyMasonry() {
+    const grid = document.getElementById('shortcutsGrid');
+    if (!grid) return;
+    const cards = grid.querySelectorAll('.folder-card');
+    cards.forEach(card => card.style.gridRowEnd = 'auto');
+    
+    // Give browser a moment to paint the natural heights
+    setTimeout(() => {
+      cards.forEach(card => {
+        const height = card.getBoundingClientRect().height;
+        const rowSpan = Math.ceil((height + 15) / 5); // 15px is the gap we want
+        card.style.gridRowEnd = 'span ' + rowSpan;
+      });
+    }, 10);
   },
 
   _emptyState() {

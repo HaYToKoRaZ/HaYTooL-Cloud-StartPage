@@ -38,6 +38,7 @@ export const Settings = {
     // Folder cols CSS Variable ile çözüldü
     document.body.setAttribute('data-cols', this.config.folderColumns || 3);
     document.documentElement.style.setProperty('--folder-icon-size', (this.config.folderIconSize || 64) + 'px'); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', this.config.folderColumns || 3);
+    window.dispatchEvent(new Event('resize'));
   },
 
   vis(id, show) { const el = document.getElementById(id); if (el) el.style.display = show ? '' : 'none'; },

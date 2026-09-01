@@ -1204,8 +1204,8 @@ body {
   backdrop-filter: var(--glass-blur);
   display: inline-block;
   width: 100%;
-  break-inside: avoid;
-  margin-bottom: 0.65rem;
+  
+  margin-bottom: 0;
   box-sizing: border-box;
 }
 .folder-header {
@@ -1535,9 +1535,12 @@ body {
 }
 
 .folders-grid {
-  display: block;
+  display: grid !important;
+  grid-auto-rows: 5px;
   column-gap: 0.65rem;
+  row-gap: 0; /* Managed by JS row span */
   width: 100%;
+  align-items: start;
 }
 
 /* ---- Folder Card ---- */
@@ -1550,8 +1553,8 @@ body {
   backdrop-filter: var(--glass-blur);
   display: inline-block;
   width: 100%;
-  break-inside: avoid;
-  margin-bottom: 0.65rem;
+  
+  margin-bottom: 0;
   box-sizing: border-box;
 }
 .folder-header {
@@ -1780,45 +1783,45 @@ body {
 .city-dropdown-item small { color: var(--text-dim); display: block; font-size: 0.75rem; margin-top: 0.1rem; }
 .city-dropdown-msg { padding: 0.6rem; font-size: 0.8rem; color: var(--text-dim); text-align: center; }
 /* BULLETPROOF GRID SÜTUNLARI */
-.folders-grid[data-cols="1"] { column-count: 1; }
-.folders-grid[data-cols="2"] { column-count: 2; }
-.folders-grid[data-cols="3"] { column-count: 3; }
-.folders-grid[data-cols="4"] { column-count: 4; }
-.folders-grid[data-cols="5"] { column-count: 5; }
-.folders-grid[data-cols="6"] { column-count: 6; }
-.folders-grid[data-cols="7"] { column-count: 7; }
-.folders-grid[data-cols="8"] { column-count: 8; }
-.folders-grid[data-cols="9"] { column-count: 9; }
-.folders-grid[data-cols="10"] { column-count: 10; }
+.folders-grid[data-cols="1"] { grid-template-columns: 1fr; }
+.folders-grid[data-cols="2"] { grid-template-columns: repeat(2, 1fr); }
+.folders-grid[data-cols="3"] { grid-template-columns: repeat(3, 1fr); }
+.folders-grid[data-cols="4"] { grid-template-columns: repeat(4, 1fr); }
+.folders-grid[data-cols="5"] { grid-template-columns: repeat(5, 1fr); }
+.folders-grid[data-cols="6"] { grid-template-columns: repeat(6, 1fr); }
+.folders-grid[data-cols="7"] { grid-template-columns: repeat(7, 1fr); }
+.folders-grid[data-cols="8"] { grid-template-columns: repeat(8, 1fr); }
+.folders-grid[data-cols="9"] { grid-template-columns: repeat(9, 1fr); }
+.folders-grid[data-cols="10"] { grid-template-columns: repeat(10, 1fr); }
 /* Fallback */
-.folders-grid:not([data-cols]) { column-count: 3; }
+.folders-grid:not([data-cols]) { grid-template-columns: repeat(3, 1fr); }
 
 @media (max-width: 1000px) {
   .folders-grid[data-cols="3"],
   .folders-grid[data-cols="4"],
   .folders-grid[data-cols="5"],
   .folders-grid:not([data-cols]) {
-    column-count: 2 !important;
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 @media (max-width: 600px) {
   .folders-grid[data-cols],
   .folders-grid:not([data-cols]) {
-    column-count: 1 !important;
+    grid-template-columns: 1fr !important;
   }
 }
 
 /* BODY LEVEL FALLBACK SÜTUNLARI */
-body[data-cols="1"] .folders-grid { column-count: 1 !important; }
-body[data-cols="2"] .folders-grid { column-count: 2 !important; }
-body[data-cols="3"] .folders-grid { column-count: 3 !important; }
-body[data-cols="4"] .folders-grid { column-count: 4 !important; }
-body[data-cols="5"] .folders-grid { column-count: 5 !important; }
-body[data-cols="6"] .folders-grid { column-count: 6 !important; }
-body[data-cols="7"] .folders-grid { column-count: 7 !important; }
-body[data-cols="8"] .folders-grid { column-count: 8 !important; }
-body[data-cols="9"] .folders-grid { column-count: 9 !important; }
-body[data-cols="10"] .folders-grid { column-count: 10 !important; }
+body[data-cols="1"] .folders-grid { grid-template-columns: 1fr !important; }
+body[data-cols="2"] .folders-grid { grid-template-columns: repeat(2, 1fr) !important; }
+body[data-cols="3"] .folders-grid { grid-template-columns: repeat(3, 1fr) !important; }
+body[data-cols="4"] .folders-grid { grid-template-columns: repeat(4, 1fr) !important; }
+body[data-cols="5"] .folders-grid { grid-template-columns: repeat(5, 1fr) !important; }
+body[data-cols="6"] .folders-grid { grid-template-columns: repeat(6, 1fr) !important; }
+body[data-cols="7"] .folders-grid { grid-template-columns: repeat(7, 1fr) !important; }
+body[data-cols="8"] .folders-grid { grid-template-columns: repeat(8, 1fr) !important; }
+body[data-cols="9"] .folders-grid { grid-template-columns: repeat(9, 1fr) !important; }
+body[data-cols="10"] .folders-grid { grid-template-columns: repeat(10, 1fr) !important; }
 
 
 
