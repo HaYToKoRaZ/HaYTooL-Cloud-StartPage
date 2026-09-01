@@ -99,23 +99,23 @@ export const Shortcuts = {
   async _seedDefaults() {
     const genId = () => Date.now().toString() + Math.random().toString(36).substr(2, 5);
     const cats = [
-      { id: 'cat_1', name: 'Sosyal Medya', icon: '📱', col: 1, order: 0 },
-      { id: 'cat_2', name: 'Sohbet', icon: '💬', col: 1, order: 1 },
+      { id: 'cat_1', name: 'Social Media', icon: '📱', col: 1, order: 0 },
+      { id: 'cat_2', name: 'Chat', icon: '💬', col: 1, order: 1 },
       
-      { id: 'cat_3', name: 'Haberler', icon: '📰', col: 2, order: 0 },
-      { id: 'cat_4', name: 'Spor', icon: '⚽', col: 2, order: 1 },
+      { id: 'cat_3', name: 'News', icon: '📰', col: 2, order: 0 },
+      { id: 'cat_4', name: 'Sports', icon: '⚽', col: 2, order: 1 },
       
-      { id: 'cat_5', name: 'Eğlence', icon: '🎬', col: 3, order: 0 },
-      { id: 'cat_6', name: 'Müzik', icon: '🎵', col: 3, order: 1 },
+      { id: 'cat_5', name: 'Entertainment', icon: '🎬', col: 3, order: 0 },
+      { id: 'cat_6', name: 'Music', icon: '🎵', col: 3, order: 1 },
       
-      { id: 'cat_7', name: 'Üretkenlik', icon: '💻', col: 4, order: 0 },
-      { id: 'cat_8', name: 'Eğitim', icon: '📚', col: 4, order: 1 },
+      { id: 'cat_7', name: 'Productivity', icon: '💻', col: 4, order: 0 },
+      { id: 'cat_8', name: 'Education', icon: '📚', col: 4, order: 1 },
       
-      { id: 'cat_9', name: 'Alışveriş', icon: '🛒', col: 5, order: 0 },
-      { id: 'cat_10', name: 'Finans', icon: '💰', col: 5, order: 1 },
+      { id: 'cat_9', name: 'Shopping', icon: '🛒', col: 5, order: 0 },
+      { id: 'cat_10', name: 'Finance', icon: '💰', col: 5, order: 1 },
       
-      { id: 'cat_11', name: 'Geliştirici', icon: '👨‍💻', col: 6, order: 0 },
-      { id: 'cat_12', name: 'Teknoloji', icon: '🚀', col: 6, order: 1 }
+      { id: 'cat_11', name: 'Developer', icon: '👨‍💻', col: 6, order: 0 },
+      { id: 'cat_12', name: 'Technology', icon: '🚀', col: 6, order: 1 }
     ];
     
     const items = [
