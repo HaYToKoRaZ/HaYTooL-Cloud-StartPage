@@ -1909,3 +1909,35 @@ body[data-cols="10"] .folders-grid { grid-template-columns: repeat(10, 1fr) !imp
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* --- DÜZENLE BUTONLARI --- */
+.link-edit-btn {
+  position: absolute;
+  top: -6px;
+  right: 20px; /* Çarpı butonunun solunda */
+  background: var(--surface-glass-hover);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all var(--transition-fast);
+  z-index: 10;
+}
+.link-item:hover .link-edit-btn { opacity: 1; transform: scale(1); }
+.link-edit-btn:hover { background: var(--fc, #3b82f6); transform: scale(1.15) !important; }
+
+.link-edit-list {
+  top: 50%;
+  right: 40px; /* Çarpının solu */
+  transform: translateY(-50%) scale(0.8);
+}
+.link-item:hover .link-edit-list { transform: translateY(-50%) scale(1); }
+.link-edit-list:hover { transform: translateY(-50%) scale(1.15) !important; }

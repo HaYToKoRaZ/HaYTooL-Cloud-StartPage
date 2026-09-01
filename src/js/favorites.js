@@ -49,7 +49,13 @@ export const Favorites = {
     addBtn.className = 'fav-add-btn';
     addBtn.title = 'Favori Ekle';
     addBtn.innerHTML = this.view === 'icon' ? '<span class="fav-add-icon">+</span><span class="fav-item-label">Ekle</span>' : '<span class="fav-add-icon">+</span><span>Ekle</span>';
-    addBtn.addEventListener('click', () => document.getElementById('favAddModal').classList.add('active'));
+    addBtn.addEventListener('click', () => { 
+      const m = document.getElementById('favAddModal'); 
+      m.removeAttribute('data-edit-idx'); 
+      document.getElementById('favAddForm').reset();
+      document.getElementById('favModalTitle').textContent = 'Favori Ekle';
+      m.classList.add('active'); 
+    });
     bar.appendChild(addBtn);
 
     // Ayarlar butonu
@@ -145,6 +151,7 @@ export const Favorites = {
     menu.style.display = 'block';
 
     const items = [
+      { label: '✏️ Düzenle', action: () => this._openEditModal(fav, idx) },
       { label: '⬅ Sola Taşı', action: () => this._moveItem(idx, -1) },
       { label: '➡ Sağa Taşı', action: () => this._moveItem(idx, +1) },
       { label: '🗑 Favoriden Çıkar', action: () => this._remove(idx), danger: true },
@@ -164,6 +171,17 @@ export const Favorites = {
     menu.style.top  = y + 'px';
 
     setTimeout(() => document.addEventListener('click', this._closeMenu.bind(this), { once: true }), 50);
+  },
+
+  _openEditModal(fav, idx) {
+    const m = document.getElementById('favAddModal');
+    m.setAttribute('data-edit-idx', idx);
+    document.getElementById('favModalTitle').textContent = 'Favoriyi Düzenle';
+    document.getElementById('favTitleInput').value = fav.title;
+    document.getElementById('favUrlInput').value = fav.url;
+    document.getElementById('favIconInput').value = fav.icon || '';
+    m.classList.add('active');
+    setTimeout(() => document.getElementById('favTitleInput')?.focus(), 100);
   },
 
   async _setView(v) {
@@ -208,11 +226,17 @@ export const Favorites = {
         let url     = document.getElementById('favUrlInput').value.trim();
         const icon  = document.getElementById('favIconInput').value.trim();
         if (!url.startsWith('http')) url = 'https://' + url;
-        this.items.push({ id: Date.now().toString(), title, url, icon });
+        const editIdx = modal.getAttribute('data-edit-idx');
+        if (editIdx !== null) {
+          this.items[editIdx] = { ...this.items[editIdx], title, url, icon };
+        } else {
+          this.items.push({ id: Date.now().toString(), title, url, icon });
+        }
         await Storage.set(this.FAV_KEY, this.items);
         this.render();
         modal.classList.remove('active');
         form.reset();
+        modal.removeAttribute('data-edit-idx');
       });
     }
   }

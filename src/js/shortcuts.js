@@ -181,7 +181,11 @@ export const Shortcuts = {
 
       a.appendChild(icon);
       a.appendChild(lbl);
+      const editBtn = document.createElement('button');
+      editBtn.className = 'link-edit-btn'; editBtn.innerHTML = '✏️'; editBtn.title = 'Düzenle';
+      editBtn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); this.openEditLinkModal(item); });
       wrap.appendChild(a);
+      wrap.appendChild(editBtn);
       wrap.appendChild(del);
 
     } else {
@@ -211,7 +215,11 @@ export const Shortcuts = {
       a.appendChild(icon);
       a.appendChild(titleSpan);
       a.appendChild(urlSpan);
+      const editBtn = document.createElement('button');
+      editBtn.className = 'link-edit-btn link-edit-list'; editBtn.innerHTML = '✏️'; editBtn.title = 'Düzenle';
+      editBtn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); this.openEditLinkModal(item); });
       wrap.appendChild(a);
+      wrap.appendChild(editBtn);
       wrap.appendChild(del);
     }
     return wrap;
@@ -322,11 +330,18 @@ export const Shortcuts = {
         const catId  = document.getElementById('shortcutTargetCatId').value || (this.categories[0]?.id || '');
         if (!url.startsWith('http')) url = 'https://' + url;
         if (!title || !url) return;
-        this.items.push({ id: Date.now().toString(), title, url, icon, categoryId: catId });
+        const editId = modal.getAttribute('data-edit-id');
+        if (editId) {
+          const item = this.items.find(i => i.id === editId);
+          if (item) { item.title = title; item.url = url; item.icon = icon; item.categoryId = catId; }
+        } else {
+          this.items.push({ id: Date.now().toString(), title, url, icon, categoryId: catId });
+        }
         await Storage.set(this.ITEMS_KEY, this.items);
         this.renderFolders();
         modal.classList.remove('active');
         form.reset();
+        modal.removeAttribute('data-edit-id');
       });
     }
   },
@@ -338,6 +353,20 @@ export const Shortcuts = {
     const cat     = catId ? this.categories.find(c => c.id === catId) : null;
     if (title)    title.textContent = cat ? '"' + cat.name + '" klasörüne Link Ekle' : 'Link Ekle';
     if (catInput) catInput.value = catId || (this.categories[0]?.id || '');
+    modal.removeAttribute('data-edit-id');
+    document.getElementById('shortcutForm').reset();
+    modal.classList.add('active');
+    setTimeout(() => document.getElementById('shortcutTitleInput')?.focus(), 100);
+  },
+
+  openEditLinkModal(item) {
+    const modal = document.getElementById('shortcutModal');
+    document.getElementById('shortcutModalTitle').textContent = 'Bağlantıyı Düzenle';
+    document.getElementById('shortcutTitleInput').value = item.title;
+    document.getElementById('shortcutUrlInput').value = item.url;
+    document.getElementById('shortcutIconInput').value = item.icon || '';
+    document.getElementById('shortcutTargetCatId').value = item.categoryId;
+    modal.setAttribute('data-edit-id', item.id);
     modal.classList.add('active');
     setTimeout(() => document.getElementById('shortcutTitleInput')?.focus(), 100);
   },
@@ -371,6 +400,8 @@ export const Shortcuts = {
     modal.setAttribute('data-cat-id', cat.id);
     document.getElementById('renameInput').value    = cat.name;
     document.getElementById('renameIconInput').value = cat.icon || '';
+    modal.removeAttribute('data-edit-id');
+    document.getElementById('shortcutForm').reset();
     modal.classList.add('active');
     setTimeout(() => document.getElementById('renameInput')?.focus(), 100);
   },
@@ -451,6 +482,8 @@ export const Shortcuts = {
       list.appendChild(row);
     });
 
+    modal.removeAttribute('data-edit-id');
+    document.getElementById('shortcutForm').reset();
     modal.classList.add('active');
     const cleanup = () => { cfBtn.removeEventListener('click', doImport); caBtn.removeEventListener('click', doCancel); if (caHdr) caHdr.removeEventListener('click', doCancel); };
     const doCancel = () => { cleanup(); modal.classList.remove('active'); };
