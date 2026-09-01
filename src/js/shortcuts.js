@@ -8,6 +8,7 @@ export const Shortcuts = {
   ITEMS_KEY:     'shortcuts_v2',
   COLLAPSED_KEY: 'collapsed_folders',
   VIEW_KEY:      'folder_views',      // { [catId]: 'icon' | 'list' | 'shortlist' }
+  SHOW_HIDDEN_KEY: 'show_hidden_folders',
 
   categories:      [],
   items:           [],
@@ -21,9 +22,10 @@ export const Shortcuts = {
   async init() {
     this.categories       = await Storage.get(this.CAT_KEY, []);
     this.items            = await Storage.get(this.ITEMS_KEY, []);
-    const coll            = await Storage.get(this.COLLAPSED_KEY, []);
-    this.collapsedFolders = new Set(coll);
+    const collapsedArr    = await Storage.get(this.COLLAPSED_KEY, []);
+    this.collapsedFolders = new Set(collapsedArr);
     this.folderViews      = await Storage.get(this.VIEW_KEY, {});
+    this.showHidden       = await Storage.get(this.SHOW_HIDDEN_KEY, false);
     this.colorIdx         = this.categories.length % this.COLORS.length;
 
     const numCols = parseInt(document.body.getAttribute('data-cols')) || 3;
@@ -47,9 +49,7 @@ export const Shortcuts = {
       topGear.addEventListener('auxclick', e => {
         if (e.button === 1) {
           e.preventDefault();
-          this.showHidden = !this.showHidden;
-          this.renderFolders();
-          this._toast(I18n.t('toast_hidden_toggled', '🕵️ Hidden folders visibility toggled!'));
+          this.toggleHiddenFolders();
         }
       });
     }
@@ -88,6 +88,13 @@ export const Shortcuts = {
       clearTimeout(this._resizeTimer);
       this._resizeTimer = setTimeout(() => this.applyMasonry(), 100);
     });
+  },
+
+  async toggleHiddenFolders() {
+    this.showHidden = !this.showHidden;
+    await Storage.set(this.SHOW_HIDDEN_KEY, this.showHidden);
+    this.renderFolders();
+    this._toast(I18n.t('toast_hidden_toggled', '🕵️ Hidden folders visibility toggled!'));
   },
 
   renderFolders() {

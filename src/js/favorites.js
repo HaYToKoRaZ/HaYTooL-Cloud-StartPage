@@ -75,9 +75,7 @@ export const Favorites = {
     optBtn.addEventListener('auxclick', e => {
       if (e.button === 1) {
         e.preventDefault();
-        Shortcuts.showHidden = !Shortcuts.showHidden;
-        Shortcuts.renderFolders();
-        Shortcuts._toast(I18n.t('toast_hidden_toggled', '🕵️ Hidden folders visibility toggled!'));
+        Shortcuts.toggleHiddenFolders();
       }
     });
     bar.appendChild(optBtn);
