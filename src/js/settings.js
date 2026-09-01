@@ -12,8 +12,12 @@ export const Settings = {
   },
   
   async init() {
-    const saved = await Storage.get('app_settings', {});
-    this.config = { ...this.config, ...saved };
+    const saved = await Storage.get('app_settings', null);
+    if (!saved) {
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      this.config.theme = prefersLight ? 'light' : 'dark';
+    }
+    this.config = { ...this.config, ...(saved || {}) };
     // Eski tema isimlerini yeni sisteme migrasyon (oled/cyber → dark)
     const themeMap = { oled: 'dark', cyber: 'dark' };
     if (themeMap[this.config.theme]) this.config.theme = themeMap[this.config.theme];

@@ -14,8 +14,15 @@ export const I18n = {
   translations: {},
 
   async init() {
-    // İlk kurulumda 'en' varsayılan; kayıtlı tercih varsa onu kullan
-    this.currentLang = await Storage.get('lang', 'en');
+    // İlk kurulumda işletim sistemi / tarayıcı dilini algıla
+    const saved = await Storage.get('lang', null);
+    if (!saved) {
+      const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+      this.currentLang = browserLang.startsWith('tr') ? 'tr' : 'en';
+      await Storage.set('lang', this.currentLang);
+    } else {
+      this.currentLang = saved;
+    }
     await this.loadLocale(this.currentLang);
     this.translateDOM();
     this._updateHtmlLang();
