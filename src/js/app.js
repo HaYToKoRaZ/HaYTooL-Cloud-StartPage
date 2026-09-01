@@ -1,12 +1,12 @@
-﻿import { I18n }     from './i18n.js';
-import { Storage }  from './storage.js';
-import { Weather }  from './weather.js';
+﻿import { I18n }      from './i18n.js';
+import { Storage }   from './storage.js';
+import { Weather }   from './weather.js';
 import { Shortcuts } from './shortcuts.js';
-import { Notes }    from './notes.js';
-import { Settings } from './settings.js';
+import { Notes }     from './notes.js';
+import { Settings }  from './settings.js';
 
 /**
- * HaYTooL Cloud StartPage - Ana Uygulama Başlatıcı v1.0.0
+ * HaYTooL Cloud StartPage - Ana Uygulama v1.1.0
  */
 class StartPageApp {
   constructor() {
@@ -34,33 +34,33 @@ class StartPageApp {
       this.initSearch();
       this.initQuotes();
       this.initGlobalKeys();
-      this.wireExtraModalButtons();
+      this.wireExtraButtons();
 
-      console.log('🚀 HaYTooL Cloud StartPage v1.0.0 – hazır.');
+      console.log('🚀 HaYTooL Cloud StartPage v1.1.0 – hazır.');
     } catch (err) {
       console.error('[App] Başlatma hatası:', err);
     }
   }
 
-  /* ---- Canlı Saat & Tarih & Karşılama ---- */
+  /* ---- Saat (Sol Üst) ---- */
   initClock() {
     const tick = () => {
       const now = new Date();
-      const h = String(now.getHours()).padStart(2, '0');
-      const m = String(now.getMinutes()).padStart(2, '0');
-      const s = String(now.getSeconds()).padStart(2, '0');
+      const h   = String(now.getHours()).padStart(2, '0');
+      const m   = String(now.getMinutes()).padStart(2, '0');
+      const s   = String(now.getSeconds()).padStart(2, '0');
 
-      const timeEl    = document.getElementById('digitalTime');
-      const secEl     = document.getElementById('digitalSeconds');
-      const dateEl    = document.getElementById('dateText');
-      const greetEl   = document.getElementById('greetingText');
+      const timeEl  = document.getElementById('digitalTime');
+      const secEl   = document.getElementById('digitalSeconds');
+      const dateEl  = document.getElementById('dateText');
+      const greetEl = document.getElementById('greetingText');
 
       if (timeEl) timeEl.textContent = h + ':' + m;
       if (secEl)  secEl.textContent  = s;
 
       if (dateEl) {
-        const locale  = I18n.currentLang === 'tr' ? 'tr-TR' : 'en-US';
-        const opts    = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const locale = I18n.currentLang === 'tr' ? 'tr-TR' : 'en-US';
+        const opts   = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
         dateEl.textContent = now.toLocaleDateString(locale, opts);
       }
 
@@ -77,7 +77,7 @@ class StartPageApp {
     setInterval(tick, 1000);
   }
 
-  /* ---- Akıllı Arama Çubuğu ---- */
+  /* ---- Arama Çubuğu ---- */
   async initSearch() {
     const input     = document.getElementById('searchInput');
     const form      = document.getElementById('searchForm');
@@ -112,12 +112,8 @@ class StartPageApp {
         e.preventDefault();
         const query = input.value.trim();
         if (!query) return;
-        // Direct URL detection
         const isUrl = /^(https?:\/\/|[a-z0-9]+([-\.][a-z0-9]+)*\.[a-z]{2,6})(:[0-9]{1,5})?(\/.*)?$/i.test(query);
-        if (isUrl) {
-          window.location.href = query.startsWith('http') ? query : 'https://' + query;
-          return;
-        }
+        if (isUrl) { window.location.href = query.startsWith('http') ? query : 'https://' + query; return; }
         const eng = this.searchEngines[this.currentEngine] || this.searchEngines.google;
         window.location.href = eng.url + encodeURIComponent(query);
       });
@@ -127,13 +123,9 @@ class StartPageApp {
   updateEngineUI(key) {
     const btn = document.getElementById('engineSelectBtn');
     const obj = this.searchEngines[key] || this.searchEngines.google;
-    if (btn) {
-      btn.innerHTML = '<span>' + obj.icon + '</span><span>▾</span>';
-      btn.title = obj.name;
-    }
+    if (btn) { btn.innerHTML = '<span>' + obj.icon + '</span><span>▾</span>'; btn.title = obj.name; }
   }
 
-  /* ---- İlham Sözleri ---- */
   initQuotes() {
     const quotes = [
       "Gelecek, bugünden hazırlananlara aittir.",
@@ -142,26 +134,19 @@ class StartPageApp {
       "Her yeni gün, yeni bir başlangıçtır.",
       "Stay hungry, stay foolish. – Steve Jobs",
       "Hayal kurmaya cesaret et, büyük düşün.",
-      "Bugün yaptığın şeyler, yarının geleceğini şekillendirir.",
       "Code is poetry."
     ];
     const el = document.getElementById('quoteBox');
-    if (el) {
-      const idx = Math.floor(Math.random() * quotes.length);
-      el.textContent = '"' + quotes[idx] + '"';
-    }
+    if (el) el.textContent = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
   }
 
-  /* ---- Global Klavye Kısayolları ---- */
   initGlobalKeys() {
     document.addEventListener('keydown', e => {
       const tag = document.activeElement.tagName;
-      // '/' tuşu – aramaya odaklan
       if (e.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA') {
         e.preventDefault();
         document.getElementById('searchInput')?.focus();
       }
-      // Escape – tüm modalleri kapat
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-overlay.active, .drawer-panel.active, .engine-dropdown.active')
           .forEach(el => el.classList.remove('active'));
@@ -169,25 +154,17 @@ class StartPageApp {
     });
   }
 
-  /* ---- Ekstra Modal Kapat Butonları ---- */
-  wireExtraModalButtons() {
-    // Second close btn on shortcut modal footer
+  wireExtraButtons() {
     const closeShortcutFooter = document.getElementById('closeShortcutModalFooter');
     const shortcutModal = document.getElementById('shortcutModal');
-    if (closeShortcutFooter && shortcutModal) {
+    if (closeShortcutFooter && shortcutModal)
       closeShortcutFooter.addEventListener('click', () => shortcutModal.classList.remove('active'));
-    }
 
-    // Cancel import header X button
     const cancelImportHeader = document.getElementById('cancelImportBtnHeader');
     const importModal = document.getElementById('importPreviewModal');
-    if (cancelImportHeader && importModal) {
+    if (cancelImportHeader && importModal)
       cancelImportHeader.addEventListener('click', () => importModal.classList.remove('active'));
-    }
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const app = new StartPageApp();
-  app.init();
-});
+document.addEventListener('DOMContentLoaded', () => new StartPageApp().init());
