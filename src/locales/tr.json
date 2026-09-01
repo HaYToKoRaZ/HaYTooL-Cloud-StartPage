@@ -194,5 +194,11 @@
   "ctx_move_left": "Sola Taşı",
   "ctx_move_right": "Sağa Taşı",
   "ctx_remove_fav": "Favoriden Çıkar",
-  "fav_edit_title": "Favoriyi Düzenle"
+  "fav_edit_title": "Favoriyi Düzenle",
+  "btn_export_html": "HTML Formatında Dışa Aktar",
+  "btn_delete_all_links": "Tüm Linkleri Sil",
+  "delete_all_links_confirm_word": "SİL",
+  "delete_all_links_prompt": "DİKKAT! İçindeki tüm linkler ve klasörler kalıcı olarak silinecek.\nDevam etmek için lütfen aşağıdaki kelimenin BİREBİR AYNISINI yazın:\n\n",
+  "toast_links_deleted": "Tüm linkler başarıyla silindi. Sayfa yenileniyor...",
+  "toast_links_delete_failed": "Hatalı kelime girdiniz, işlem iptal edildi."
 }

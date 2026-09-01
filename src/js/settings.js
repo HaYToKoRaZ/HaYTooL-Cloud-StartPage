@@ -283,6 +283,27 @@ export const Settings = {
   },
 
   setupReset() {
+    const delLinksBtn = document.getElementById('deleteAllLinksBtn');
+    if (delLinksBtn) {
+      delLinksBtn.addEventListener('click', async () => {
+        const confirmWord = I18n.t('delete_all_links_confirm_word', 'SİL');
+        const promptMsg = I18n.t('delete_all_links_prompt', 'Tüm linkleri silmek üzeresiniz. Onaylamak için lütfen kutuya büyük harflerle şunu yazın: ') + confirmWord;
+        
+        const userInput = prompt(promptMsg);
+        
+        if (userInput !== null) {
+          if (userInput.trim() === confirmWord) {
+            await Storage.set('shortcuts_v2', []);
+            await Storage.set('favorites_bar', []);
+            this.toast(I18n.t('toast_links_deleted', 'Tüm linkler başarıyla silindi. Yükleniyor...'));
+            setTimeout(() => window.location.reload(), 1500);
+          } else {
+            alert(I18n.t('toast_links_delete_failed', 'Hatalı kelime girdiniz, işlem iptal edildi.'));
+          }
+        }
+      });
+    }
+
     const resetBtn = document.getElementById('resetSettingsBtn');
     if (resetBtn) {
       resetBtn.addEventListener('click', async () => {
