@@ -2026,3 +2026,16 @@ body[data-cols="10"] .folders-grid { grid-template-columns: repeat(10, 1fr) !imp
   box-sizing: border-box;
   justify-content: center;
 }
+
+/* İkon Görünümünde İkonu Büyüt */
+.fav-bar-container.view-icon .fav-icon-box {
+  width: 48px;
+  height: 48px;
+  font-size: 2rem;
+  border-radius: 12px;
+}
+.fav-bar-container.view-icon .fav-icon-box img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
