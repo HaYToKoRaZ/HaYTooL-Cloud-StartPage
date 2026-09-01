@@ -211,20 +211,8 @@ export const Settings = {
     f('customBgInput',        this.config.customBgUrl);
     f('langSelect',           I18n.currentLang);
     f('folderColumnsSelect',  String(this.config.folderColumns || 3));
-    f('iconSizeSlider',       String(this.config.folderIconSize || 64));
-    const iconVal = document.getElementById('iconSizeValue');
-    if (iconVal) iconVal.textContent = (this.config.folderIconSize || 64) + 'px';
-    t('toggleClock',          this.config.showClock);
-    t('toggleSeconds',        this.config.showSeconds);
-    t('toggleGreeting',       this.config.showGreeting);
-    t('toggleWeather',        this.config.showWeather);
-    t('toggleFavBar',         this.config.showFavBar);
-    
-    
-    const input = document.getElementById('weatherCityInput');
-    if (input && this.config.weatherCityObj) {
-      input.value = this.config.weatherCityObj.name + (this.config.weatherCityObj.country ? ', ' + this.config.weatherCityObj.country : '');
-    } else if (input) {
+    f('iconSizeSelect',       String(this.config.folderIconSize || 64));
+    else if (input) {
       input.value = '';
     }
   },

@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <link rel="alternate icon" type="image/png" href="../assets/icons/favicon.png">
   <link rel="stylesheet" href="../css/theme.css">
-  <link rel="stylesheet" href="../css/main.css?v=430b8071">
+  <link rel="stylesheet" href="../css/main.css?v=cc0259fb">
 </head>
 <body class="bg-preset-aurora">
   <div id="bgLayer"></div>
@@ -257,11 +257,15 @@
         </div>
       </div>
       <div class="form-group" style="margin-top: 1rem;">
-        <label style="display:flex; justify-content:space-between;">
-          <span>Klasör İçi İkon Boyutu</span>
-          <span id="iconSizeValue" style="color:var(--accent); font-weight:600;">64px</span>
-        </label>
-        <input type="range" id="iconSizeSlider" min="32" max="128" step="4" value="64" style="width: 100%; margin-top: 0.5rem; accent-color: var(--accent);">
+        <label>Klasör İçi İkon Boyutu</label>
+        <select id="iconSizeSelect" class="form-select" style="margin-top:0.3rem;">
+          <option value="32">Çok Küçük (32px)</option>
+          <option value="48">Küçük (48px)</option>
+          <option value="64">Orta - Varsayılan (64px)</option>
+          <option value="80">Büyük (80px)</option>
+          <option value="96">Çok Büyük (96px)</option>
+          <option value="128">Devasa (128px)</option>
+        </select>
       </div>
 
       <div class="settings-section-title">🌤️ Hava Durumu</div>
