@@ -36,6 +36,7 @@ export const Shortcuts = {
     this.renderFolders();
     this.setupShortcutModal();
     this.setupBookmarkImport();
+      this.setupCollapseExpandAll();
     this.setupRenameModal();
     
     const grid = document.getElementById('shortcutsGrid');
@@ -580,7 +581,29 @@ export const Shortcuts = {
     setTimeout(() => document.getElementById('renameInput')?.focus(), 100);
   },
 
-  setupBookmarkImport() {
+  setupCollapseExpandAll() {
+      const expandAllBtn = document.getElementById('expandAllBtn');
+      const collapseAllBtn = document.getElementById('collapseAllBtn');
+      
+      if (expandAllBtn) {
+        expandAllBtn.addEventListener('click', async () => {
+          this.collapsedFolders.clear();
+          await Storage.set(this.COLLAPSED_KEY, [...this.collapsedFolders]);
+          this.renderFolders();
+          this._toast('Bütün klasörler genişletildi.');
+        });
+      }
+      if (collapseAllBtn) {
+        collapseAllBtn.addEventListener('click', async () => {
+          this.categories.forEach(cat => this.collapsedFolders.add(cat.id));
+          await Storage.set(this.COLLAPSED_KEY, [...this.collapsedFolders]);
+          this.renderFolders();
+          this._toast('Bütün klasörler daraltıldı.');
+        });
+      }
+    },
+
+    setupBookmarkImport() {
     const btn   = document.getElementById('bookmarkImportBtn');
     const input = document.getElementById('bookmarkFileInput');
     if (!btn || !input) return;
