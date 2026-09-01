@@ -1427,3 +1427,322 @@ body {
   max-width: 100%;
   box-sizing: border-box;
 }
+/* ==========================================================================
+   FAVORİLER BARI - v2.0.0
+   ========================================================================== */
+.fav-bar-section {
+  width: 100%;
+  padding: 0.4rem 1.5rem 0.3rem;
+  background: rgba(0,0,0,0.18);
+  border-bottom: 1px solid var(--border-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  flex-shrink: 0;
+}
+
+.fav-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0.2rem 0;
+}
+.fav-bar::-webkit-scrollbar { display: none; }
+
+.fav-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.fav-item-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  text-decoration: none;
+  padding: 0.35rem 0.5rem 0.25rem;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+  cursor: pointer;
+  min-width: 56px;
+}
+.fav-item-link:hover { background: rgba(255,255,255,0.08); }
+
+.fav-icon-box {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; border-radius: 6px; overflow: hidden;
+  flex-shrink: 0;
+}
+.fav-icon-box img { width: 24px; height: 24px; border-radius: 4px; object-fit: contain; }
+
+.fav-item-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  max-width: 64px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  transition: color var(--transition-fast);
+}
+.fav-item-link:hover .fav-item-label { color: var(--text-main); }
+
+/* "..." seçenekler butonu */
+.fav-options-btn {
+  position: absolute;
+  top: 2px; right: -2px;
+  background: var(--surface-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: 50%;
+  color: var(--text-dim);
+  width: 16px; height: 16px;
+  font-size: 0.6rem;
+  display: none;
+  align-items: center; justify-content: center;
+  cursor: pointer; padding: 0; line-height: 1;
+}
+.fav-item:hover .fav-options-btn { display: flex; }
+
+/* "+ Ekle" butonu */
+.fav-add-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.5rem 0.25rem;
+  border: 1.5px dashed rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-family: inherit;
+  min-width: 48px;
+  transition: all var(--transition-fast);
+}
+.fav-add-btn:hover { border-color: var(--accent-primary); color: var(--accent-primary); background: rgba(99,102,241,0.07); }
+.fav-add-icon { font-size: 1rem; line-height: 1; }
+
+/* ==========================================================================
+   3-SÜTUN KLASÖR GRID - v2.0.0
+   ========================================================================== */
+.folders-main {
+  flex: 1;
+  padding: 0.9rem 1.5rem 0.5rem;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.folders-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  width: 100%;
+}
+
+@media (max-width: 1000px) { .folders-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .folders-grid { grid-template-columns: 1fr; } }
+
+/* ---- Folder Card ---- */
+.folder-card {
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  border-top: 2.5px solid var(--fc, #6366f1);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
+  min-height: 48px;
+}
+.folder-card:hover { box-shadow: var(--glass-shadow-hover); }
+
+/* Collapsed: sadece header görünür */
+.folder-card.collapsed .folder-body { display: none; }
+
+/* Header */
+.folder-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  border-left: 3px solid var(--fc, #6366f1);
+  transition: background var(--transition-fast);
+}
+.folder-header:hover { background: rgba(255,255,255,0.04); }
+
+.folder-arrow {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  transition: transform var(--transition-fast);
+  width: 10px; flex-shrink: 0;
+}
+.folder-card:not(.collapsed) .folder-arrow { transform: rotate(90deg); }
+
+.folder-emoji { font-size: 1rem; flex-shrink: 0; }
+
+.folder-name {
+  flex: 1; font-size: 0.85rem; font-weight: 700;
+  color: var(--text-main); overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+}
+
+.folder-count {
+  font-size: 0.7rem; color: var(--text-dim);
+  background: rgba(255,255,255,0.07);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-full); flex-shrink: 0;
+}
+
+.folder-opt-btn {
+  background: none; border: none;
+  color: var(--text-dim);
+  font-size: 0.9rem; padding: 0.1rem 0.3rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer; opacity: 0;
+  transition: opacity var(--transition-fast), background var(--transition-fast);
+  line-height: 1;
+}
+.folder-header:hover .folder-opt-btn { opacity: 1; }
+.folder-opt-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.1); }
+
+/* Body */
+.folder-body {
+  padding: 0.55rem 0.65rem 0.65rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* İkon Görünümü */
+.folder-body.view-icon {
+  display: flex; flex-wrap: wrap; gap: 0.3rem;
+  align-items: flex-start;
+}
+.folder-body.view-icon .link-item {
+  position: relative; display: inline-flex;
+}
+.link-icon-card {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0.25rem; text-decoration: none; padding: 0.35rem 0.4rem;
+  border-radius: var(--radius-sm); min-width: 52px; max-width: 68px;
+  transition: background var(--transition-fast);
+  color: var(--text-muted);
+}
+.link-icon-card:hover { background: rgba(255,255,255,0.07); }
+
+.link-fav-icon {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.05rem; border-radius: 6px;
+  flex-shrink: 0;
+}
+.link-fav-icon img { width: 22px; height: 22px; border-radius: 4px; object-fit: contain; }
+
+.link-icon-label {
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--text-dim); text-align: center;
+  max-width: 64px; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.link-icon-card:hover .link-icon-label { color: var(--text-main); }
+
+/* Liste Görünümü */
+.folder-body.view-list { display: flex; flex-direction: column; gap: 0; }
+.folder-body.view-list .link-item {
+  display: flex; align-items: center; position: relative;
+}
+.link-list-row {
+  display: flex; align-items: center; gap: 0.5rem;
+  text-decoration: none; padding: 0.3rem 0.4rem;
+  border-radius: var(--radius-sm); color: var(--text-muted);
+  flex: 1; overflow: hidden;
+  transition: background var(--transition-fast);
+}
+.link-list-row:hover { background: rgba(255,255,255,0.06); color: var(--text-main); }
+.link-list-title {
+  font-size: 0.82rem; font-weight: 500;
+  flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.link-list-url {
+  font-size: 0.72rem; color: var(--text-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+/* Sil Butonu */
+.link-del-btn {
+  display: none;
+  background: none; border: none; color: var(--accent-rose);
+  font-size: 0.65rem; cursor: pointer; padding: 0 3px;
+  border-radius: 50%; flex-shrink: 0; line-height: 1;
+}
+.link-item:hover .link-del-btn { display: inline; }
+.link-del-list { margin-left: 0.25rem; }
+
+/* "+ Bu klasöre ekle" butonu */
+.add-to-folder-btn {
+  background: none; border: 1px dashed rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm); color: var(--text-dim);
+  font-size: 0.75rem; cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; gap: 0.3rem;
+  padding: 0.25rem 0.5rem; margin-top: 0.25rem;
+  transition: all var(--transition-fast);
+}
+.view-icon .add-to-folder-btn { padding: 0.35rem 0.4rem; min-width: 36px; justify-content: center; }
+.add-to-folder-btn:hover { color: var(--accent-primary); border-color: var(--accent-primary); background: rgba(99,102,241,0.07); }
+
+/* Yeni klasör ekle kartı */
+.folder-add-card {
+  border: 1.5px dashed var(--border-glass-hover) !important;
+  border-top: 1.5px dashed var(--border-glass-hover) !important;
+  background: transparent !important;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 72px;
+}
+.folder-add-btn {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0.35rem; background: none; border: none;
+  color: var(--text-dim); cursor: pointer; font-family: inherit;
+  padding: 1rem; transition: color var(--transition-fast);
+}
+.folder-add-btn:hover { color: var(--accent-primary); }
+
+/* ==========================================================================
+   CONTEXT MENU
+   ========================================================================== */
+.context-menu {
+  position: fixed;
+  z-index: 9999;
+  min-width: 185px;
+  background: var(--surface-elevated);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass-hover);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow-hover), 0 8px 32px rgba(0,0,0,0.4);
+  padding: 0.3rem;
+  animation: fadeInUp 0.12s ease;
+  overflow: hidden;
+}
+.ctx-item {
+  display: block; width: 100%; text-align: left;
+  background: none; border: none;
+  color: var(--text-muted); font-size: 0.83rem; font-family: inherit;
+  padding: 0.45rem 0.75rem; border-radius: var(--radius-sm);
+  cursor: pointer; transition: all var(--transition-fast);
+}
+.ctx-item:hover { background: rgba(255,255,255,0.07); color: var(--text-main); }
+.ctx-item.ctx-danger { color: var(--accent-rose); }
+.ctx-item.ctx-danger:hover { background: rgba(244,63,94,0.1); }
+.ctx-sep { height: 1px; background: var(--border-glass); margin: 0.25rem 0.5rem; }
+
+/* Empty state grid span */
+.empty-state-main { grid-column: 1 / -1; min-height: 40vh; }

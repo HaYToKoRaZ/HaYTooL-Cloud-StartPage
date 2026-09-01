@@ -19,50 +19,77 @@
         <img src="../assets/icons/favicon.svg" alt="HaYTooL">
         <span>HaYTooL</span>
       </div>
-
       <div id="headerClockWidget" class="header-clock-widget glass-card">
         <div class="header-time">
           <span id="digitalTime">00:00</span><span id="digitalSeconds" class="header-seconds">00</span>
         </div>
         <div id="dateText" class="header-date">...</div>
       </div>
-
-      <button id="weatherBadge" class="weather-badge glass-card" title="Hava Durumu">
-        <span class="weather-icon">⏳</span>
-        <span>Yükleniyor...</span>
+      <button id="weatherBadge" class="weather-badge glass-card" title="Hava Durumu – yenilemek için tıkla">
+        <span class="weather-icon">⏳</span><span>Yükleniyor...</span>
       </button>
     </div>
-
     <div class="top-bar-right">
       <div id="greetingText" class="header-greeting"></div>
-
       <button id="bookmarkImportBtn" class="bookmark-import-btn">
-        <span>⭐</span>
-        <span>Favori İçe Aktar</span>
+        <span>⭐</span><span>Favori İçe Aktar</span>
       </button>
       <input type="file" id="bookmarkFileInput" accept=".html,.htm" style="display:none;">
-
       <button id="settingsBtn" class="icon-btn" title="Ayarlar">⚙️</button>
     </div>
   </header>
 
-  <!-- ====== FULL PAGE FOLDERS ====== -->
-  <main class="folders-main" id="foldersMain">
-    <!-- Dinamik olarak shortcuts.js tarafından doldurulur -->
-    <div id="shortcutsGrid"></div>
+  <!-- ====== FAVORİLER BARI ====== -->
+  <section class="fav-bar-section" id="favBarSection">
+    <div class="fav-bar" id="favBar">
+      <!-- JS tarafından doldurulur -->
+    </div>
+  </section>
+
+  <!-- ====== KLASÖRLER BÖLÜMÜ ====== -->
+  <main class="folders-main">
+    <div id="shortcutsGrid" class="folders-grid"></div>
   </main>
 
-  <!-- ====== BOTTOM ====== -->
+  <!-- ====== FOOTER ====== -->
   <footer class="bottom-bar">
     <div id="quoteBox" class="quote-box"></div>
-    <div class="footer-brand">HaYTooL StartPage v1.3.0</div>
+    <div class="footer-brand">HaYTooL StartPage v2.0.0</div>
   </footer>
 
-  <!-- ====== ADD SHORTCUT MODAL ====== -->
+  <!-- ====== FAVORİ EKLE MODAL ====== -->
+  <div id="favAddModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:400px;">
+      <div class="modal-header">
+        <h3>⭐ Favori Ekle</h3>
+        <button id="closeFavModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
+      </div>
+      <form id="favAddForm">
+        <div class="form-group">
+          <label>Site Adı</label>
+          <input type="text" id="favTitleInput" class="form-input" placeholder="Örn: GitHub" required>
+        </div>
+        <div class="form-group">
+          <label>Web Adresi (URL)</label>
+          <input type="text" id="favUrlInput" class="form-input" placeholder="https://github.com" required>
+        </div>
+        <div class="form-group">
+          <label>İkon / Emoji <span style="color:var(--text-dim);font-weight:400;">(opsiyonel)</span></label>
+          <input type="text" id="favIconInput" class="form-input" placeholder="🐙 (boş = favicon otomatik)">
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="cancelFavModal" class="btn-secondary">İptal</button>
+          <button type="submit" class="btn-primary">Ekle</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====== KISA YOL EKLE MODAL ====== -->
   <div id="shortcutModal" class="modal-overlay">
     <div class="modal-content" style="max-width:420px;">
       <div class="modal-header">
-        <h3>Kısayol Ekle</h3>
+        <h3 id="shortcutModalTitle">Link Ekle</h3>
         <button id="closeShortcutModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
       </div>
       <form id="shortcutForm">
@@ -71,17 +98,14 @@
           <input type="text" id="shortcutTitleInput" class="form-input" placeholder="Örn: GitHub" required>
         </div>
         <div class="form-group">
-          <label>Web Adresi (URL)</label>
+          <label>URL</label>
           <input type="text" id="shortcutUrlInput" class="form-input" placeholder="https://github.com" required>
         </div>
         <div class="form-group">
           <label>İkon / Emoji <span style="color:var(--text-dim);font-weight:400;">(opsiyonel)</span></label>
           <input type="text" id="shortcutIconInput" class="form-input" placeholder="🐙">
         </div>
-        <div class="form-group" id="catSelectGroup">
-          <label>Kategori / Klasör</label>
-          <select id="shortcutCategorySelect" class="form-select"></select>
-        </div>
+        <input type="hidden" id="shortcutTargetCatId">
         <div class="modal-actions">
           <button type="button" id="closeShortcutModalFooter" class="btn-secondary">İptal</button>
           <button type="submit" class="btn-primary">Kaydet</button>
@@ -90,7 +114,29 @@
     </div>
   </div>
 
-  <!-- ====== BOOKMARK IMPORT PREVIEW MODAL ====== -->
+  <!-- ====== KLASÖR YENİDEN ADLANDIR MODAL ====== -->
+  <div id="renameModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:380px;">
+      <div class="modal-header">
+        <h3>✏️ Klasörü Yeniden Adlandır</h3>
+        <button id="closeRenameModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
+      </div>
+      <div class="form-group">
+        <label>Klasör Adı</label>
+        <input type="text" id="renameInput" class="form-input" placeholder="Yeni ad">
+      </div>
+      <div class="form-group">
+        <label>İkon (Emoji)</label>
+        <input type="text" id="renameIconInput" class="form-input" placeholder="📁">
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="cancelRenameModal" class="btn-secondary">İptal</button>
+        <button type="button" id="confirmRenameModal" class="btn-primary">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== BOOKMARK IMPORT PREVIEW ====== -->
   <div id="importPreviewModal" class="modal-overlay">
     <div class="modal-content" style="max-width:540px;">
       <div class="modal-header">
@@ -98,13 +144,11 @@
         <button id="cancelImportBtnHeader" class="icon-btn" style="width:28px;height:28px;">✕</button>
       </div>
       <details style="cursor:pointer;margin-bottom:1rem;">
-        <summary style="font-size:0.85rem;color:var(--text-muted);font-weight:600;padding:0.4rem 0;">
-          📖 Favorileri nasıl dışa aktarırım?
-        </summary>
-        <div style="margin-top:0.6rem;display:flex;flex-direction:column;gap:0.4rem;">
+        <summary style="font-size:0.85rem;color:var(--text-muted);font-weight:600;padding:0.4rem 0;">📖 Nasıl dışa aktarırım?</summary>
+        <div style="margin-top:0.5rem;display:flex;flex-direction:column;gap:0.35rem;">
           <div class="import-hint">🔵 <strong>Chrome:</strong> Yer İşaretleri Yöneticisi (Ctrl+Shift+O) → ⋮ → Dışa Aktar</div>
-          <div class="import-hint">🟠 <strong>Firefox:</strong> Yer İşaretleri → Tüm Yer İşaretlerini Göster (Ctrl+Shift+B) → İçe ve Dışa Aktar → HTML</div>
-          <div class="import-hint">🔷 <strong>Edge:</strong> Favoriler → Favorileri Yönet → ⋯ → Favorileri Dışa Aktar</div>
+          <div class="import-hint">🟠 <strong>Firefox:</strong> Yer İşaretleri → Tüm Yer İşaretlerini Göster → İçe ve Dışa Aktar → HTML</div>
+          <div class="import-hint">🔷 <strong>Edge:</strong> Favoriler → Yönet → ⋯ → Dışa Aktar</div>
           <div class="import-hint">🔴 <strong>Opera:</strong> Yer İşaretleri → HTML'ye Aktar</div>
         </div>
       </details>
@@ -117,73 +161,63 @@
     </div>
   </div>
 
-  <!-- ====== SETTINGS MODAL ====== -->
+  <!-- ====== AYARLAR MODAL ====== -->
   <div id="settingsModal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
         <h3>Ayarlar & Özelleştirme</h3>
         <button id="closeSettingsModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
       </div>
-      <div class="form-group">
-        <label>Tema Modu</label>
+      <div class="form-group"><label>Tema</label>
         <select id="themeSelect" class="form-select">
-          <option value="dark">Koyu Glass (Varsayılan)</option>
+          <option value="dark">Koyu Glass</option>
           <option value="light">Açık Glass</option>
           <option value="oled">OLED Siyah</option>
           <option value="cyber">Cyberpunk Neon</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Arka Plan Stili</label>
+      <div class="form-group"><label>Arka Plan</label>
         <select id="bgSelect" class="form-select">
-          <option value="aurora">Kuzey Işıkları (Aurora)</option>
+          <option value="aurora">Kuzey Işıkları</option>
           <option value="nebula">Kozmik Nebula</option>
           <option value="cyber">Cyber Glow</option>
-          <option value="minimal">Minimalist Derinlik</option>
+          <option value="minimal">Minimalist</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Özel Arka Plan Görseli URL</label>
+      <div class="form-group"><label>Özel Arka Plan URL</label>
         <input type="url" id="customBgInput" class="form-input" placeholder="https://...">
       </div>
-      <div class="form-group">
-        <label>Arayüz Dili</label>
+      <div class="form-group"><label>Dil</label>
         <select id="langSelect" class="form-select">
-          <option value="tr">Türkçe (TR)</option>
-          <option value="en">English (EN)</option>
+          <option value="tr">Türkçe</option>
+          <option value="en">English</option>
         </select>
       </div>
-      <div style="margin-top:1.25rem;">
-        <h4 style="font-size:0.88rem;margin-bottom:0.75rem;color:var(--text-muted);">Widget Görünürlüğü</h4>
-        <div class="toggle-item"><span>Saat & Tarih</span>
-          <label class="switch"><input type="checkbox" id="toggleClock" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>Saniye</span>
-          <label class="switch"><input type="checkbox" id="toggleSeconds" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>Karşılama Mesajı</span>
-          <label class="switch"><input type="checkbox" id="toggleGreeting" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>Hava Durumu</span>
-          <label class="switch"><input type="checkbox" id="toggleWeather" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>İlham Sözü</span>
-          <label class="switch"><input type="checkbox" id="toggleQuote" checked><span class="slider"></span></label></div>
+      <div style="margin-top:1rem;">
+        <h4 style="font-size:0.88rem;margin-bottom:0.6rem;color:var(--text-muted);">Widget Görünürlüğü</h4>
+        <div class="toggle-item"><span>Saat & Tarih</span><label class="switch"><input type="checkbox" id="toggleClock" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span>Saniye</span><label class="switch"><input type="checkbox" id="toggleSeconds" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span>Karşılama</span><label class="switch"><input type="checkbox" id="toggleGreeting" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span>Hava Durumu</span><label class="switch"><input type="checkbox" id="toggleWeather" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span>Favoriler Barı</span><label class="switch"><input type="checkbox" id="toggleFavBar" checked><span class="slider"></span></label></div>
+        <div class="toggle-item"><span>İlham Sözü</span><label class="switch"><input type="checkbox" id="toggleQuote" checked><span class="slider"></span></label></div>
       </div>
-      <div style="margin-top:1.5rem;">
-        <h4 style="font-size:0.88rem;margin-bottom:0.75rem;color:var(--text-muted);">Yedekleme & Sıfırlama</h4>
+      <div style="margin-top:1.25rem;">
+        <h4 style="font-size:0.88rem;margin-bottom:0.6rem;color:var(--text-muted);">Yedekleme</h4>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
-          <button type="button" id="exportDataBtn" class="btn-secondary" style="flex:1;">Yedek İndir (JSON)</button>
-          <label class="btn-secondary" style="flex:1;text-align:center;cursor:pointer;">
-            Yedek Yükle <input type="file" id="importDataInput" accept=".json" style="display:none;">
-          </label>
+          <button type="button" id="exportDataBtn" class="btn-secondary" style="flex:1;">Yedek İndir</button>
+          <label class="btn-secondary" style="flex:1;text-align:center;cursor:pointer;">Yedek Yükle<input type="file" id="importDataInput" accept=".json" style="display:none;"></label>
         </div>
-        <button type="button" id="resetSettingsBtn" class="btn-secondary"
-          style="width:100%;color:var(--accent-rose);border-color:rgba(244,63,94,0.3);">
-          Tüm Verileri Sıfırla
-        </button>
+        <button type="button" id="resetSettingsBtn" class="btn-secondary" style="width:100%;color:var(--accent-rose);border-color:rgba(244,63,94,0.3);">Tüm Verileri Sıfırla</button>
       </div>
       <div class="modal-actions">
         <button type="button" id="saveSettingsBtn" class="btn-primary">Kaydet & Uygula</button>
       </div>
     </div>
   </div>
+
+  <!-- Context Menu -->
+  <div id="contextMenu" class="context-menu" style="display:none;"></div>
 
   <div id="toast"></div>
   <script type="module" src="../js/app.js"></script>
