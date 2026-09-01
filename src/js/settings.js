@@ -212,7 +212,11 @@ export const Settings = {
     f('langSelect',           I18n.currentLang);
     f('folderColumnsSelect',  String(this.config.folderColumns || 3));
     f('iconSizeSelect',       String(this.config.folderIconSize || 64));
-    else if (input) {
+    
+    const input = document.getElementById('weatherCityInput');
+    if (input && this.config.weatherCityObj) {
+      input.value = this.config.weatherCityObj.name + (this.config.weatherCityObj.country ? ', ' + this.config.weatherCityObj.country : '');
+    } else if (input) {
       input.value = '';
     }
   },
