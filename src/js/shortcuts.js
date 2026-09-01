@@ -71,9 +71,77 @@ export const Shortcuts = {
     card.setAttribute('data-folder-id', cat.id);
     card.style.setProperty('--fc', cat.color || '#6366f1');
 
+    // --- Srkle brak mant (Drag & Drop) ---
+    if (cat.id !== '__other__') {
+      card.setAttribute('draggable', 'true');
+      card.style.cursor = 'grab';
+
+      card.addEventListener('dragstart', e => {
+        if (e.target.closest('.folder-body')) {
+          e.preventDefault(); return; // Folder iini srklemeyi engelle
+        }
+        e.dataTransfer.setData('text/plain', cat.id);
+        setTimeout(() => card.style.opacity = '0.5', 0);
+      });
+
+      card.addEventListener('dragend', () => {
+        card.style.opacity = '1';
+        document.querySelectorAll('.folder-card').forEach(c => {
+          c.style.borderTop = '';
+          c.style.borderBottom = '';
+        });
+      });
+
+      card.addEventListener('dragover', e => {
+        e.preventDefault();
+        const bounding = card.getBoundingClientRect();
+        const offset = bounding.y + (bounding.height / 2);
+        if (e.clientY - offset > 0) {
+          card.style.borderBottom = '2px solid var(--accent)';
+          card.style.borderTop = '';
+        } else {
+          card.style.borderTop = '2px solid var(--accent)';
+          card.style.borderBottom = '';
+        }
+      });
+
+      card.addEventListener('dragleave', e => {
+        card.style.borderTop = '';
+        card.style.borderBottom = '';
+      });
+
+      card.addEventListener('drop', async e => {
+        e.preventDefault();
+        card.style.borderTop = '';
+        card.style.borderBottom = '';
+        
+        const draggedId = e.dataTransfer.getData('text/plain');
+        if (!draggedId || draggedId === cat.id) return;
+
+        const draggedIdx = this.categories.findIndex(c => c.id === draggedId);
+        const dropIdx = this.categories.findIndex(c => c.id === cat.id);
+        
+        if (draggedIdx === -1 || dropIdx === -1) return;
+
+        const bounding = card.getBoundingClientRect();
+        const offset = bounding.y + (bounding.height / 2);
+        const insertAfter = (e.clientY - offset > 0);
+
+        const [movedCat] = this.categories.splice(draggedIdx, 1);
+        let adjustedDropIdx = this.categories.findIndex(c => c.id === cat.id);
+        const targetIdx = insertAfter ? adjustedDropIdx + 1 : adjustedDropIdx;
+        
+        this.categories.splice(targetIdx, 0, movedCat);
+        
+        await Storage.set(this.CAT_KEY, this.categories);
+        this.renderFolders();
+      });
+    }
+
     /* --- Header --- */
     const header = document.createElement('div');
     header.className = 'folder-header';
+    if (cat.id !== '__other__') header.style.cursor = 'grab';
 
     const arrow = document.createElement('span');
     arrow.className = 'folder-arrow';
