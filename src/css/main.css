@@ -1800,6 +1800,11 @@ body {
 .folders-grid[data-cols="3"] { grid-template-columns: repeat(3, 1fr); }
 .folders-grid[data-cols="4"] { grid-template-columns: repeat(4, 1fr); }
 .folders-grid[data-cols="5"] { grid-template-columns: repeat(5, 1fr); }
+.folders-grid[data-cols="6"] { grid-template-columns: repeat(6, 1fr); }
+.folders-grid[data-cols="7"] { grid-template-columns: repeat(7, 1fr); }
+.folders-grid[data-cols="8"] { grid-template-columns: repeat(8, 1fr); }
+.folders-grid[data-cols="9"] { grid-template-columns: repeat(9, 1fr); }
+.folders-grid[data-cols="10"] { grid-template-columns: repeat(10, 1fr); }
 /* Fallback */
 .folders-grid:not([data-cols]) { grid-template-columns: repeat(3, 1fr); }
 
@@ -1824,6 +1829,11 @@ body[data-cols="2"] .folders-grid { grid-template-columns: repeat(2, 1fr) !impor
 body[data-cols="3"] .folders-grid { grid-template-columns: repeat(3, 1fr) !important; }
 body[data-cols="4"] .folders-grid { grid-template-columns: repeat(4, 1fr) !important; }
 body[data-cols="5"] .folders-grid { grid-template-columns: repeat(5, 1fr) !important; }
+body[data-cols="6"] .folders-grid { grid-template-columns: repeat(6, 1fr) !important; }
+body[data-cols="7"] .folders-grid { grid-template-columns: repeat(7, 1fr) !important; }
+body[data-cols="8"] .folders-grid { grid-template-columns: repeat(8, 1fr) !important; }
+body[data-cols="9"] .folders-grid { grid-template-columns: repeat(9, 1fr) !important; }
+body[data-cols="10"] .folders-grid { grid-template-columns: repeat(10, 1fr) !important; }
 
 
 
