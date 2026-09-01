@@ -58,5 +58,8 @@ export const I18n = {
     await this.loadLocale(lang);
     await Storage.set('lang', lang);
     this.translateDOM();
+    if (window.ShortcutsApp && typeof window.ShortcutsApp.renderFolders === 'function') {
+      window.ShortcutsApp.renderFolders();
+    }
   }
 };
