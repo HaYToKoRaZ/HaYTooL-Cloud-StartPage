@@ -2,229 +2,241 @@
 import { I18n } from './i18n.js';
 
 /**
- * HaYTooL Cloud StartPage - Hızlı Erişim & Favoriler Yöneticisi
- * Kategori bazlı gruplama + Tarayıcı favorileri (HTML) içe aktarma
+ * HaYTooL Cloud StartPage - Tam Sayfa Accordion Klasör + Favoriler İçe Aktarma
  */
 export const Shortcuts = {
   CATEGORIES_KEY: 'shortcut_categories',
   ITEMS_KEY: 'shortcuts_v2',
-
-  // Varsayılan boş - kullanıcı kendi ekler/içe aktarır
-  defaultCategories: [],
-  defaultItems: [],
+  COLLAPSED_KEY: 'collapsed_folders',
 
   categories: [],
   items: [],
-  activeCategory: 'all',
+  collapsedFolders: new Set(),
+
+  FOLDER_COLORS: ['#6366f1','#ec4899','#10b981','#f59e0b','#06b6d4','#8b5cf6','#f43f5e','#14b8a6','#3b82f6','#a78bfa','#fb923c','#34d399'],
+  colorIndex: 0,
 
   async init() {
-    this.categories = await Storage.get(this.CATEGORIES_KEY, this.defaultCategories);
-    this.items      = await Storage.get(this.ITEMS_KEY, this.defaultItems);
-    this.activeCategory = 'all';
-    this.renderCategoryTabs();
-    this.renderGrid();
+    this.categories      = await Storage.get(this.CATEGORIES_KEY, []);
+    this.items           = await Storage.get(this.ITEMS_KEY, []);
+    const saved          = await Storage.get(this.COLLAPSED_KEY, []);
+    this.collapsedFolders = new Set(saved);
+    this.colorIndex      = this.categories.length % this.FOLDER_COLORS.length;
+
+    this.renderFolders();
     this.setupModalListeners();
     this.setupBookmarkImport();
   },
 
-  /* ---- Category Tab bar ---- */
-  renderCategoryTabs() {
-    const bar = document.getElementById('categoryTabBar');
-    if (!bar) return;
-    bar.innerHTML = '';
-
-    // Kategori yoksa tab bar'ı gizle
-    if (this.categories.length === 0) {
-      bar.style.display = 'none';
-      return;
-    }
-    bar.style.display = 'flex';
-
-    // "Tümü" butonu
-    const allBtn = this._makeTabBtn('all', '🌟', I18n.t('shortcuts_all', 'Tümü'));
-    if (this.activeCategory === 'all') allBtn.classList.add('active');
-    allBtn.addEventListener('click', () => this._switchCategory('all'));
-    bar.appendChild(allBtn);
-
-    this.categories.forEach(cat => {
-      const btn = this._makeTabBtn(cat.id, cat.icon, cat.name);
-      if (this.activeCategory === cat.id) btn.classList.add('active');
-      btn.addEventListener('click', () => this._switchCategory(cat.id));
-      bar.appendChild(btn);
-    });
-  },
-
-  _makeTabBtn(id, icon, name) {
-    const btn = document.createElement('button');
-    btn.className = 'cat-tab-btn';
-    btn.setAttribute('data-cat', id);
-    btn.innerHTML = '<span class="cat-icon">' + icon + '</span><span class="cat-label">' + name + '</span>';
-    return btn;
-  },
-
-  _switchCategory(catId) {
-    this.activeCategory = catId;
-    document.querySelectorAll('.cat-tab-btn').forEach(b => b.classList.remove('active'));
-    const active = document.querySelector('[data-cat="' + catId + '"]');
-    if (active) active.classList.add('active');
-    this.renderGrid();
-  },
-
-  /* ---- Speed Dial Grid ---- */
-  renderGrid() {
+  /* ============================================================
+     RENDER: Tam sayfa accordion klasörler
+     ============================================================ */
+  renderFolders() {
     const grid = document.getElementById('shortcutsGrid');
     if (!grid) return;
     grid.innerHTML = '';
 
-    const hasItems = this.items.length > 0;
-
-    if (!hasItems) {
-      // Boş durum - içe aktarma yönlendirmesi
-      const emptyEl = document.createElement('div');
-      emptyEl.className = 'empty-state-main';
-      emptyEl.innerHTML =
-        '<div class="empty-icon">⭐</div>' +
-        '<div class="empty-title">Henüz kısayol yok</div>' +
-        '<div class="empty-desc">Tarayıcı favorilerinizi içe aktarın veya tek tek ekleyin.</div>' +
-        '<div class="empty-actions">' +
-          '<button class="btn-primary" id="emptyImportBtn">⭐ Favori İçe Aktar</button>' +
-          '<button class="btn-secondary" id="emptyAddBtn">+ Manuel Ekle</button>' +
-        '</div>';
-      grid.appendChild(emptyEl);
-
-      const importBtn = document.getElementById('emptyImportBtn');
-      const addBtn    = document.getElementById('emptyAddBtn');
-      if (importBtn) importBtn.addEventListener('click', () => document.getElementById('bookmarkFileInput')?.click());
-      if (addBtn)    addBtn.addEventListener('click',    () => this.openAddModal());
+    if (this.items.length === 0 && this.categories.length === 0) {
+      grid.appendChild(this._emptyState());
       return;
     }
 
-    if (this.activeCategory === 'all') {
-      // Grup: kategori var mı?
-      if (this.categories.length > 0) {
-        const grouped = {};
-        this.categories.forEach(cat => { grouped[cat.id] = []; });
-        grouped['__other__'] = [];
+    // Kategorisiz öğeler için geçici grup
+    const grouped = {};
+    this.categories.forEach(c => { grouped[c.id] = []; });
+    grouped['__other__'] = [];
 
-        this.items.forEach(item => {
-          if (grouped[item.categoryId] !== undefined) grouped[item.categoryId].push(item);
-          else grouped['__other__'].push(item);
-        });
+    this.items.forEach(item => {
+      if (grouped[item.categoryId] !== undefined) grouped[item.categoryId].push(item);
+      else grouped['__other__'].push(item);
+    });
 
-        this.categories.forEach(cat => {
-          if (grouped[cat.id].length === 0) return;
-          grid.appendChild(this._makeCategorySection(cat, grouped[cat.id]));
-        });
-        if (grouped['__other__'].length > 0) {
-          const other = { id: '__other__', name: 'Diğer', icon: '📁', color: '#64748b' };
-          grid.appendChild(this._makeCategorySection(other, grouped['__other__']));
-        }
-      } else {
-        // Kategori yok - düz liste
-        const flat = { id: '_flat', name: 'Kısayollar', icon: '🔗', color: '#6366f1' };
-        grid.appendChild(this._makeCategorySection(flat, this.items));
-      }
-    } else {
-      const cat = this.categories.find(c => c.id === this.activeCategory);
-      const filtered = this.items.filter(item => item.categoryId === this.activeCategory);
-      if (cat && filtered.length > 0) {
-        grid.appendChild(this._makeCategorySection(cat, filtered));
-      } else {
-        const emptyEl = document.createElement('div');
-        emptyEl.className = 'empty-state';
-        emptyEl.textContent = 'Bu kategoride henüz kısayol yok.';
-        grid.appendChild(emptyEl);
-      }
+    // Her kategori için accordion kart
+    this.categories.forEach(cat => {
+      const folderItems = grouped[cat.id] || [];
+      grid.appendChild(this._makeFolderCard(cat, folderItems));
+    });
+
+    // Kategorisiz öğeler
+    if (grouped['__other__'].length > 0) {
+      const other = { id: '__other__', name: 'Diğer', icon: '📁', color: '#64748b' };
+      grid.appendChild(this._makeFolderCard(other, grouped['__other__']));
     }
 
-    // "+ Ekle" butonu
+    // Genel "+ Klasör / Kısayol ekle" satırı
     const addRow = document.createElement('div');
-    addRow.className = 'shortcuts-add-row';
+    addRow.style.cssText = 'display:flex;justify-content:center;padding:0.75rem 0 0.25rem;';
     const addBtn = document.createElement('button');
     addBtn.className = 'add-shortcut-btn';
-    addBtn.innerHTML = '<span>+</span> <span>' + I18n.t('add_shortcut', 'Kısayol Ekle') + '</span>';
+    addBtn.innerHTML = '<span>+</span> <span>Manuel Kısayol Ekle</span>';
     addBtn.addEventListener('click', () => this.openAddModal());
     addRow.appendChild(addBtn);
     grid.appendChild(addRow);
   },
 
-  _makeCategorySection(cat, items) {
-    const section = document.createElement('div');
-    section.className = 'shortcut-category-section';
+  _makeFolderCard(cat, items) {
+    const isCollapsed = this.collapsedFolders.has(cat.id);
+    const card = document.createElement('div');
+    card.className = 'folder-card' + (isCollapsed ? ' collapsed' : '');
+    card.setAttribute('data-folder-id', cat.id);
+    card.style.setProperty('--folder-accent', cat.color || '#6366f1');
 
-    if (cat.id !== '_flat') {
-      const header = document.createElement('div');
-      header.className = 'shortcut-cat-header';
-      header.innerHTML =
-        '<span class="shortcut-cat-icon" style="color:' + (cat.color || '#6366f1') + '">' + (cat.icon || '📁') + '</span>' +
-        '<span class="shortcut-cat-name">' + cat.name + '</span>' +
-        '<span class="shortcut-cat-count">' + items.length + '</span>';
-      section.appendChild(header);
-    }
+    // --- Header ---
+    const header = document.createElement('div');
+    header.className = 'folder-header';
 
-    const row = document.createElement('div');
-    row.className = 'shortcuts-row';
-    items.forEach(item => row.appendChild(this._makeShortcutCard(item)));
-    section.appendChild(row);
-    return section;
+    const collapseIcon = document.createElement('span');
+    collapseIcon.className = 'folder-collapse-icon';
+    collapseIcon.textContent = '▶';
+
+    const emoji = document.createElement('span');
+    emoji.className = 'folder-emoji';
+    emoji.textContent = cat.icon || '📁';
+
+    const name = document.createElement('span');
+    name.className = 'folder-name';
+    name.textContent = cat.name;
+
+    const count = document.createElement('span');
+    count.className = 'folder-count';
+    count.textContent = items.length + ' link';
+
+    // Folder action buttons
+    const actions = document.createElement('div');
+    actions.className = 'folder-actions';
+
+    const deleteFolderBtn = document.createElement('button');
+    deleteFolderBtn.className = 'folder-action-btn';
+    deleteFolderBtn.title = 'Klasörü sil';
+    deleteFolderBtn.textContent = '🗑';
+    deleteFolderBtn.addEventListener('click', async e => {
+      e.stopPropagation();
+      if (!confirm('"' + cat.name + '" klasörü ve içindeki tüm linkler silinecek. Emin misiniz?')) return;
+      this.categories = this.categories.filter(c => c.id !== cat.id);
+      this.items = this.items.filter(i => i.categoryId !== cat.id);
+      await Storage.set(this.CATEGORIES_KEY, this.categories);
+      await Storage.set(this.ITEMS_KEY, this.items);
+      this.renderFolders();
+    });
+    actions.appendChild(deleteFolderBtn);
+
+    header.appendChild(collapseIcon);
+    header.appendChild(emoji);
+    header.appendChild(name);
+    header.appendChild(count);
+    header.appendChild(actions);
+
+    // Toggle collapse on header click
+    header.addEventListener('click', async e => {
+      if (e.target.closest('.folder-actions')) return;
+      card.classList.toggle('collapsed');
+      if (card.classList.contains('collapsed')) {
+        this.collapsedFolders.add(cat.id);
+      } else {
+        this.collapsedFolders.delete(cat.id);
+      }
+      await Storage.set(this.COLLAPSED_KEY, [...this.collapsedFolders]);
+    });
+
+    // --- Body ---
+    const body = document.createElement('div');
+    body.className = 'folder-body';
+
+    items.forEach(item => body.appendChild(this._makeLinkChip(item)));
+
+    // "+ Link ekle" chip
+    const addChip = document.createElement('button');
+    addChip.className = 'add-link-chip';
+    addChip.innerHTML = '<span>+</span>';
+    addChip.title = 'Bu klasöre link ekle';
+    addChip.addEventListener('click', () => {
+      const catSel = document.getElementById('shortcutCategorySelect');
+      if (catSel) catSel.value = cat.id;
+      this.openAddModal(cat.id);
+    });
+    body.appendChild(addChip);
+
+    card.appendChild(header);
+    card.appendChild(body);
+    return card;
   },
 
-  _makeShortcutCard(item) {
-    const card = document.createElement('div');
-    card.className = 'shortcut-card';
+  _makeLinkChip(item) {
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.style.display = 'inline-flex';
 
-    const link = document.createElement('a');
-    link.href = item.url;
-    link.className = 'shortcut-link';
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    link.title = item.title;
+    const a = document.createElement('a');
+    a.className = 'link-chip';
+    a.href = item.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.title = item.url;
 
-    const iconBox = document.createElement('div');
-    iconBox.className = 'shortcut-icon-box';
-
+    const iconEl = document.createElement('span');
+    iconEl.className = 'link-chip-icon';
     if (item.icon && (item.icon.startsWith('http') || item.icon.startsWith('data:'))) {
-      iconBox.innerHTML = '<img src="' + item.icon + '" alt="' + item.title + '" onerror="this.parentElement.textContent=\'🌐\'" />';
-    } else if (item.icon && item.icon.trim() !== '') {
-      iconBox.textContent = item.icon;
+      iconEl.innerHTML = '<img src="' + item.icon + '" alt="" onerror="this.parentElement.textContent=\'🌐\'" />';
+    } else if (item.icon && item.icon.trim()) {
+      iconEl.textContent = item.icon;
     } else {
       try {
         const domain = new URL(item.url).hostname;
-        iconBox.innerHTML = '<img src="https://www.google.com/s2/favicons?domain=' + domain + '&sz=64" alt="' + item.title + '" onerror="this.parentElement.textContent=\'🌐\'" />';
-      } catch(e) { iconBox.textContent = '🌐'; }
+        iconEl.innerHTML = '<img src="https://www.google.com/s2/favicons?domain=' + domain + '&sz=32" alt="" onerror="this.parentElement.textContent=\'🌐\'" />';
+      } catch(e) { iconEl.textContent = '🌐'; }
     }
 
-    const label = document.createElement('div');
-    label.className = 'shortcut-label';
+    const label = document.createElement('span');
+    label.className = 'link-chip-label';
     label.textContent = item.title;
 
     const delBtn = document.createElement('button');
-    delBtn.className = 'shortcut-delete-btn';
+    delBtn.className = 'link-chip-del';
     delBtn.innerHTML = '✕';
-    delBtn.title = I18n.t('delete', 'Sil');
-    delBtn.addEventListener('click', e => {
+    delBtn.title = 'Sil';
+    delBtn.addEventListener('click', async e => {
       e.preventDefault(); e.stopPropagation();
-      this.removeItem(item.id);
+      this.items = this.items.filter(i => i.id !== item.id);
+      await Storage.set(this.ITEMS_KEY, this.items);
+      this.renderFolders();
     });
 
-    link.appendChild(iconBox);
-    link.appendChild(label);
-    card.appendChild(link);
-    card.appendChild(delBtn);
-    return card;
+    a.appendChild(iconEl);
+    a.appendChild(label);
+    a.appendChild(delBtn);
+    wrapper.appendChild(a);
+    return wrapper;
+  },
+
+  _emptyState() {
+    const el = document.createElement('div');
+    el.className = 'empty-state-main';
+    el.innerHTML =
+      '<div class="empty-icon">⭐</div>' +
+      '<div class="empty-title">Henüz klasör veya kısayol yok</div>' +
+      '<div class="empty-desc">Tarayıcı favorilerinizi (.html) içe aktarın — klasörler otomatik oluşur. Ya da tek tek link ekleyebilirsiniz.</div>' +
+      '<div class="empty-actions">' +
+        '<button class="btn-primary" id="emptyImportBtn">⭐ Favori İçe Aktar</button>' +
+        '<button class="btn-secondary" id="emptyAddBtn">+ Manuel Ekle</button>' +
+      '</div>';
+    setTimeout(() => {
+      document.getElementById('emptyImportBtn')?.addEventListener('click', () => document.getElementById('bookmarkFileInput')?.click());
+      document.getElementById('emptyAddBtn')?.addEventListener('click', () => this.openAddModal());
+    }, 0);
+    return el;
   },
 
   /* ---- Add Modal ---- */
   setupModalListeners() {
     const modal    = document.getElementById('shortcutModal');
     const closeBtn = document.getElementById('closeShortcutModal');
+    const closeFooter = document.getElementById('closeShortcutModalFooter');
     const form     = document.getElementById('shortcutForm');
     const catSel   = document.getElementById('shortcutCategorySelect');
 
-    this._refreshCategorySelect(catSel);
-
-    if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-    if (modal)    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
+    if (closeBtn)    closeBtn.addEventListener('click',    () => modal.classList.remove('active'));
+    if (closeFooter) closeFooter.addEventListener('click', () => modal.classList.remove('active'));
+    if (modal)       modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
 
     if (form) {
       form.addEventListener('submit', async e => {
@@ -232,56 +244,47 @@ export const Shortcuts = {
         const title = document.getElementById('shortcutTitleInput').value.trim();
         let url     = document.getElementById('shortcutUrlInput').value.trim();
         const icon  = document.getElementById('shortcutIconInput').value.trim();
-        const catId = catSel && catSel.value ? catSel.value : '';
+        const catId = catSel && catSel.value ? catSel.value : (this.categories[0]?.id || '');
 
         if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
         if (!title || !url) return;
 
-        // Kategori yoksa seçim yok, categoryId boş bırak
         this.items.push({ id: Date.now().toString(), title, url, icon: icon || '', categoryId: catId });
         await Storage.set(this.ITEMS_KEY, this.items);
-        this.renderCategoryTabs();
-        this.renderGrid();
+        this.renderFolders();
         modal.classList.remove('active');
         form.reset();
       });
     }
   },
 
-  _refreshCategorySelect(catSel) {
-    if (!catSel) return;
-    catSel.innerHTML = '';
-    if (this.categories.length === 0) {
-      catSel.closest('.form-group').style.display = 'none';
-      return;
-    }
-    catSel.closest('.form-group').style.display = '';
-    this.categories.forEach(cat => {
-      const opt = document.createElement('option');
-      opt.value = cat.id;
-      opt.textContent = cat.icon + ' ' + cat.name;
-      catSel.appendChild(opt);
-    });
-    if (this.activeCategory !== 'all') catSel.value = this.activeCategory;
-  },
-
-  openAddModal() {
+  openAddModal(preferCatId) {
     const modal  = document.getElementById('shortcutModal');
     const catSel = document.getElementById('shortcutCategorySelect');
-    this._refreshCategorySelect(catSel);
+    const catGroup = document.getElementById('catSelectGroup');
+
+    if (catSel) {
+      catSel.innerHTML = '';
+      if (this.categories.length > 0) {
+        if (catGroup) catGroup.style.display = '';
+        this.categories.forEach(cat => {
+          const opt = document.createElement('option');
+          opt.value = cat.id;
+          opt.textContent = cat.icon + ' ' + cat.name;
+          catSel.appendChild(opt);
+        });
+        if (preferCatId) catSel.value = preferCatId;
+      } else {
+        if (catGroup) catGroup.style.display = 'none';
+      }
+    }
+
     if (modal) modal.classList.add('active');
     setTimeout(() => document.getElementById('shortcutTitleInput')?.focus(), 100);
   },
 
-  async removeItem(id) {
-    this.items = this.items.filter(item => item.id !== id);
-    await Storage.set(this.ITEMS_KEY, this.items);
-    this.renderGrid();
-  },
-
   /* ============================================================
-     BROWSER BOOKMARKS HTML IMPORTER
-     Chrome / Firefox / Edge / Opera .html export desteği
+     BOOKMARK IMPORTER
      ============================================================ */
   setupBookmarkImport() {
     const importBtn   = document.getElementById('bookmarkImportBtn');
@@ -294,12 +297,8 @@ export const Shortcuts = {
       if (!file) return;
       const reader = new FileReader();
       reader.onload = async ev => {
-        try {
-          const parsed = this.parseBookmarkHtml(ev.target.result);
-          await this.showImportPreview(parsed);
-        } catch(err) {
-          alert('Favori dosyası okunamadı:\n' + err.message);
-        }
+        try { await this.showImportPreview(this.parseBookmarkHtml(ev.target.result)); }
+        catch(err) { alert('Favori dosyası okunamadı:\n' + err.message); }
         importInput.value = '';
       };
       reader.readAsText(file, 'UTF-8');
@@ -307,17 +306,15 @@ export const Shortcuts = {
   },
 
   parseBookmarkHtml(html) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
+    const doc = new DOMParser().parseFromString(html, 'text/html');
     const folders = [];
-
     const rootDl = doc.querySelector('DL, dl');
     if (!rootDl) throw new Error('Geçerli bir tarayıcı favorileri dosyası değil.');
 
     const processFolder = (dl, folderName) => {
       const fd = { name: folderName || 'Genel', items: [] };
       for (const dt of dl.children) {
-        const tag = dt.tagName ? dt.tagName.toUpperCase() : '';
+        const tag = (dt.tagName || '').toUpperCase();
         if (tag !== 'DT' && tag !== 'P') continue;
         const h3    = dt.querySelector(':scope > H3, :scope > h3');
         const subDl = dt.querySelector(':scope > DL, :scope > dl');
@@ -327,11 +324,7 @@ export const Shortcuts = {
         } else {
           const a = dt.querySelector(':scope > A, :scope > a');
           if (a && a.href && a.href.startsWith('http')) {
-            fd.items.push({
-              title: (a.textContent || a.href).trim().slice(0, 80),
-              url: a.href,
-              icon: a.getAttribute('ICON') || a.getAttribute('icon') || ''
-            });
+            fd.items.push({ title: (a.textContent || a.href).trim().slice(0, 80), url: a.href, icon: a.getAttribute('ICON') || a.getAttribute('icon') || '' });
           }
         }
       }
@@ -340,7 +333,7 @@ export const Shortcuts = {
 
     const root = processFolder(rootDl, 'İçe Aktarılanlar');
     if (root.items.length > 0) folders.unshift(root);
-    if (folders.length === 0) throw new Error('Hiç yer imi linki bulunamadı. Dosyanın tarayıcıdan dışa aktarılmış HTML olduğundan emin olun.');
+    if (folders.length === 0) throw new Error('Hiç yer imi linki bulunamadı.');
     return folders;
   },
 
@@ -350,10 +343,11 @@ export const Shortcuts = {
     const summary    = document.getElementById('importSummaryText');
     const confirmBtn = document.getElementById('confirmImportBtn');
     const cancelBtn  = document.getElementById('cancelImportBtn');
+    const cancelHdr  = document.getElementById('cancelImportBtnHeader');
     if (!modal || !list) return;
 
-    const totalLinks = folders.reduce((acc, f) => acc + f.items.length, 0);
-    if (summary) summary.textContent = folders.length + ' klasör • ' + totalLinks + ' link bulundu. İçe aktarılacakları seçin:';
+    const total = folders.reduce((a, f) => a + f.items.length, 0);
+    if (summary) summary.textContent = folders.length + ' klasör • ' + total + ' link bulundu. İçe aktarılacakları seçin:';
 
     list.innerHTML = '';
     const selected = new Set(folders.map((_, i) => i));
@@ -366,64 +360,59 @@ export const Shortcuts = {
       cb.addEventListener('change', () => { if (cb.checked) selected.add(idx); else selected.delete(idx); });
       const lbl = document.createElement('label');
       lbl.htmlFor = 'ifolder_' + idx;
-      lbl.innerHTML =
-        '<span class="import-folder-icon">📁</span>' +
-        '<span class="import-folder-name">' + this._esc(folder.name) + '</span>' +
-        '<span class="import-folder-count">' + folder.items.length + ' link</span>';
+      lbl.innerHTML = '<span class="import-folder-icon">📁</span><span class="import-folder-name">' + this._esc(folder.name) + '</span><span class="import-folder-count">' + folder.items.length + ' link</span>';
       row.appendChild(cb); row.appendChild(lbl);
       list.appendChild(row);
     });
 
     modal.classList.add('active');
 
-    const handleConfirm = async () => {
+    const cleanup = () => {
+      confirmBtn.removeEventListener('click', doImport);
+      cancelBtn.removeEventListener('click', doCancel);
+      if (cancelHdr) cancelHdr.removeEventListener('click', doCancel);
+    };
+
+    const doCancel = () => { cleanup(); modal.classList.remove('active'); };
+    const doImport = async () => {
       cleanup();
       modal.classList.remove('active');
-      let addedCount = 0;
+      let added = 0;
 
       for (const idx of selected) {
         const folder = folders[idx];
         let cat = this.categories.find(c => c.name.toLowerCase() === folder.name.toLowerCase());
         if (!cat) {
-          cat = { id: 'import_' + Date.now() + '_' + idx, name: folder.name, icon: '📁', color: this._randomColor(), order: this.categories.length };
+          const color = this.FOLDER_COLORS[this.colorIndex % this.FOLDER_COLORS.length];
+          this.colorIndex++;
+          cat = { id: 'import_' + Date.now() + '_' + idx, name: folder.name, icon: '📁', color, order: this.categories.length };
           this.categories.push(cat);
         }
         folder.items.forEach(item => {
           if (!this.items.find(i => i.url === item.url)) {
             this.items.push({ id: 'bm_' + Date.now() + '_' + Math.random().toString(36).slice(2), title: item.title, url: item.url, icon: item.icon || '', categoryId: cat.id });
-            addedCount++;
+            added++;
           }
         });
       }
 
       await Storage.set(this.CATEGORIES_KEY, this.categories);
       await Storage.set(this.ITEMS_KEY, this.items);
-      this.renderCategoryTabs();
-      this.renderGrid();
-      this._showToast('✅ ' + addedCount + ' favori başarıyla içe aktarıldı!');
+      this.renderFolders();
+      this._toast('✅ ' + added + ' favori aktarıldı!');
     };
 
-    const handleCancel = () => { cleanup(); modal.classList.remove('active'); };
-    const cleanup = () => {
-      confirmBtn.removeEventListener('click', handleConfirm);
-      cancelBtn.removeEventListener('click', handleCancel);
-    };
-
-    confirmBtn.addEventListener('click', handleConfirm);
-    cancelBtn.addEventListener('click', handleCancel);
-    modal.addEventListener('click', e => { if (e.target === modal) handleCancel(); }, { once: true });
+    confirmBtn.addEventListener('click', doImport);
+    cancelBtn.addEventListener('click', doCancel);
+    if (cancelHdr) cancelHdr.addEventListener('click', doCancel);
+    modal.addEventListener('click', e => { if (e.target === modal) doCancel(); }, { once: true });
   },
 
   _esc(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); },
-  _randomColor() {
-    const c = ['#6366f1','#ec4899','#10b981','#f59e0b','#06b6d4','#8b5cf6','#f43f5e','#14b8a6','#3b82f6','#a78bfa'];
-    return c[Math.floor(Math.random() * c.length)];
-  },
-  _showToast(msg) {
+  _toast(msg) {
     const t = document.getElementById('toast');
     if (!t) return;
-    t.textContent = msg;
-    t.classList.add('show');
+    t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3500);
   }
 };

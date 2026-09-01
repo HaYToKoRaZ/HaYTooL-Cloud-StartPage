@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HaYTooL Cloud StartPage</title>
-  <meta name="description" content="Modern, hızlı ve estetik yeni sekme – HaYTooL Cloud StartPage">
   <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
   <link rel="alternate icon" type="image/png" href="../assets/icons/favicon.png">
   <link rel="stylesheet" href="../css/theme.css">
@@ -13,17 +12,14 @@
 <body class="bg-preset-aurora">
   <div id="bgLayer"></div>
 
-  <!-- ====== TOP HEADER BAR ====== -->
+  <!-- ====== TOP HEADER ====== -->
   <header class="top-bar">
-
-    <!-- Sol: Logo + Saat/Tarih + Hava Durumu -->
     <div class="top-bar-left">
       <div class="app-brand" title="HaYTooL Cloud StartPage">
         <img src="../assets/icons/favicon.svg" alt="HaYTooL">
         <span>HaYTooL</span>
       </div>
 
-      <!-- Saat & Tarih Widget (Sol Üst) -->
       <div id="headerClockWidget" class="header-clock-widget glass-card">
         <div class="header-time">
           <span id="digitalTime">00:00</span><span id="digitalSeconds" class="header-seconds">00</span>
@@ -31,96 +27,36 @@
         <div id="dateText" class="header-date">...</div>
       </div>
 
-      <!-- Hava Durumu -->
-      <button id="weatherBadge" class="weather-badge glass-card" title="Hava Durumu – Yenilemek için tıklayın">
+      <button id="weatherBadge" class="weather-badge glass-card" title="Hava Durumu">
         <span class="weather-icon">⏳</span>
-        <span data-i18n="weather_loading">Yükleniyor...</span>
+        <span>Yükleniyor...</span>
       </button>
     </div>
 
-    <!-- Sağ: Karşılama + Butonlar -->
     <div class="top-bar-right">
-      <div id="greetingText" class="header-greeting">...</div>
+      <div id="greetingText" class="header-greeting"></div>
 
-      <!-- Favori İçe Aktar -->
-      <button id="bookmarkImportBtn" class="bookmark-import-btn" title="Tarayıcı favorilerini içe aktar">
+      <button id="bookmarkImportBtn" class="bookmark-import-btn">
         <span>⭐</span>
-        <span data-i18n="import_bookmarks">Favori İçe Aktar</span>
+        <span>Favori İçe Aktar</span>
       </button>
       <input type="file" id="bookmarkFileInput" accept=".html,.htm" style="display:none;">
 
-      <!-- Notlar -->
-      <button id="notesToggleBtn" class="icon-btn" title="Hızlı Notlar & Görevler">📝</button>
-
-      <!-- Ayarlar -->
       <button id="settingsBtn" class="icon-btn" title="Ayarlar">⚙️</button>
     </div>
   </header>
 
-  <!-- ====== MAIN CENTER ====== -->
-  <main class="main-container">
-
-    <!-- Arama Çubuğu -->
-    <section id="searchWrapper" class="search-wrapper">
-      <form id="searchForm" class="search-box">
-        <div class="engine-selector">
-          <button type="button" id="engineSelectBtn" class="engine-btn" title="Arama Motoru">
-            <span>🔍</span><span>▾</span>
-          </button>
-          <div id="engineDropdown" class="engine-dropdown">
-            <div class="engine-option" data-engine="google">   <span>🔍</span> Google</div>
-            <div class="engine-option" data-engine="duckduckgo"><span>🦆</span> DuckDuckGo</div>
-            <div class="engine-option" data-engine="bing">     <span>🅱️</span> Bing</div>
-            <div class="engine-option" data-engine="youtube">  <span>📺</span> YouTube</div>
-            <div class="engine-option" data-engine="github">   <span>🐙</span> GitHub</div>
-            <div class="engine-option" data-engine="yandex">   <span>🟡</span> Yandex</div>
-            <div class="engine-option" data-engine="brave">    <span>🦁</span> Brave</div>
-          </div>
-        </div>
-        <input type="text" id="searchInput" class="search-input"
-          placeholder="Web'de ara veya URL girin..."
-          data-i18n-placeholder="search_placeholder"
-          autofocus autocomplete="off">
-        <button type="submit" class="search-submit-btn" title="Ara">➜</button>
-      </form>
-    </section>
-
-    <!-- Kategori Sekmeleri + Kısayol Kartları -->
-    <section id="shortcutsSection" class="shortcuts-section">
-      <div id="categoryTabBar" class="category-tab-bar" style="display:none;"></div>
-      <div id="shortcutsGrid"></div>
-    </section>
-
+  <!-- ====== FULL PAGE FOLDERS ====== -->
+  <main class="folders-main" id="foldersMain">
+    <!-- Dinamik olarak shortcuts.js tarafından doldurulur -->
+    <div id="shortcutsGrid"></div>
   </main>
 
-  <!-- ====== ALT FOOTER ====== -->
+  <!-- ====== BOTTOM ====== -->
   <footer class="bottom-bar">
     <div id="quoteBox" class="quote-box"></div>
-    <div class="footer-brand">HaYTooL StartPage v1.1.0</div>
+    <div class="footer-brand">HaYTooL StartPage v1.3.0</div>
   </footer>
-
-  <!-- ====== NOTES DRAWER ====== -->
-  <div id="notesDrawer" class="drawer-panel">
-    <div class="drawer-header">
-      <div class="drawer-tabs">
-        <button id="tabNotes"  class="drawer-tab active">Not Defteri</button>
-        <button id="tabTodos" class="drawer-tab">Yapılacaklar</button>
-      </div>
-      <button id="closeNotesDrawer" class="icon-btn" style="width:28px;height:28px;font-size:0.8rem;">✕</button>
-    </div>
-    <div class="drawer-body">
-      <div id="notesView">
-        <textarea id="notesTextarea" class="notes-textarea" placeholder="Düşüncelerinizi buraya not alın... (Otomatik kaydedilir)"></textarea>
-      </div>
-      <div id="todosView" style="display:none;">
-        <div class="todo-input-box">
-          <input type="text" id="todoInput" placeholder="Yeni görev ekle...">
-          <button id="addTodoBtn" class="btn-primary" style="padding:0.4rem 0.8rem;">+</button>
-        </div>
-        <ul id="todoList" class="todo-list"></ul>
-      </div>
-    </div>
-  </div>
 
   <!-- ====== ADD SHORTCUT MODAL ====== -->
   <div id="shortcutModal" class="modal-overlay">
@@ -139,11 +75,11 @@
           <input type="text" id="shortcutUrlInput" class="form-input" placeholder="https://github.com" required>
         </div>
         <div class="form-group">
-          <label>İkon / Emoji <span style="color:var(--text-dim);font-weight:400;">(opsiyonel – boş bırakılırsa favicon alınır)</span></label>
+          <label>İkon / Emoji <span style="color:var(--text-dim);font-weight:400;">(opsiyonel)</span></label>
           <input type="text" id="shortcutIconInput" class="form-input" placeholder="🐙">
         </div>
         <div class="form-group" id="catSelectGroup">
-          <label>Kategori</label>
+          <label>Kategori / Klasör</label>
           <select id="shortcutCategorySelect" class="form-select"></select>
         </div>
         <div class="modal-actions">
@@ -156,7 +92,7 @@
 
   <!-- ====== BOOKMARK IMPORT PREVIEW MODAL ====== -->
   <div id="importPreviewModal" class="modal-overlay">
-    <div class="modal-content" style="max-width:520px;">
+    <div class="modal-content" style="max-width:540px;">
       <div class="modal-header">
         <h3>⭐ Favori İçe Aktar</h3>
         <button id="cancelImportBtnHeader" class="icon-btn" style="width:28px;height:28px;">✕</button>
@@ -166,25 +102,14 @@
           📖 Favorileri nasıl dışa aktarırım?
         </summary>
         <div style="margin-top:0.6rem;display:flex;flex-direction:column;gap:0.4rem;">
-          <div style="font-size:0.82rem;color:var(--text-dim);padding:0.4rem 0.7rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);">
-            🔵 <strong>Chrome:</strong> Yer işaretleri → Yer İşaretleri Yöneticisi (Ctrl+Shift+O) → ⋮ → Dışa Aktar
-          </div>
-          <div style="font-size:0.82rem;color:var(--text-dim);padding:0.4rem 0.7rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);">
-            🟠 <strong>Firefox:</strong> Yer İşaretleri → Tüm Yer İşaretlerini Göster (Ctrl+Shift+B) → İçe ve Dışa Aktar → HTML Olarak Dışa Aktar
-          </div>
-          <div style="font-size:0.82rem;color:var(--text-dim);padding:0.4rem 0.7rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);">
-            🔷 <strong>Edge:</strong> Favoriler → Favorileri Yönet → ⋯ → Favorileri Dışa Aktar
-          </div>
-          <div style="font-size:0.82rem;color:var(--text-dim);padding:0.4rem 0.7rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);">
-            🔴 <strong>Opera:</strong> Yer İşaretleri → HTML'ye Aktar
-          </div>
+          <div class="import-hint">🔵 <strong>Chrome:</strong> Yer İşaretleri Yöneticisi (Ctrl+Shift+O) → ⋮ → Dışa Aktar</div>
+          <div class="import-hint">🟠 <strong>Firefox:</strong> Yer İşaretleri → Tüm Yer İşaretlerini Göster (Ctrl+Shift+B) → İçe ve Dışa Aktar → HTML</div>
+          <div class="import-hint">🔷 <strong>Edge:</strong> Favoriler → Favorileri Yönet → ⋯ → Favorileri Dışa Aktar</div>
+          <div class="import-hint">🔴 <strong>Opera:</strong> Yer İşaretleri → HTML'ye Aktar</div>
         </div>
       </details>
-
       <div id="importSummaryText" class="import-summary"></div>
-      <div class="import-list-scroll">
-        <div id="importFolderList"></div>
-      </div>
+      <div class="import-list-scroll"><div id="importFolderList"></div></div>
       <div class="modal-actions">
         <button type="button" id="cancelImportBtn" class="btn-secondary">Vazgeç</button>
         <button type="button" id="confirmImportBtn" class="btn-primary">İçe Aktar</button>
@@ -230,7 +155,7 @@
       </div>
       <div style="margin-top:1.25rem;">
         <h4 style="font-size:0.88rem;margin-bottom:0.75rem;color:var(--text-muted);">Widget Görünürlüğü</h4>
-        <div class="toggle-item"><span>Saat & Tarih (Sol Üst)</span>
+        <div class="toggle-item"><span>Saat & Tarih</span>
           <label class="switch"><input type="checkbox" id="toggleClock" checked><span class="slider"></span></label></div>
         <div class="toggle-item"><span>Saniye</span>
           <label class="switch"><input type="checkbox" id="toggleSeconds" checked><span class="slider"></span></label></div>
@@ -238,12 +163,6 @@
           <label class="switch"><input type="checkbox" id="toggleGreeting" checked><span class="slider"></span></label></div>
         <div class="toggle-item"><span>Hava Durumu</span>
           <label class="switch"><input type="checkbox" id="toggleWeather" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>Arama Çubuğu</span>
-          <label class="switch"><input type="checkbox" id="toggleSearch" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>Kısayollar</span>
-          <label class="switch"><input type="checkbox" id="toggleShortcuts" checked><span class="slider"></span></label></div>
-        <div class="toggle-item"><span>Notlar Paneli</span>
-          <label class="switch"><input type="checkbox" id="toggleNotes" checked><span class="slider"></span></label></div>
         <div class="toggle-item"><span>İlham Sözü</span>
           <label class="switch"><input type="checkbox" id="toggleQuote" checked><span class="slider"></span></label></div>
       </div>
@@ -252,8 +171,7 @@
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
           <button type="button" id="exportDataBtn" class="btn-secondary" style="flex:1;">Yedek İndir (JSON)</button>
           <label class="btn-secondary" style="flex:1;text-align:center;cursor:pointer;">
-            Yedek Yükle
-            <input type="file" id="importDataInput" accept=".json" style="display:none;">
+            Yedek Yükle <input type="file" id="importDataInput" accept=".json" style="display:none;">
           </label>
         </div>
         <button type="button" id="resetSettingsBtn" class="btn-secondary"
