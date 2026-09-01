@@ -198,7 +198,7 @@ export const Shortcuts = {
       
       // 12. Teknoloji
       { id: genId(), categoryId: 'cat_12', title: 'ChatGPT', url: 'https://chat.openai.com' },
-      { id: genId(), categoryId: 'cat_12', title: 'TechCrunch', url: 'https://techcrunch.com' },
+      { id: genId(), categoryId: 'cat_12', title: 'TeknoSeyir', url: 'https://teknoseyir.com' },
       { id: genId(), categoryId: 'cat_12', title: 'The Verge', url: 'https://www.theverge.com' },
       { id: genId(), categoryId: 'cat_12', title: 'Wired', url: 'https://www.wired.com' },
       { id: genId(), categoryId: 'cat_12', title: 'CNET', url: 'https://www.cnet.com' }
