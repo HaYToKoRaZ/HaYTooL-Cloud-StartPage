@@ -1609,6 +1609,9 @@ body {
   padding: 0.55rem 0.65rem 0.65rem;
   border-top: 1px solid rgba(255,255,255,0.05);
 }
+.folder-card.collapsed .folder-body {
+  display: none !important;
+}
 
 /* İkon Görünümü */
 .folder-body.view-icon {
