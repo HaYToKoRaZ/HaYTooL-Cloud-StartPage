@@ -223,6 +223,6 @@
   "btn_push_cloud_loading": "Uploading to Cloud...",
   "btn_push_cloud_success": "Successfully Sent to Cloud!",
   "btn_push_cloud_error": "Upload Failed",
-  "btn_new_folder_title": "New Folder (Middle-click: Send to Cloud)",
+  "btn_new_folder_title": "Create New Folder",
   "login_action": "Sign In"
 }

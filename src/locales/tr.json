@@ -224,6 +224,6 @@
   "btn_push_cloud_loading": "Buluta Gönderiliyor...",
   "btn_push_cloud_success": "Buluta Başarıyla Gönderildi!",
   "btn_push_cloud_error": "Gönderilemedi",
-  "btn_new_folder_title": "Yeni Klasör (Orta tık: Buluta Gönder)",
+  "btn_new_folder_title": "Yeni Klasör Oluştur",
   "login_action": "Giriş Yap"
 }

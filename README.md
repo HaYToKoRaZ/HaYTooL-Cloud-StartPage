@@ -27,7 +27,7 @@ Welcome to **HaYTooL Cloud StartPage**. This project is a next-generation, ultra
   - Drag & Drop folder organization across customizable columns (1 to 10 columns).
   - Flexible folder view modes: **Icon Grid (⊞)**, **Full List (📋)**, and **Shortlist (📃 10 Links)**.
   - One-click A–Z folder link sorting.
-  - Middle-click shortcut on New Folder button to immediately push state to cloud.
+  - Quick middle-click shortcut to toggle hidden folders visibility on the fly.
 - ⭐ **Favorites Bar**: Quick access bar at the top with customizable icon or list views.
 - 🌦️ **Live Weather & Geocoding**: Powered by Open-Meteo with automatic/manual location search, offline fallback, and real-time weather badges.
 - 🔍 **Multi-Engine Search Bar**: Instant switching between Google, DuckDuckGo, Bing, Yandex, Brave, and GitHub search.
@@ -99,7 +99,7 @@ HaYTooL Cloud StartPage; göz alıcı Glassmorphism (buzlu cam) estetiğini, esn
   - Sürükle-bırak (Drag & Drop) ile klasörleri ve linkleri dilediğiniz gibi sıralama (1 ila 10 sütun desteği).
   - Klasör bazında bağımsız görünüm modları: **İkon Görünümü (⊞)**, **Tam Liste (📋)** ve **Kısa Liste (📃 İlk 10 Link)**.
   - Tek tıkla linkleri A'dan Z'ye alfabetik dizme.
-  - Yeni Klasör butonuna **fare orta tuşuyla (tekerlek)** tıklandığında o anki durumu anında buluta gönderme kısayolu.
+  - **Fare orta tuşuyla (tekerlek)** gizlenmiş özel klasörleri anında açıp kapatma kısayolu.
 - ⭐ **Üst Favori Barı**: En sık kullandığınız sitelere tek tıkla erişim (İkon veya Liste görünümü).
 - 🌦️ **Canlı Hava Durumu & Arama**: Open-Meteo destekli canlı hava durumu, Türkçe şehir arama desteği, otomatik koordinat doğrulama ve çevrimdışı önbellek koruması.
 - 🔍 **Çoklu Arama Çubuğu**: Google, DuckDuckGo, Bing, Yandex, Brave ve GitHub arama motorları arasında anında geçiş.
