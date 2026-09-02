@@ -24,10 +24,13 @@ export const Settings = {
     const themeMap = { oled: 'dark', cyber: 'dark' };
     if (themeMap[this.config.theme]) this.config.theme = themeMap[this.config.theme];
     this.apply();
-    this.setupListeners();
-    this.setupCityAutocomplete();
-    this.setupBackup();
-    this.setupReset();
+    if (!this._initialized) {
+      this._initialized = true;
+      this.setupListeners();
+      this.setupCityAutocomplete();
+      this.setupBackup();
+      this.setupReset();
+    }
   },
 
   apply() {
@@ -200,88 +203,115 @@ export const Settings = {
 
   // === HAVA DURUMU CANLI ARAMA (AUTOCOMPLETE) ===
   setupBackup() {
-    const expBtn = document.getElementById('exportDataBtn');
-    const impInp = document.getElementById('importDataInput');
+    const expBtn = document.getElementById("exportDataBtn");
+    const impInp = document.getElementById("importDataInput");
     
     if (expBtn) {
-      expBtn.addEventListener('click', async () => {
-        const allData = await Storage.getAll();
-        const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'haytool_backup_' + new Date().toISOString().slice(0,10) + '.json';
-        a.click();
-        URL.revokeObjectURL(url);
-        this.toast(I18n.t('toast_backup_downloaded', 'Yedek indirildi'));
+      let isExporting = false;
+      expBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (isExporting) return;
+        isExporting = true;
+        try {
+          const allData = await Storage.getAll();
+          const blob = new Blob([JSON.stringify(allData, null, 2)], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "haytool_backup_" + new Date().toISOString().slice(0,10) + ".json";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 2000);
+          this.toast(I18n.t("toast_backup_downloaded", "Yedek indirildi"));
+        } finally {
+          setTimeout(() => { isExporting = false; }, 1500);
+        }
       });
     }
 
-    const expHtmlBtn = document.getElementById('exportHtmlBtn');
+    const expHtmlBtn = document.getElementById("exportHtmlBtn");
     if (expHtmlBtn) {
-      expHtmlBtn.addEventListener('click', async () => {
-        const favs = await Storage.get('favorites_bar', []);
-        const cats = await Storage.get('shortcut_categories', []);
-        const items = await Storage.get('shortcuts_v2', []);
-        
-        let html = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
-<TITLE>Bookmarks</TITLE>
-<H1>Bookmarks</H1>
-<DL><p>\n`;
-        
-        if (favs && favs.length > 0) {
-          html += `    <DT><H3>HaYTooL Favorites</H3>\n    <DL><p>\n`;
-          favs.forEach(f => {
-            html += `        <DT><A HREF="${f.url}">${f.title}</A>\n`;
-          });
-          html += `    </DL><p>\n`;
+      let isExportingHtml = false;
+      expHtmlBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (isExportingHtml) return;
+        isExportingHtml = true;
+        try {
+          const favs = await Storage.get("favorites_bar", []);
+          const cats = await Storage.get("shortcut_categories", []);
+          const items = await Storage.get("shortcuts_v2", []);
+          
+          let html = "<!DOCTYPE NETSCAPE-Bookmark-file-1>\n" +
+                     "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=UTF-8\">\n" +
+                     "<TITLE>Bookmarks</TITLE>\n<H1>Bookmarks</H1>\n<DL><p>\n";
+          
+          if (favs && favs.length > 0) {
+            html += "    <DT><H3>HaYTooL Favorites</H3>\n    <DL><p>\n";
+            favs.forEach(f => {
+              html += "        <DT><A HREF=\"" + f.url + "\">" + f.title + "</A>\n";
+            });
+            html += "    </DL><p>\n";
+          }
+
+          if (cats && cats.length > 0) {
+            cats.forEach(c => {
+              const cItems = items.filter(i => i.categoryId === c.id);
+              if (cItems.length > 0) {
+                html += "    <DT><H3>" + c.name + "</H3>\n    <DL><p>\n";
+                cItems.forEach(i => {
+                  html += "        <DT><A HREF=\"" + i.url + "\">" + i.title + "</A>\n";
+                });
+                html += "    </DL><p>\n";
+              }
+            });
+          }
+
+          html += "</DL><p>\n";
+
+          const blob = new Blob([html], { type: "text/html" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "haytool_bookmarks_" + new Date().toISOString().slice(0,10) + ".html";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 2000);
+          this.toast(I18n.t("toast_backup_downloaded", "Yer imleri HTML olarak indirildi"));
+        } finally {
+          setTimeout(() => { isExportingHtml = false; }, 1500);
         }
-
-        if (cats && cats.length > 0) {
-          cats.forEach(c => {
-            const cItems = items.filter(i => i.categoryId === c.id);
-            if (cItems.length > 0) {
-              html += `    <DT><H3>${c.name}</H3>\n    <DL><p>\n`;
-              cItems.forEach(i => {
-                html += `        <DT><A HREF="${i.url}">${i.title}</A>\n`;
-              });
-              html += `    </DL><p>\n`;
-            }
-          });
-        }
-
-        html += `</DL><p>\n`;
-
-        const blob = new Blob([html], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'haytool_bookmarks_' + new Date().toISOString().slice(0,10) + '.html';
-        a.click();
-        URL.revokeObjectURL(url);
-        this.toast(I18n.t('toast_backup_downloaded', 'HTML yer imleri dışa aktarıldı!'));
       });
     }
 
     if (impInp) {
-      impInp.addEventListener('change', (e) => {
+      impInp.addEventListener("change", async (e) => {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
         reader.onload = async (ev) => {
           try {
             const data = JSON.parse(ev.target.result);
-            if (typeof data !== 'object') throw new Error('Geçersiz dosya');
+            if (!data || typeof data !== "object") throw new Error("Geçersiz dosya formatı");
+            
             for (const key of Object.keys(data)) {
+              if (key === "_last_local_update") continue;
               await Storage.set(key, data[key]);
             }
-            this.toast(I18n.t('toast_backup_downloaded'));
-            setTimeout(() => window.location.reload(), 1500);
+
+            if (typeof Storage.pushAllToCloud === "function") {
+              await Storage.pushAllToCloud();
+            }
+
+            this.toast(I18n.t("toast_backup_uploaded", "Yedek başarıyla yüklendi! Sayfa yenileniyor..."));
+            setTimeout(() => window.location.reload(), 1200);
           } catch(err) {
-            alert('Yedek yüklenirken hata oluştu: ' + err.message);
+            alert((I18n.t("import_backup_error", "Yedek yüklenirken hata oluştu: ")) + err.message);
           }
-          impInp.value = '';
+          impInp.value = "";
         };
         reader.readAsText(file);
       });
