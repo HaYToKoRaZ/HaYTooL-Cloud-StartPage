@@ -12,17 +12,15 @@ import { Auth }      from './auth.js';
 class StartPageApp {
   async init() {
     try {
-      await I18n.init();
-      
-      // 1. Önce Auth ve bulut eşitlemesini tamamla (böylece ayarlar en taze haliyle gelir)
-      await Auth.init();
-
-      // 2. Buluttan inen taze ayarlarla Settings'i başlat
+      // 1. Yerel ayarlarla sayfayı ve temayı ANINDA başlat (0 ms gecikme, sıfır parlama)
       await Settings.init();
-
-      await Weather.init();
+      await I18n.init();
       await Favorites.init();
       await Shortcuts.init();
+      await Weather.init();
+
+      // 2. Bulut eşitlemesi ve kimlik kontrolünü arka planda başlat (Arayüzü bekletmez)
+      Auth.init().catch(err => console.error('[Auth] init hatası:', err));
       this.initClock();
       this.initQuotes();
       
@@ -188,3 +186,4 @@ class StartPageApp {
 }
 
 document.addEventListener('DOMContentLoaded', () => new StartPageApp().init());
+
