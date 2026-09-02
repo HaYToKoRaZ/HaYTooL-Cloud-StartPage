@@ -14,7 +14,7 @@
 [![Language](https://img.shields.io/badge/Language-JavaScript%20ESNext-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![UI](https://img.shields.io/badge/UI-Vanilla%20CSS%20%7C%20Glassmorphism-264de4?style=for-the-badge&logo=css3&logoColor=white)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage)
 [![Database](https://img.shields.io/badge/Storage-chrome.storage.local-4285F4?style=for-the-badge&logo=google)](https://developer.chrome.com/docs/extensions/reference/storage/)
-[![Version](https://img.shields.io/badge/Version-v4.1.0-informational?style=for-the-badge&logo=semver)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases)
+[![Version](https://img.shields.io/badge/Version-v4.1.1-informational?style=for-the-badge&logo=semver)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases)
 [![Downloads](https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Cloud-StartPage/total?style=for-the-badge&logo=github&color=blueviolet)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases)
 [![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)](LICENSE)
 
