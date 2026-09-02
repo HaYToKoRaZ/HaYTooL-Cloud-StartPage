@@ -57,6 +57,12 @@
             document.getElementById('errorBox').style.display = "block";
         }
 
+        // GÜVENLİK KONTROLÜ: Eklenti kimliği 32 haneli standart Chrome uzantı ID formatında olmalıdır
+        if (!EXTENSION_ID || !/^[a-z]{32}$/.test(EXTENSION_ID)) {
+            showError("Güvenlik Uyarısı: Geçersiz veya eksik Eklenti Kimliği. Lütfen girişi doğrudan HaYTooL eklentiniz içerisinden başlatın.");
+            document.getElementById('btnAuth').style.display = "none";
+        }
+
         document.getElementById('btnAuth').addEventListener('click', async () => {
             document.getElementById('btnAuth').style.display = "none";
             document.getElementById('loader').style.display = "block";
