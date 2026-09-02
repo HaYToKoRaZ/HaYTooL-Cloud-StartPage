@@ -7,33 +7,53 @@ import { Settings }  from './settings.js';
 import { Auth }      from './auth.js';
 
 /**
- * HaYTooL Cloud StartPage v2.0.0
+ * HaYTooL Cloud StartPage v4.1.1
  */
 class StartPageApp {
   async init() {
     try {
       await I18n.init();
-      await Settings.init();
       
-      // Auth'u bekleyelim (Giriş/Karşılama ekranı için)
+      // 1. Önce Auth ve bulut eşitlemesini tamamla (böylece ayarlar en taze haliyle gelir)
       await Auth.init();
+
+      // 2. Buluttan inen taze ayarlarla Settings'i başlat
+      await Settings.init();
 
       await Weather.init();
       await Favorites.init();
       await Shortcuts.init();
       this.initClock();
+      this.initQuotes();
       
       this.initGlobalKeys();
       this.initSearchBar();
       
-      window.addEventListener('render_shortcuts_and_favorites', () => {
-        Shortcuts.renderFolders();
+      window.addEventListener('render_shortcuts_and_favorites', async () => {
+        Favorites.items = await Storage.get(Favorites.FAV_KEY, []);
         Favorites.render();
+        Shortcuts.categories = await Storage.get(Shortcuts.CAT_KEY, []);
+        Shortcuts.items = await Storage.get(Shortcuts.ITEMS_KEY, []);
+        Shortcuts.renderFolders();
+      });
+
+      window.addEventListener('cloud_data_loaded', async () => {
+        await Settings.init();
+        if (document.getElementById('settingsModal')?.classList.contains('active')) {
+          Settings.populate();
+        }
+        await Weather.fetchAndRender(true);
+        Favorites.items = await Storage.get(Favorites.FAV_KEY, []);
+        Favorites.render();
+        Shortcuts.categories = await Storage.get(Shortcuts.CAT_KEY, []);
+        Shortcuts.items = await Storage.get(Shortcuts.ITEMS_KEY, []);
+        Shortcuts.renderFolders();
       });
       
       window.addEventListener('langchange', () => {
         Shortcuts.renderFolders();
         Favorites.render();
+        this.initQuotes();
       });
       
       console.log('✨ HaYTooL Cloud StartPage v4.1.1 - hazır.');
@@ -46,7 +66,7 @@ class StartPageApp {
     }
   }
 
-    initQuotes() {
+  initQuotes() {
     const box = document.getElementById('quoteBox');
     if (!box) return;
     const quotes = [
@@ -96,7 +116,6 @@ class StartPageApp {
       if (timeEl) timeEl.textContent = h + ":" + m;
       if (secEl)  secEl.textContent  = s;
       if (dateEl) {
-        // İki satır olması için tarih ve ay ayırıyoruz
         const dayName = now.toLocaleDateString(lang, { weekday: "short" });
         const dayNum = now.toLocaleDateString(lang, { day: "numeric" });
         const monthName = now.toLocaleDateString(lang, { month: "short" });
@@ -122,8 +141,6 @@ class StartPageApp {
     tick(); setInterval(tick, 1000);
   }
 
-  
-
   initGlobalKeys() {
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape')
@@ -137,9 +154,6 @@ class StartPageApp {
     const searchInput = document.getElementById('topSearchInput');
     const engineSelect = document.getElementById('topSearchEngineSelect');
     
-    // Initial display setting
-    
-
     const savedEngine = await Storage.get('search_engine', 'google');
     if (engineSelect) {
       engineSelect.value = savedEngine;
@@ -174,7 +188,3 @@ class StartPageApp {
 }
 
 document.addEventListener('DOMContentLoaded', () => new StartPageApp().init());
-
-
-
-

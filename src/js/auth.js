@@ -163,6 +163,7 @@ export const Auth = {
         const hasContent = !!(
           (cloudData.shortcuts_v2 && cloudData.shortcuts_v2.length > 0) ||
           (cloudData.shortcut_categories && cloudData.shortcut_categories.length > 0) ||
+          (cloudData.favorites_bar && cloudData.favorites_bar.length > 0) ||
           cloudData.app_settings
         );
 
@@ -189,6 +190,9 @@ export const Auth = {
             window.location.reload();
             return;
           }
+
+          // Buluttan inen taze ayarları ve linkleri arayüze uygula
+          window.dispatchEvent(new Event('cloud_data_loaded'));
         } else {
           // Bulutta henüz veri yok, bu cihazdaki yerel verileri buluta aktar!
           console.log('[Auth] Bulut boş, yerel veriler buluta aktarılıyor...');
@@ -349,4 +353,5 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 });
+
 
