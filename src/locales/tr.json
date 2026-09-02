@@ -219,5 +219,10 @@
   "settings_icon_api": "Kısayol İkon Servisi",
   "settings_show_import_btn": "Yer İmlerini İçe Aktar Butonunu Göster",
   "settings_show_theme_btn": "Hızlı Tema Butonunu Göster",
-  "theme_toggle": "Temayı Değiştir"
+  "theme_toggle": "Temayı Değiştir",
+  "btn_push_cloud": "Şu Anki Hali Buluta Gönder",
+  "btn_push_cloud_loading": "Buluta Gönderiliyor...",
+  "btn_push_cloud_success": "Buluta Başarıyla Gönderildi!",
+  "btn_push_cloud_error": "Gönderilemedi",
+  "btn_new_folder_title": "Yeni Klasör (Orta tık: Buluta Gönder)"
 }

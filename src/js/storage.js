@@ -74,6 +74,12 @@ if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', () => {
     flushCloudSync();
   });
+  // Sekme arka plana geçtiğinde veya gizlendiğinde bekleyen verileri anında buluta gönder
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      flushCloudSync();
+    }
+  });
 }
 
 function scheduleCloudSync(changedKey, changedValue) {
@@ -86,7 +92,7 @@ function scheduleCloudSync(changedKey, changedValue) {
   if (syncTimeout) clearTimeout(syncTimeout);
   syncTimeout = setTimeout(() => {
     flushCloudSync();
-  }, 200); // 200ms hızlı debounce
+  }, 10000); // 10 saniye tasarruflu debounce (arka arkaya yapılan tüm değişiklikleri tek pakette toplar)
 }
 
 export const Storage = {

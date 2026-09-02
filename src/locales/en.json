@@ -218,5 +218,10 @@
   "settings_icon_api": "Favicon Provider Service",
   "settings_show_import_btn": "Show Import Bookmarks Button",
   "settings_show_theme_btn": "Show Quick Theme Toggle Button",
-  "theme_toggle": "Toggle Theme"
+  "theme_toggle": "Toggle Theme",
+  "btn_push_cloud": "Send Current State to Cloud",
+  "btn_push_cloud_loading": "Uploading to Cloud...",
+  "btn_push_cloud_success": "Successfully Sent to Cloud!",
+  "btn_push_cloud_error": "Upload Failed",
+  "btn_new_folder_title": "New Folder (Middle-click: Send to Cloud)"
 }

@@ -1,3 +1,4 @@
+import { I18n } from './i18n.js';
 import { auth, db, GithubAuthProvider, signInWithCredential, signOut, onAuthStateChanged, doc, getDoc, setDoc, onSnapshot } from './firebase-config.js';
 import { Storage, setApplyingCloudData } from './storage.js';
 
@@ -310,22 +311,23 @@ export const Auth = {
         syncBtn.style.cssText = 'width:100%; margin-top:8px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:0.82rem;';
         container.appendChild(syncBtn);
       }
-      syncBtn.innerHTML = '☁️ <span>Buluta Şimdi Eşitle</span>';
+      const defaultLabel = () => '☁️ <span>' + I18n.t('btn_push_cloud', 'Şu Anki Hali Buluta Gönder') + '</span>';
+      syncBtn.innerHTML = defaultLabel();
       syncBtn.onclick = async () => {
         syncBtn.disabled = true;
-        syncBtn.innerHTML = '⏳ <span>Eşitleniyor...</span>';
+        syncBtn.innerHTML = '⏳ <span>' + I18n.t('btn_push_cloud_loading', 'Buluta Gönderiliyor...') + '</span>';
         const ok = await Storage.pushAllToCloud();
         if (ok) {
-          syncBtn.innerHTML = '✅ <span>Buluta Başarıyla Eşitlendi!</span>';
+          syncBtn.innerHTML = '✅ <span>' + I18n.t('btn_push_cloud_success', 'Buluta Başarıyla Gönderildi!') + '</span>';
           setTimeout(() => {
             syncBtn.disabled = false;
-            syncBtn.innerHTML = '☁️ <span>Buluta Şimdi Eşitle</span>';
+            syncBtn.innerHTML = defaultLabel();
           }, 2500);
         } else {
-          syncBtn.innerHTML = '❌ <span>Hata Oluştu</span>';
+          syncBtn.innerHTML = '❌ <span>' + I18n.t('btn_push_cloud_error', 'Gönderilemedi') + '</span>';
           setTimeout(() => {
             syncBtn.disabled = false;
-            syncBtn.innerHTML = '☁️ <span>Buluta Şimdi Eşitle</span>';
+            syncBtn.innerHTML = defaultLabel();
           }, 2500);
         }
       };

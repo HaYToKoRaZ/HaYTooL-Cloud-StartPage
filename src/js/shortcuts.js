@@ -765,7 +765,24 @@ export const Shortcuts = {
     const colorInput = document.getElementById('createFolderColorInput');
 
     if (openBtn) {
-      openBtn.addEventListener('click', () => this.openCreateFolderModal());
+      // Sol tık: Yeni Klasör Oluşturma Modalı
+      openBtn.addEventListener('click', (e) => {
+        if (e.button === 0) this.openCreateFolderModal();
+      });
+
+      // Fare Orta Tuş: Anında Buluta Gönder (Push to Cloud)
+      openBtn.addEventListener('auxclick', async (e) => {
+        if (e.button === 1) {
+          e.preventDefault();
+          this._toast('⏳ ' + I18n.t('btn_push_cloud_loading', 'Buluta Gönderiliyor...'));
+          const ok = await Storage.pushAllToCloud();
+          if (ok) {
+            this._toast('☁️ ' + I18n.t('btn_push_cloud_success', 'Buluta Başarıyla Gönderildi!'));
+          } else {
+            this._toast('❌ ' + I18n.t('btn_push_cloud_error', 'Gönderilemedi'));
+          }
+        }
+      });
     }
 
     if (closeBtn) closeBtn.addEventListener('click', () => modal?.classList.remove('active'));

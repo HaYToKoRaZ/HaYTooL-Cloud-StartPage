@@ -141,6 +141,44 @@ body {
   transition: all var(--transition-fast);
 }
 
+.header-btn-group {
+  display: flex;
+  align-items: center;
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  gap: 2px;
+}
+
+.header-btn-group .icon-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+}
+
+.header-btn-group .icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+}
+
+.btn-create-folder {
+  color: #38bdf8 !important;
+  border-color: rgba(56, 189, 248, 0.25) !important;
+  background: rgba(56, 189, 248, 0.08) !important;
+}
+
+.btn-create-folder:hover {
+  color: #7dd3fc !important;
+  background: rgba(56, 189, 248, 0.18) !important;
+  border-color: rgba(56, 189, 248, 0.45) !important;
+  transform: translateY(-1px);
+}
+
 .icon-btn:hover {
   color: var(--text-main);
   background: var(--surface-glass-hover);
