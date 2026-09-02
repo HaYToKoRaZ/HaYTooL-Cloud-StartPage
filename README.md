@@ -61,7 +61,7 @@
 
 <div align="center">
 
-| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="32" /><br/>**Chrome** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="32" /><br/>**Brave** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="32" /><br/>**Edge** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="32" /><br/>**Opera** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chromium/chromium_48x48.png" width="32" /><br/>**Helium** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="32" /><br/>**Vivaldi** |
+| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="32" /><br/>**Chrome** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="32" /><br/>**Brave** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="32" /><br/>**Edge** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="32" /><br/>**Opera** | <img src="https://github.com/imputnet/helium/raw/main/resources/branding/app_icon/raw.png" width="32" /><br/>**Helium** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="32" /><br/>**Vivaldi** |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | `chrome://extensions` | `brave://extensions` | `edge://extensions` | `opera://extensions` | `helium://extensions` | `vivaldi://extensions` |
 
@@ -144,7 +144,7 @@
 
 <div align="center">
 
-| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="32" /><br/>**Chrome** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="32" /><br/>**Brave** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="32" /><br/>**Edge** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="32" /><br/>**Opera** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chromium/chromium_48x48.png" width="32" /><br/>**Helium** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="32" /><br/>**Vivaldi** |
+| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="32" /><br/>**Chrome** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="32" /><br/>**Brave** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="32" /><br/>**Edge** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="32" /><br/>**Opera** | <img src="https://github.com/imputnet/helium/raw/main/resources/branding/app_icon/raw.png" width="32" /><br/>**Helium** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="32" /><br/>**Vivaldi** |
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | `chrome://extensions` | `brave://extensions` | `edge://extensions` | `opera://extensions` | `helium://extensions` | `vivaldi://extensions` |
 
