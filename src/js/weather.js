@@ -28,33 +28,63 @@ export const Weather = {
 
     badge.innerHTML = '<span class="weather-icon">⏳</span><span>Yükleniyor...</span>';
 
-    if (cityObj && cityObj.lat !== undefined && cityObj.lon !== undefined) {
-      await this.fetchWeather(cityObj.lat, cityObj.lon, cityObj.name);
+    const lat = parseFloat(cityObj?.lat);
+    const lon = parseFloat(cityObj?.lon);
+    const hasValidCoords = !isNaN(lat) && !isNaN(lon) && lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
+
+    if (hasValidCoords) {
+      await this.fetchWeather(lat, lon, cityObj.name || 'Konum');
     } else {
+      // Varsayılan: İstanbul (41.0082, 28.9784)
       await this.fetchWeather(41.0082, 28.9784, 'İstanbul');
     }
   },
 
   async fetchWeather(lat, lon, cityName) {
     try {
-      const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+      const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + encodeURIComponent(lat) +
+                  '&longitude=' + encodeURIComponent(lon) +
                   '&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto';
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('Hava API hatası');
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+
+      if (!res.ok) throw new Error('Hava API yanıt vermedi (HTTP ' + res.status + ')');
       const data = await res.json();
+      
+      if (!data || !data.current || typeof data.current.temperature_2m !== 'number') {
+        throw new Error('Geçersiz veya eksik hava durumu verisi');
+      }
+
       const wd = {
         temp:     Math.round(data.current.temperature_2m),
-        code:     data.current.weather_code,
+        code:     data.current.weather_code ?? 0,
         city:     cityName || 'Konum',
-        wind:     Math.round(data.current.wind_speed_10m),
-        humidity: data.current.relative_humidity_2m
+        wind:     Math.round(data.current.wind_speed_10m ?? 0),
+        humidity: Math.round(data.current.relative_humidity_2m ?? 0)
       };
+
       await Storage.set('weather_cache', { timestamp: Date.now(), data: wd });
       this.render(wd);
     } catch(e) {
-      console.warn('[Weather] Hata:', e);
-      const badge = document.getElementById('weatherBadge');
-      if (badge) badge.innerHTML = '<span class="weather-icon">🌤️</span><span>--°C</span>';
+      console.warn('[Weather] Hata:', e.message || e);
+      
+      // Hata durumunda önbellekte eski veri varsa onu göster
+      const cached = await Storage.get('weather_cache', null);
+      if (cached && cached.data) {
+        this.render(cached.data);
+      } else {
+        const badge = document.getElementById('weatherBadge');
+        if (badge) {
+          badge.innerHTML = '<div class="weather-badge-top">' +
+            '<span class="weather-icon">🌤️</span>' +
+            '<span>--°C <small style="opacity:.6;font-size:.8em">' + (cityName || 'Konum') + '</small></span>' +
+          '</div>';
+        }
+      }
     }
   },
 

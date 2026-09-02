@@ -31,32 +31,44 @@ export const Auth = {
     });
   },
 
-  // Storage'da bekleyen token varsa Firebase'e giriş yap
+  // Storage'da bekleyen token varsa Firebase'e anında giriş yap
   async _processPendingToken() {
+    if (this._isProcessingAuth) return;
+    this._isProcessingAuth = true;
     try {
       const result = await new Promise(r =>
         chrome.storage.local.get(['_pending_auth_token'], r)
       );
       const token = result ? result._pending_auth_token : null;
-      if (!token) return;
+      if (!token) {
+        this._isProcessingAuth = false;
+        return;
+      }
 
       await new Promise(r => chrome.storage.local.remove(['_pending_auth_token'], r));
 
       const credential = GithubAuthProvider.credential(token);
       const fbResult   = await signInWithCredential(auth, credential);
       this.currentUser = fbResult.user;
+      await this.updateProfileUI(fbResult.user);
 
-      // İlk giriş: buluttan çek ve sayfayı YENİLE
-      await this.checkAndSyncCloudData(fbResult.user, true);
+      // Karşılama modalı açıksa anında kapat
+      const modal = document.getElementById('welcomeModal');
+      if (modal) modal.classList.remove('active');
 
       if (this._authResolve) {
         this._authResolve(fbResult.user);
         this._authResolve = null;
         this._authReject  = null;
       }
+
+      // İlk giriş: buluttan çek ve sayfayı hemen yenile
+      await this.checkAndSyncCloudData(fbResult.user, true);
     } catch (e) {
       chrome.storage.local.remove(['_pending_auth_token']);
       console.warn('[Auth] Pending token işlenemedi:', e.message);
+    } finally {
+      this._isProcessingAuth = false;
     }
   },
 
@@ -323,34 +335,19 @@ export const Auth = {
   }
 };
 
-// EXTERNAL_AUTH_SUCCESS mesajı gelince
+// EXTERNAL_AUTH_SUCCESS veya storage değişikliği gelince anında oturumu tamamla
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'EXTERNAL_AUTH_SUCCESS') {
-    (async () => {
-      try {
-        const credential = GithubAuthProvider.credential(request.token);
-        const result     = await signInWithCredential(auth, credential);
-        Auth.currentUser = result.user;
-        await Auth.updateProfileUI(result.user);
-
-        chrome.storage.local.remove(['_pending_auth_token']);
-
-        if (Auth._authResolve) {
-          Auth._authResolve(result.user);
-          Auth._authResolve = null;
-          Auth._authReject  = null;
-        }
-
-        // Buluttan veriyi indir ve sayfayı kesin olarak yenile!
-        await Auth.checkAndSyncCloudData(result.user, true);
-
-        sendResponse({ ok: true });
-      } catch (e) {
-        console.error('EXTERNAL_AUTH_SUCCESS hatası:', e);
-        sendResponse({ ok: false, error: e.message });
-      }
-    })();
+    Auth._processPendingToken();
+    sendResponse({ ok: true });
     return true;
+  }
+});
+
+// Storage'da token kaydedildiğinde sekmeyi yenilemeye gerek kalmadan 0ms tepki ver!
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName === 'local' && changes._pending_auth_token && changes._pending_auth_token.newValue) {
+    Auth._processPendingToken();
   }
 });
 
