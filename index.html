@@ -107,20 +107,21 @@
       background: rgba(30, 41, 59, 0.6);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 3px;
-      gap: 3px;
+      padding: 2px 4px;
+      gap: 2px;
+      flex-wrap: wrap;
     }
     .lang-btn {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 16px;
+      gap: 4px;
+      padding: 3px 7px;
+      border-radius: 14px;
       border: none;
       background: transparent;
       color: var(--text-muted);
       font-family: inherit;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
@@ -520,13 +521,28 @@
         <a href="privacy.html" class="nav-link" data-i18n="nav_privacy">Gizlilik</a>
         <a href="terms.html" class="nav-link" data-i18n="nav_terms">Şartlar</a>
 
-        <!-- Bayraklı Dil Seçici -->
+        <!-- Bayraklı 7 Dil Seçici -->
         <div class="lang-switch">
-          <button type="button" class="lang-btn active" id="btnLangTr" onclick="setLang('tr')">
+          <button type="button" class="lang-btn active" id="btnLangTr" onclick="setLang('tr')" title="Türkçe">
             <img src="https://flagcdn.com/20x15/tr.png" alt="TR"> <span>TR</span>
           </button>
-          <button type="button" class="lang-btn" id="btnLangEn" onclick="setLang('en')">
+          <button type="button" class="lang-btn" id="btnLangEn" onclick="setLang('en')" title="English">
             <img src="https://flagcdn.com/20x15/gb.png" alt="EN"> <span>EN</span>
+          </button>
+          <button type="button" class="lang-btn" id="btnLangDe" onclick="setLang('de')" title="Deutsch">
+            <img src="https://flagcdn.com/20x15/de.png" alt="DE"> <span>DE</span>
+          </button>
+          <button type="button" class="lang-btn" id="btnLangEs" onclick="setLang('es')" title="Español">
+            <img src="https://flagcdn.com/20x15/es.png" alt="ES"> <span>ES</span>
+          </button>
+          <button type="button" class="lang-btn" id="btnLangFr" onclick="setLang('fr')" title="Français">
+            <img src="https://flagcdn.com/20x15/fr.png" alt="FR"> <span>FR</span>
+          </button>
+          <button type="button" class="lang-btn" id="btnLangRu" onclick="setLang('ru')" title="Русский">
+            <img src="https://flagcdn.com/20x15/ru.png" alt="RU"> <span>RU</span>
+          </button>
+          <button type="button" class="lang-btn" id="btnLangPt" onclick="setLang('pt')" title="Português">
+            <img src="https://flagcdn.com/20x15/pt.png" alt="PT"> <span>PT</span>
           </button>
         </div>
 
@@ -543,7 +559,7 @@
     <!-- HERO BÖLÜMÜ -->
     <section class="hero">
       <div class="badge">
-        <span data-i18n="badge_ver">✨ Sürüm v4.2.0 Yayında</span>
+        <span data-i18n="badge_ver">✨ Sürüm v4.3.0 Yayında</span>
         <span>•</span>
         <span>Manifest V3 Ready</span>
       </div>
@@ -659,6 +675,12 @@
           <h3 data-i18n="feat_6_title">Dinamik Temalar & Kişiselleştirme</h3>
           <p data-i18n="feat_6_desc">Karanlık, Aydınlık, Aurora, Siberpunk ve AMOLED temaları. Özel duvar kağıdı tanımlama, sütun sayısı ve widget görünürlük kontrolleri.</p>
         </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3 data-i18n="feat_7_title">7 Dil Desteği & Yerelleştirme</h3>
+          <p data-i18n="feat_7_desc">Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, Rusça ve Portekizce dillerinde tam yerel arayüz ve Chromium mağaza desteği.</p>
+        </div>
       </div>
     </section>
 
@@ -670,7 +692,7 @@
           <div class="dot dot-yellow"></div>
           <div class="dot dot-green"></div>
         </div>
-        <span style="font-family:'JetBrains Mono'; font-size:0.8rem; color:var(--text-dim);">HaYTooL-Architecture-v4.2.0.js</span>
+        <span style="font-family:'JetBrains Mono'; font-size:0.8rem; color:var(--text-dim);">HaYTooL-Architecture-v4.3.0.js</span>
       </div>
       <div class="terminal-code">
         <span class="comment">// 🛡️ HaYTooL Cloud StartPage — Mimari Standartlar</span><br>
@@ -709,97 +731,278 @@
 
   <script>
     const translations = {
-      tr: {
-        nav_features: "Özellikler",
-        nav_tech: "Teknoloji",
-        nav_privacy: "Gizlilik",
-        nav_terms: "Şartlar",
-        badge_ver: "✨ Sürüm v4.2.0 Yayında",
-        hero_title: "Tarayıcınızı Geleceğe Taşıyın",
-        hero_desc: "HaYTooL Cloud StartPage; buzlu cam (Glassmorphism) estetiği, ultra hızlı yerel mimari ve Firebase tabanlı kesintisiz GitHub bulut senkronizasyonu ile donatılmış modern başlangıç sayfanızdır.",
-        btn_install: "Eklentiyi İndir / Yükle",
-        btn_explore: "Özellikleri Keşfet",
-        stat_speed: "Açılış Hızı (Sıfır FOIT)",
-        stat_offline: "Yerel-Öncelikli (Offline-First)",
-        stat_columns: "Esnek Sütun Desteği",
-        stat_sync: "Bulut Eşitleme Güvencesi",
-        sec_title: "Güçlü ve Ayrıcalıklı Özellikler",
-        sec_sub: "Klasik yer imi kalabalığından kurtulun, üretkenliğinizi zirveye taşıyın.",
-        feat_1_title: "Sıfır Parlama & Anında Açılış",
-        feat_1_desc: "Senkronize tema önyükleyicisi ile sayfa açılırken hiçbir tema parlaması (FOIT) yaşanmaz. Saf Vanilla JS ile 50ms'nin altında ışık hızında yüklenir.",
-        feat_2_title: "GitHub Bulut Senkronizasyonu",
-        feat_2_desc: "GitHub hesabınızla tek tıkla bağlanın. Tüm linkleriniz, klasör dizilimleriniz ve ayarlarınız 10 saniyelik tasarruf moduyla tüm cihazlarınıza anında eşitlensin.",
-        feat_3_title: "Akıllı Klasör & Kısa Liste Modu",
-        feat_3_desc: "Her klasör için bağımsız İkon (⊞), Liste (📋) veya 10'lu Kısa Liste (📃) modu seçin. Linklerinizi tek tıkla A-Z sıralayın, sürükleyip bırakarak düzenleyin.",
-        feat_4_title: "Fare Orta Tuşu ile Gizli Klasörler",
-        feat_4_desc: "Ayarlar veya üst kontrol butonlarına fare tekerleğiyle (orta tık) bastığınızda gizlenmiş özel klasörleriniz anında görünür hale gelir veya gizlenir.",
-        feat_5_title: "Canlı Hava Durumu & Arama",
-        feat_5_desc: "Open-Meteo destekli canlı hava durumu widget'ı, küresel şehir arama desteği, otomatik koordinat doğrulama ve çevrimdışı önbellek koruması.",
-        feat_6_title: "Dinamik Temalar & Kişiselleştirme",
-        feat_6_desc: "Karanlık, Aydınlık, Aurora, Siberpunk ve AMOLED temaları. Özel duvar kağıdı tanımlama, sütun sayısı ve widget görünürlük kontrolleri.",
-        btn_install: "GitHub Deposu (Kaynak Kod)",
-        store_sub_chrome: "Chrome Web Mağazası",
-        store_sub_edge: "Edge Eklentileri",
-        store_sub_helium: "Chrome Mağazası ile",
-        all_rights: "Tüm hakları saklıdır."
-      },
-      en: {
-        nav_features: "Features",
-        nav_tech: "Technology",
-        nav_privacy: "Privacy Policy",
-        nav_terms: "Terms of Use",
-        badge_ver: "✨ Version v4.2.0 Live",
-        hero_title: "Elevate Your Browsing Experience",
-        hero_desc: "HaYTooL Cloud StartPage is your next-gen new tab dashboard featuring premium glassmorphism aesthetics, zero-latency local-first speed, and seamless GitHub cloud sync.",
-        btn_install: "Download / Install Extension",
-        btn_explore: "Explore Features",
-        stat_speed: "Startup Speed (Zero FOIT)",
-        stat_offline: "Local-First Architecture",
-        stat_columns: "Flexible Column Layout",
-        stat_sync: "Cloud Sync Assurance",
-        sec_title: "Powerful & Distinctive Features",
-        sec_sub: "Declutter your bookmark chaos and supercharge your daily productivity.",
-        feat_1_title: "Zero-Flicker & Instant Startup",
-        feat_1_desc: "Synchronous theme bootstrapper completely eliminates theme flashing (FOIT). Loads in under 50ms with zero-framework pure Vanilla JS.",
-        feat_2_title: "GitHub Cloud Synchronization",
-        feat_2_desc: "Sign in effortlessly with your GitHub account. All your bookmarks, layouts, and preferences sync seamlessly with an economical 10s debounce.",
-        feat_3_title: "Smart Folders & Shortlist Mode",
-        feat_3_desc: "Choose Icon Grid (⊞), Full List (📋), or Shortlist (📃 10 Links) per folder. Sort links A-Z with one click and organize via smooth Drag & Drop.",
-        feat_4_title: "Middle-Click Hidden Folders",
-        feat_4_desc: "Click with the mouse wheel (middle-click) on the Settings gear or control buttons to instantly reveal or hide private folders.",
-        feat_5_title: "Live Weather & Global Search",
-        feat_5_desc: "Open-Meteo live weather widget with global location search, automatic coordinate validation, and offline cache protection.",
-        feat_6_title: "Dynamic Themes & Customization",
-        feat_6_desc: "Dark, Light, Aurora, Cyberpunk, and AMOLED themes. Custom background wallpaper upload, column sizing, and widget controls.",
-        btn_install: "GitHub Repository (Source)",
-        store_sub_chrome: "Chrome Web Store",
-        store_sub_edge: "Edge Add-ons",
-        store_sub_helium: "Via Chrome Store",
-        all_rights: "All rights reserved."
-      }
-    };
+  "tr": {
+    "nav_features": "Özellikler",
+    "nav_tech": "Teknoloji",
+    "nav_privacy": "Gizlilik",
+    "nav_terms": "Şartlar",
+    "badge_ver": "✨ Sürüm v4.3.0 Yayında",
+    "hero_title": "Tarayıcınızı Geleceğe Taşıyın",
+    "hero_desc": "HaYTooL Cloud StartPage; buzlu cam (Glassmorphism) estetiği, ultra hızlı yerel mimari ve Firebase tabanlı kesintisiz GitHub bulut senkronizasyonu ile donatılmış modern başlangıç sayfanızdır.",
+    "btn_install": "GitHub Deposu (Kaynak Kod)",
+    "btn_explore": "Özellikleri Keşfet",
+    "store_sub_chrome": "Chrome Web Mağazası",
+    "store_sub_edge": "Edge Eklentileri",
+    "store_sub_helium": "Chrome Mağazası ile",
+    "stat_speed": "Açılış Hızı (Sıfır FOIT)",
+    "stat_offline": "Yerel-Öncelikli (Offline-First)",
+    "stat_columns": "Esnek Sütun Desteği",
+    "stat_sync": "Bulut Eşitleme Güvencesi",
+    "sec_title": "Güçlü ve Ayrıcalıklı Özellikler",
+    "sec_sub": "Klasik yer imi kalabalığından kurtulun, üretkenliğinizi zirveye taşıyın.",
+    "feat_1_title": "Sıfır Parlama & Anında Açılış",
+    "feat_1_desc": "Senkronize tema önyükleyicisi ile sayfa açılırken hiçbir tema parlaması (FOIT) yaşanmaz. Saf Vanilla JS ile 50ms'nin altında ışık hızında yüklenir.",
+    "feat_2_title": "GitHub Bulut Senkronizasyonu",
+    "feat_2_desc": "GitHub hesabınızla tek tıkla bağlanın. Tüm linkleriniz, klasör dizilimleriniz ve ayarlarınız 10 saniyelik tasarruf moduyla tüm cihazlarınıza anında eşitlensin.",
+    "feat_3_title": "Akıllı Klasör & Kısa Liste Modu",
+    "feat_3_desc": "Her klasör için bağımsız İkon (⊞), Liste (📋) veya 10'lu Kısa Liste (📃) modu seçin. Linklerinizi tek tıkla A-Z sıralayın, sürükleyip bırakarak düzenleyin.",
+    "feat_4_title": "Fare Orta Tuşu ile Gizli Klasörler",
+    "feat_4_desc": "Ayarlar veya üst kontrol butonlarına fare tekerleğiyle (orta tık) bastığınızda gizlenmiş özel klasörleriniz anında görünür hale gelir veya gizlenir.",
+    "feat_5_title": "Canlı Hava Durumu & Arama",
+    "feat_5_desc": "Open-Meteo destekli canlı hava durumu widget'ı, küresel şehir arama desteği, otomatik koordinat doğrulama ve çevrimdışı önbellek koruması.",
+    "feat_6_title": "Dinamik Temalar & Kişiselleştirme",
+    "feat_6_desc": "Karanlık, Aydınlık, Aurora, Siberpunk ve AMOLED temaları. Özel duvar kağıdı tanımlama, sütun sayısı ve widget görünürlük kontrolleri.",
+    "feat_7_title": "7 Dil Desteği & Yerelleştirme",
+    "feat_7_desc": "Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, Rusça ve Portekizce dillerinde tam yerel arayüz ve Chromium mağaza desteği.",
+    "all_rights": "Tüm hakları saklıdır."
+  },
+  "en": {
+    "nav_features": "Features",
+    "nav_tech": "Technology",
+    "nav_privacy": "Privacy Policy",
+    "nav_terms": "Terms of Use",
+    "badge_ver": "✨ Version v4.3.0 Live",
+    "hero_title": "Elevate Your Browsing Experience",
+    "hero_desc": "HaYTooL Cloud StartPage is your next-gen new tab dashboard featuring premium glassmorphism aesthetics, zero-latency local-first speed, and seamless GitHub cloud sync.",
+    "btn_install": "GitHub Repository (Source)",
+    "btn_explore": "Explore Features",
+    "store_sub_chrome": "Chrome Web Store",
+    "store_sub_edge": "Edge Add-ons",
+    "store_sub_helium": "Via Chrome Store",
+    "stat_speed": "Startup Speed (Zero FOIT)",
+    "stat_offline": "Local-First Architecture",
+    "stat_columns": "Flexible Column Layout",
+    "stat_sync": "Cloud Sync Assurance",
+    "sec_title": "Powerful & Distinctive Features",
+    "sec_sub": "Declutter your bookmark chaos and supercharge your daily productivity.",
+    "feat_1_title": "Zero-Flicker & Instant Startup",
+    "feat_1_desc": "Synchronous theme bootstrapper completely eliminates theme flashing (FOIT). Loads in under 50ms with zero-framework pure Vanilla JS.",
+    "feat_2_title": "GitHub Cloud Synchronization",
+    "feat_2_desc": "Sign in effortlessly with your GitHub account. All your bookmarks, layouts, and preferences sync seamlessly with an economical 10s debounce.",
+    "feat_3_title": "Smart Folders & Shortlist Mode",
+    "feat_3_desc": "Choose Icon Grid (⊞), Full List (📋), or Shortlist (📃 10 Links) per folder. Sort links A-Z with one click and organize via smooth Drag & Drop.",
+    "feat_4_title": "Middle-Click Hidden Folders",
+    "feat_4_desc": "Click with the mouse wheel (middle-click) on the Settings gear or control buttons to instantly reveal or hide private folders.",
+    "feat_5_title": "Live Weather & Global Search",
+    "feat_5_desc": "Open-Meteo live weather widget with global location search, automatic coordinate validation, and offline cache protection.",
+    "feat_6_title": "Dynamic Themes & Customization",
+    "feat_6_desc": "Dark, Light, Aurora, Cyberpunk, and AMOLED themes. Custom background wallpaper upload, column sizing, and widget controls.",
+    "feat_7_title": "7 Languages & Store i18n",
+    "feat_7_desc": "Full native interface and store localization in Turkish, English, German, Spanish, French, Russian, and Portuguese.",
+    "all_rights": "All rights reserved."
+  },
+  "de": {
+    "nav_features": "Funktionen",
+    "nav_tech": "Technologie",
+    "nav_privacy": "Datenschutz",
+    "nav_terms": "Nutzungsbedingungen",
+    "badge_ver": "✨ Version v4.3.0 Live",
+    "hero_title": "Bringen Sie Ihren Browser in die Zukunft",
+    "hero_desc": "HaYTooL Cloud StartPage ist Ihre Startseite der nächsten Generation mit Glassmorphism-Ästhetik, blitzschneller Leistung und nahtloser GitHub-Cloud-Synchronisierung.",
+    "btn_install": "GitHub-Repository (Quellcode)",
+    "btn_explore": "Funktionen entdecken",
+    "store_sub_chrome": "Chrome Web Store",
+    "store_sub_edge": "Edge-Erweiterungen",
+    "store_sub_helium": "Über Chrome Store",
+    "stat_speed": "Startgeschwindigkeit (< 50ms)",
+    "stat_offline": "Lokale Priorität (Offline-First)",
+    "stat_columns": "Flexible Spaltenunterstützung",
+    "stat_sync": "Cloud-Synchronisationssicherheit",
+    "sec_title": "Leistungsstarke Funktionen",
+    "sec_sub": "Befreien Sie sich vom Lesezeichen-Chaos und steigern Sie Ihre Produktivität.",
+    "feat_1_title": "Sofortiger Start ohne Flackern",
+    "feat_1_desc": "Der synchrone Theme-Bootstrapper verhindert Theme-Flackern. Lädt in unter 50ms mit reinem Vanilla JS.",
+    "feat_2_title": "GitHub-Cloud-Synchronisierung",
+    "feat_2_desc": "Verbinden Sie sich mit GitHub. Lesezeichen, Ordner und Einstellungen werden mit 10s-Sparmodus synchronisiert.",
+    "feat_3_title": "Intelligente Ordner & Kurzwahlliste",
+    "feat_3_desc": "Wählen Sie Symbol-, Listen- oder 10er-Kurzlistenansicht. A–Z Sortierung und Drag & Drop.",
+    "feat_4_title": "Versteckte Ordner mit mittlerer Maustaste",
+    "feat_4_desc": "Klicken Sie mit dem Mausrad auf Steuerungs-Schaltflächen, um private Ordner sofort ein- oder auszublenden.",
+    "feat_5_title": "Live-Wetter & Globale Suche",
+    "feat_5_desc": "Open-Meteo Live-Wetter-Widget, globale Städtesuche und Offline-Zwischenspeicher.",
+    "feat_6_title": "Dynamische Themes & Anpassung",
+    "feat_6_desc": "Dunkle, Helle, Aurora-, Cyberpunk- und AMOLED-Themes. Eigene Hintergrundbilder und flexible Spalten.",
+    "feat_7_title": "7 Sprachen & Store-Lokalisierung",
+    "feat_7_desc": "Vollständige Benutzeroberfläche und Store-Unterstützung auf Türkisch, Englisch, Deutsch, Spanisch, Französisch, Russisch und Portugiesisch.",
+    "all_rights": "Alle Rechte vorbehalten."
+  },
+  "es": {
+    "nav_features": "Características",
+    "nav_tech": "Tecnología",
+    "nav_privacy": "Privacidad",
+    "nav_terms": "Términos",
+    "badge_ver": "✨ Versión v4.3.0 Disponible",
+    "hero_title": "Lleva tu Navegador al Futuro",
+    "hero_desc": "HaYTooL Cloud StartPage es tu página de inicio de última generación con estética Glassmorphism, rendimiento ultrarrápido y sincronización en la nube con GitHub.",
+    "btn_install": "Repositorio GitHub (Código)",
+    "btn_explore": "Explorar Funciones",
+    "store_sub_chrome": "Chrome Web Store",
+    "store_sub_edge": "Complementos Edge",
+    "store_sub_helium": "Vía Chrome Store",
+    "stat_speed": "Velocidad de Inicio (< 50ms)",
+    "stat_offline": "Prioridad Local (Offline-First)",
+    "stat_columns": "Soporte de Columnas Flexible",
+    "stat_sync": "Sincronización en la Nube",
+    "sec_title": "Características Destacadas",
+    "sec_sub": "Despeja el desorden de marcadores y maximiza tu productividad diaria.",
+    "feat_1_title": "Inicio Instantáneo Sin Parpadeos",
+    "feat_1_desc": "El cargador de temas síncrono elimina el parpadeo de estilos. Carga en menos de 50ms con puro Vanilla JS.",
+    "feat_2_title": "Sincronización en la Nube con GitHub",
+    "feat_2_desc": "Conéctate con tu cuenta de GitHub. Tus enlaces y ajustes se sincronizan con un modo ahorro de 10 segundos.",
+    "feat_3_title": "Carpetas Inteligentes y Lista Corta",
+    "feat_3_desc": "Elige vista de Iconos, Lista Completa o Lista Corta de 10 enlaces. Ordenación A–Z y arrastrar y soltar.",
+    "feat_4_title": "Carpetas Ocultas con Clic Central",
+    "feat_4_desc": "Haz clic con la rueda del ratón en los botones de control para mostrar u ocultar carpetas privadas.",
+    "feat_5_title": "Clima en Vivo y Búsqueda Global",
+    "feat_5_desc": "Widget del tiempo con Open-Meteo, búsqueda mundial de ciudades y protección con caché sin conexión.",
+    "feat_6_title": "Temas Dinámicos y Personalización",
+    "feat_6_desc": "Temas Oscuro, Claro, Aurora, Cyberpunk y AMOLED. Fondos personalizados y columnas flexibles.",
+    "feat_7_title": "7 Idiomas y Soporte en Tiendas",
+    "feat_7_desc": "Interfaz nativa y soporte de tiendas en turco, inglés, alemán, español, francés, ruso y portugués.",
+    "all_rights": "Todos los derechos reservados."
+  },
+  "fr": {
+    "nav_features": "Fonctionnalités",
+    "nav_tech": "Technologie",
+    "nav_privacy": "Confidentialité",
+    "nav_terms": "Conditions",
+    "badge_ver": "✨ Version v4.3.0 En Ligne",
+    "hero_title": "Propulsez Votre Navigateur Vers l'Avenir",
+    "hero_desc": "HaYTooL Cloud StartPage est votre tableau de bord nouvelle génération alliant esthétique Glassmorphism, rapidité locale et synchronisation Cloud GitHub fluide.",
+    "btn_install": "Dépôt GitHub (Code Source)",
+    "btn_explore": "Explorer les Fonctions",
+    "store_sub_chrome": "Chrome Web Store",
+    "store_sub_edge": "Extensions Edge",
+    "store_sub_helium": "Via Chrome Store",
+    "stat_speed": "Vitesse d'Ouverture (< 50ms)",
+    "stat_offline": "Priorité Locale (Offline-First)",
+    "stat_columns": "Colonnes Modulables",
+    "stat_sync": "Garantie de Synchronisation",
+    "sec_title": "Fonctionnalités Clés",
+    "sec_sub": "Désencombrez vos favoris et libérez votre productivité au quotidien.",
+    "feat_1_title": "Démarrage Instantané Sans Scintillement",
+    "feat_1_desc": "Le chargeur de thème synchrone évite tout clignotement visuel. Chargement en moins de 50ms en pur Vanilla JS.",
+    "feat_2_title": "Synchronisation Cloud avec GitHub",
+    "feat_2_desc": "Connectez-vous avec GitHub. Vos favoris et réglages se synchronisent avec un délai économique de 10s.",
+    "feat_3_title": "Dossiers Intelligents & Liste Courte",
+    "feat_3_desc": "Choisissez la vue Icônes, Liste Complète ou Liste Courte de 10 liens. Tri A–Z et Glisser-Déposer.",
+    "feat_4_title": "Dossiers Masqués via Clic Molette",
+    "feat_4_desc": "Cliquez avec la molette de la souris sur les boutons de contrôle pour afficher ou masquer vos dossiers privés.",
+    "feat_5_title": "Météo en Direct & Recherche Mondiale",
+    "feat_5_desc": "Widget météo Open-Meteo, recherche mondiale de villes et gestion hors ligne sécurisée.",
+    "feat_6_title": "Thèmes Dynamiques & Personnalisation",
+    "feat_6_desc": "Thèmes Sombre, Clair, Aurore, Cyberpunk et AMOLED. Fond d'écran personnalisé et colonnes ajustables.",
+    "feat_7_title": "Support en 7 Langues & Stores",
+    "feat_7_desc": "Interface native complète et intégration store en turc, anglais, allemand, espagnol, français, russe et portugais.",
+    "all_rights": "Tous droits réservés."
+  },
+  "ru": {
+    "nav_features": "Возможности",
+    "nav_tech": "Технологии",
+    "nav_privacy": "Конфиденциальность",
+    "nav_terms": "Условия",
+    "badge_ver": "✨ Версия v4.3.0 Выпущена",
+    "hero_title": "Ваш браузер будущего",
+    "hero_desc": "HaYTooL Cloud StartPage — стартовая страница нового поколения с эффектом матового стекла, сверхбыстрой загрузкой и облачной синхронизацией через GitHub.",
+    "btn_install": "Репозиторий GitHub (Код)",
+    "btn_explore": "Узнать подробнее",
+    "store_sub_chrome": "Chrome Web Store",
+    "store_sub_edge": "Расширения Edge",
+    "store_sub_helium": "Через Chrome Store",
+    "stat_speed": "Скорость запуска (< 50мс)",
+    "stat_offline": "Локальный приоритет (Offline-First)",
+    "stat_columns": "Гибкая сетка колонок",
+    "stat_sync": "Облачная синхронизация",
+    "sec_title": "Мощные возможности",
+    "sec_sub": "Избавьтесь от хаоса закладок и повысьте свою ежедневную продуктивность.",
+    "feat_1_title": "Мгновенный запуск без мерцания",
+    "feat_1_desc": "Синхронный загрузчик предотвращает мерцание темы. Загрузка менее чем за 50мс на чистом Vanilla JS.",
+    "feat_2_title": "Облачная синхронизация через GitHub",
+    "feat_2_desc": "Входите через GitHub. Все ссылки и параметры синхронизируются с 10-секундным экономным пакетом.",
+    "feat_3_title": "Умные папки и краткий список",
+    "feat_3_desc": "Выбирайте значки, полный список или топ-10 ссылок. Сортировка А-Я и перетаскивание Drag & Drop.",
+    "feat_4_title": "Скрытые папки кликом колесика мыши",
+    "feat_4_desc": "Нажимайте колесико мыши на кнопках управления, чтобы мгновенно скрыть или показать приватные папки.",
+    "feat_5_title": "Живая погода и глобальный поиск",
+    "feat_5_desc": "Виджет погоды Open-Meteo, глобальный поиск городов и надежный автономный кэш.",
+    "feat_6_title": "Динамические темы и настройка",
+    "feat_6_desc": "Темная, светлая, полярное сияние, киберпанк и AMOLED темы. Свои фоновые рисунки и колонки.",
+    "feat_7_title": "Поддержка 7 языков и магазинов",
+    "feat_7_desc": "Полная поддержка на турецком, английском, немецком, испанском, французском, русском и португальском языках.",
+    "all_rights": "Все права защищены."
+  },
+  "pt": {
+    "nav_features": "Recursos",
+    "nav_tech": "Tecnologia",
+    "nav_privacy": "Privacidade",
+    "nav_terms": "Termos",
+    "badge_ver": "✨ Versão v4.3.0 Disponível",
+    "hero_title": "Leve o Seu Navegador para o Futuro",
+    "hero_desc": "HaYTooL Cloud StartPage é o seu painel de nova guia de última geração com estética Glassmorphism, velocidade local ultrarrápida e sincronização na nuvem com GitHub.",
+    "btn_install": "Repositório GitHub (Código)",
+    "btn_explore": "Explorar Recursos",
+    "store_sub_chrome": "Chrome Web Store",
+    "store_sub_edge": "Extensões do Edge",
+    "store_sub_helium": "Via Chrome Store",
+    "stat_speed": "Velocidade de Abertura (< 50ms)",
+    "stat_offline": "Prioridade Local (Offline-First)",
+    "stat_columns": "Colunas Personalizáveis",
+    "stat_sync": "Garantia de Sincronização",
+    "sec_title": "Recursos Poderosos",
+    "sec_sub": "Organize o caos dos seus favoritos e turbine a sua produtividade diária.",
+    "feat_1_title": "Inicialização Instantânea Sem Piscar",
+    "feat_1_desc": "O carregador síncrono elimina oscilações de tema. Carrega em menos de 50ms em puro Vanilla JS.",
+    "feat_2_title": "Sincronização na Nuvem com GitHub",
+    "feat_2_desc": "Conecte-se com sua conta GitHub. Atalhos e configurações sincronizam com modo econômico de 10s.",
+    "feat_3_title": "Pastas Inteligentes e Lista Curta",
+    "feat_3_desc": "Escolha grade de ícones, lista completa ou lista curta de 10 links. Ordenação A–Z e arrastar e soltar.",
+    "feat_4_title": "Pastas Ocultas com Clique do Meio",
+    "feat_4_desc": "Clique com o botão do meio do mouse (roda) nos botões de controle para revelar ou ocultar pastas privadas.",
+    "feat_5_title": "Clima ao Vivo e Pesquisa Global",
+    "feat_5_desc": "Widget de clima Open-Meteo, pesquisa mundial de cidades e proteção com cache offline.",
+    "feat_6_title": "Temas Dinâmicos e Personalização",
+    "feat_6_desc": "Temas Escuro, Claro, Aurora, Cyberpunk e AMOLED. Papéis de parede personalizados e colunas ajustáveis.",
+    "feat_7_title": "Suporte a 7 Idiomas e Lojas",
+    "feat_7_desc": "Interface nativa completa e suporte para lojas em turco, inglês, alemão, espanhol, francês, russo e português.",
+    "all_rights": "Todos os direitos reservados."
+  }
+};
 
     function setLang(lang) {
       document.documentElement.lang = lang;
-      const dict = translations[lang] || translations.tr;
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
+      const dict = translations[lang] || translations.en;
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
         if (dict[key]) el.textContent = dict[key];
       });
 
-      document.getElementById('btnLangTr').classList.toggle('active', lang === 'tr');
-      document.getElementById('btnLangEn').classList.toggle('active', lang === 'en');
+      document.querySelectorAll(".lang-btn").forEach(btn => btn.classList.remove("active"));
+      const activeBtn = document.getElementById("btnLang" + lang.charAt(0).toUpperCase() + lang.slice(1));
+      if (activeBtn) activeBtn.classList.add("active");
       
-      const shot = document.getElementById('appScreenshotImg');
+      const shot = document.getElementById("appScreenshotImg");
       if (shot) {
-        shot.src = lang === 'en' ? 'assets/screenshots/eng.jpeg' : 'assets/screenshots/tr.jpeg';
+        // Türkçe seçildiğinde Türkçe resim, diğer tüm dillerde İngilizce resim
+        shot.src = lang === "tr" ? "assets/screenshots/tr.jpeg" : "assets/screenshots/eng.jpeg";
       }
 
-      localStorage.setItem('haytool_web_lang', lang);
+      localStorage.setItem("haytool_web_lang", lang);
     }
 
     // Başlangıç dili algılama
-    const savedLang = localStorage.getItem('haytool_web_lang') || (navigator.language.startsWith('tr') ? 'tr' : 'en');
+    const browserLang = (navigator.language || "en").split("-")[0];
+    const defaultAvailable = ["tr", "en", "de", "es", "fr", "ru", "pt"].includes(browserLang) ? browserLang : "en";
+    const savedLang = localStorage.getItem("haytool_web_lang") || defaultAvailable;
     setLang(savedLang);
   </script>
 

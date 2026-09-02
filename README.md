@@ -27,7 +27,7 @@ This repository branch (`websites`) hosts the official landing page, live docume
 
 ## 📁 Branch Architecture & Files
 
-- **`index.html`**: The official, multilingual (TR/EN) glassmorphism landing page with store links and feature showcase.
+- **`index.html`**: The official, 7-language multilingual (TR, EN, DE, ES, FR, RU, PT) glassmorphism landing page with store links and feature showcase.
 - **`auth.html`**: The secure Firebase & GitHub OAuth bridge that safely authenticates users and communicates with the Chrome extension.
 - **`privacy.html`**: Privacy Policy detailing our strict zero-tracking, privacy-first standards.
 - **`terms.html`**: Terms of Service and usage conditions.
