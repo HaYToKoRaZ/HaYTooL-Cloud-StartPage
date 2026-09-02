@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yapılıyor... - HaYTooL</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            background: rgba(30, 41, 59, 0.7);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        h2 { margin: 0 0 10px 0; font-weight: 500; }
+        p { color: #94a3b8; font-size: 14px; margin: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loader" id="loader"></div>
+        <h2 id="statusTitle">Giriş Bekleniyor...</h2>
+        <p id="statusDesc">Lütfen bekleyin, GitHub ile giriş yapılıyor.</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+        import { getAuth, GithubAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAC68Qs2ct4TW8i1TS_G2gNVaw9ur4Cyr0",
+            authDomain: "haytool-cloud-startpage-github.firebaseapp.com",
+            projectId: "haytool-cloud-startpage-github",
+            storageBucket: "haytool-cloud-startpage-github.firebasestorage.app",
+            messagingSenderId: "524900247283",
+            appId: "1:524900247283:web:7905a99380660ec3adf986"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GithubAuthProvider();
+        
+        // Eklenti ID'si (Externally Connectable için)
+        const EXTENSION_ID = "fdhinggkjfghbgbbccjoeiinajjjfjhk"; 
+
+        async function doAuth() {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const credential = GithubAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                
+                document.getElementById('loader').style.borderColor = "rgba(255, 255, 255, 0.1)";
+                document.getElementById('loader').style.borderLeftColor = "#22c55e";
+                document.getElementById('statusTitle').innerText = "Giriş Başarılı!";
+                document.getElementById('statusTitle').style.color = "#22c55e";
+                document.getElementById('statusDesc').innerText = "Kimlik bilgileri eklentiye gönderiliyor...";
+
+                // Eklentiye mesaj gönder
+                if (chrome && chrome.runtime && chrome.runtime.sendMessage) {
+                    chrome.runtime.sendMessage(EXTENSION_ID, { 
+                        action: "AUTH_SUCCESS", 
+                        token: token
+                    }, (response) => {
+                        document.getElementById('statusDesc').innerText = "Yönlendirme tamamlandı. Bu pencereyi kapatabilirsiniz.";
+                        setTimeout(() => window.close(), 1000);
+                    });
+                } else {
+                    document.getElementById('statusDesc').innerText = "Eklenti ile iletişim kurulamadı. Lütfen bu sayfayı kapatıp eklentiyi manuel kontrol edin.";
+                }
+
+            } catch (error) {
+                console.error("Giriş hatası:", error);
+                document.getElementById('loader').style.display = "none";
+                document.getElementById('statusTitle').innerText = "Giriş Başarısız";
+                document.getElementById('statusTitle').style.color = "#ef4444";
+                document.getElementById('statusDesc').innerText = error.message;
+            }
+        }
+
+        window.onload = doAuth;
+    </script>
+</body>
+</html>
