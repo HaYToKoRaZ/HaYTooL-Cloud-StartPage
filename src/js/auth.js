@@ -1,4 +1,4 @@
-import { auth, db, GithubAuthProvider, signInWithPopup, signOut, onAuthStateChanged, doc, getDoc, setDoc, onSnapshot } from './firebase-config.js';
+import { auth, db, GithubAuthProvider, signInWithPopup, signInWithCredential, signOut, onAuthStateChanged, doc, getDoc, setDoc, onSnapshot } from './firebase-config.js';
 import { Storage } from './storage.js';
 
 export const Auth = {
@@ -67,20 +67,8 @@ export const Auth = {
 
   async loginWithGitHub() {
     console.log('loginWithGitHub started...');
-    return new Promise(async (resolve, reject) => {
-      try {
-        const provider = new GithubAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        
-        await this.checkAndSyncCloudData(user);
-        await this.updateProfileUI(user);
-        
-        resolve(user);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    const url = 'https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/websites/auth.html';
+    window.open(url, 'haytool_auth', 'width=500,height=600');
   },
 
   async logout() {
@@ -185,3 +173,19 @@ export const Auth = {
     }
   }
 };
+
+
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+  if (request.action === 'EXTERNAL_AUTH_SUCCESS') {
+    try {
+      const credential = GithubAuthProvider.credential(request.token);
+      const result = await signInWithCredential(auth, credential);
+      await Auth.checkAndSyncCloudData(result.user);
+      await Auth.updateProfileUI(result.user);
+      window.location.reload();
+    } catch (e) {
+      console.error('Giriş başarısız', e);
+      alert('Giriş hatası: ' + e.message);
+    }
+  }
+});
