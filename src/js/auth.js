@@ -65,7 +65,7 @@ export const Auth = {
       this._authResolve = resolve;
       this._authReject  = reject;
 
-      const url = 'https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/auth.html?v=' + Date.now();
+      const url = 'https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/auth.html?v=' + Date.now() + '&extid=' + chrome.runtime.id;
       const popup = window.open(url, 'haytool_auth', 'width=500,height=660,left=200,top=100');
 
       // 5 dakika zaman aşımı
