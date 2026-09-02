@@ -215,5 +215,9 @@
   "modal_folder_icon": "Simge / Emoji",
   "modal_folder_color": "Vurgu Rengi",
   "btn_create_folder": "Klasör Oluştur",
-  "toast_folder_created": "Klasör başarıyla oluşturuldu!"
+  "toast_folder_created": "Klasör başarıyla oluşturuldu!",
+  "settings_icon_api": "Kısayol İkon Servisi",
+  "settings_show_import_btn": "Yer İmlerini İçe Aktar Butonunu Göster",
+  "settings_show_theme_btn": "Hızlı Tema Butonunu Göster",
+  "theme_toggle": "Temayı Değiştir"
 }

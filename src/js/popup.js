@@ -1,4 +1,5 @@
 // popup.js
+import { Storage } from './storage.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const titleInput = document.getElementById('titleInput');
@@ -22,13 +23,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 2. Load categories to populate folder select
   try {
-    const data = await chrome.storage.local.get('shortcut_categories');
-    const categories = data.shortcut_categories || [];
-    
+    const categories = await Storage.get('shortcut_categories', []);
     categories.forEach(cat => {
       const option = document.createElement('option');
       option.value = cat.id;
-      option.textContent = `📁 ${cat.name}`;
+      option.textContent = `${cat.icon || '📁'} ${cat.name}`;
       folderSelect.appendChild(option);
     });
   } catch (err) {
@@ -53,16 +52,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       if (targetId === '_favorites') {
         // Add to Favorites Bar
-        const favData = await chrome.storage.local.get('favorites_bar');
-        const favorites = favData.favorites_bar || [];
+        const favorites = await Storage.get('favorites_bar', []);
         favorites.push(newItem);
-        await chrome.storage.local.set({ favorites_bar: favorites });
+        await Storage.set('favorites_bar', favorites);
       } else {
         // Add to standard shortcuts
-        const itemsData = await chrome.storage.local.get('shortcuts_v2');
-        const items = itemsData.shortcuts_v2 || [];
+        const items = await Storage.get('shortcuts_v2', []);
         items.push(newItem);
-        await chrome.storage.local.set({ shortcuts_v2: items });
+        await Storage.set('shortcuts_v2', items);
       }
 
       // Show success message

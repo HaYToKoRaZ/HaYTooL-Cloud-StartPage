@@ -46,6 +46,24 @@ class StartPageApp {
     }
   }
 
+    initQuotes() {
+    const box = document.getElementById('quoteBox');
+    if (!box) return;
+    const quotes = [
+      { tr: "Geleceği tahmin etmenin en iyi yolu onu yaratmaktır.", en: "The best way to predict the future is to create it.", author: "Peter Drucker" },
+      { tr: "Büyük işler, bir dizi küçük şeyin bir araya getirilmesiyle yapılır.", en: "Great things are done by a series of small things brought together.", author: "Vincent Van Gogh" },
+      { tr: "Sadelik en üst düzey gelişmişliktir.", en: "Simplicity is the ultimate sophistication.", author: "Leonardo da Vinci" },
+      { tr: "Başarı, her gün tekrarlanan küçük çabaların toplamıdır.", en: "Success is the sum of small efforts, repeated day in and day out.", author: "Robert Collier" },
+      { tr: "Hata yapmayan insan, genellikle hiçbir şey yapmayan insandır.", en: "A person who never made a mistake never tried anything new.", author: "Albert Einstein" },
+      { tr: "Bugün yapacağınız seçimler yarınınızı belirler.", en: "Your choices today define your tomorrow.", author: "HaYTooL" },
+      { tr: "Zaman en kıymetli hazinedir, onu iyi değerlendirin.", en: "Time is what we want most, but what we use worst.", author: "William Penn" }
+    ];
+    const q = quotes[Math.floor(Math.random() * quotes.length)];
+    const lang = (I18n.currentLang || 'tr').toLowerCase();
+    const text = lang === 'tr' ? q.tr : q.en;
+    box.innerHTML = `<span style="font-style:italic; font-size:0.8rem; opacity:0.85;">"${text}"</span> <small style="opacity:0.6; font-size:0.72rem; margin-left:6px;">— ${q.author}</small>`;
+  }
+
   initClock() {
     const tick = () => {
       const lang = I18n.currentLang === "tr" ? "tr-TR" : "en-US";
@@ -156,4 +174,5 @@ class StartPageApp {
 }
 
 document.addEventListener('DOMContentLoaded', () => new StartPageApp().init());
+
 

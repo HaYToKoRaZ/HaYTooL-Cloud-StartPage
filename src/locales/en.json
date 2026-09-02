@@ -214,5 +214,9 @@
   "modal_folder_icon": "Icon / Emoji",
   "modal_folder_color": "Accent Color",
   "btn_create_folder": "Create Folder",
-  "toast_folder_created": "Folder created successfully!"
+  "toast_folder_created": "Folder created successfully!",
+  "settings_icon_api": "Favicon Provider Service",
+  "settings_show_import_btn": "Show Import Bookmarks Button",
+  "settings_show_theme_btn": "Show Quick Theme Toggle Button",
+  "theme_toggle": "Toggle Theme"
 }

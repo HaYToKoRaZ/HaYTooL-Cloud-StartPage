@@ -1,5 +1,6 @@
 import { Storage } from './storage.js';
 import { I18n } from './i18n.js';
+import { auth, db, doc, setDoc } from './firebase-config.js';
 
 export const Settings = {
   config: { 
@@ -52,7 +53,9 @@ export const Settings = {
     }
     
     // Widget visibility
-    this.vis('headerClockWidget', this.config.showClock);
+    this.vis('headerTimeWidget', this.config.showClock);
+    this.vis('headerDateWidget', this.config.showClock);
+    this.vis('quoteBox', this.config.showQuote !== false);
     this.vis('digitalSeconds',    this.config.showSeconds);
     this.vis('greetingText',      this.config.showGreeting);
     this.vis('weatherBadge',      this.config.showWeather);
@@ -427,3 +430,4 @@ export const Settings = {
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 };
+
