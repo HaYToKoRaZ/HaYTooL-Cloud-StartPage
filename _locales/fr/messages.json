@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "HaYTooL Cloud StartPage",
+    "description": "Nom de l'extension"
+  },
+  "appDesc": {
+    "message": "Page d'accueil moderne, ultra-rapide, esthétique et modulaire avec recherche multi-moteurs, raccourcis, notes, météo et double thème.",
+    "description": "Description de l'extension"
+  }
+}

@@ -9,7 +9,7 @@
 <p align="center">
   <a href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/"><img src="https://img.shields.io/badge/Web%20Portal-Live%20Demo-blue?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live Demo"></a>
   <img src="https://img.shields.io/badge/Manifest-V3-purple?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Manifest V3">
-  <img src="https://img.shields.io/badge/Version-v4.2.0-success?style=for-the-badge" alt="Version 4.2.0">
+  <img src="https://img.shields.io/badge/Version-v4.3.0-success?style=for-the-badge" alt="Version 4.3.0">
 </p>
 
 Welcome to **HaYTooL Cloud StartPage**. This project is a next-generation, ultra-fast, and highly customizable browser new tab extension designed to supercharge your daily browsing productivity.
@@ -36,7 +36,7 @@ Welcome to **HaYTooL Cloud StartPage**. This project is a next-generation, ultra
 - 🌦️ **Live Weather & Geocoding**: Powered by Open-Meteo with automatic/manual location search, offline fallback, and real-time weather badges.
 - 🔍 **Multi-Engine Search Bar**: Instant switching between Google, DuckDuckGo, Bing, Yandex, Brave, and GitHub search.
 - 🎨 **Rich Customization & Dynamic Themes**: Multiple glassmorphism themes (Dark, Light, Aurora, Cyberpunk, AMOLED), custom background image support, and granular widget visibility controls.
-- 🌐 **Multi-Language Support (i18n)**: Full native Turkish (TR) and English (EN) language support.
+- 🌐 **Global Multi-Language Support (7 Languages)**: Full native translation support for English (EN), Turkish (TR), German (DE), Spanish (ES), French (FR), Russian (RU), and Portuguese (PT). Built with native Chromium `_locales` store localization.
 - 💾 **Data Portability**: Full JSON backup export/import and standard Netscape Bookmarks HTML import/export.
 
 ---
@@ -112,7 +112,7 @@ HaYTooL Cloud StartPage; göz alıcı Glassmorphism (buzlu cam) estetiğini, esn
 - 🌦️ **Canlı Hava Durumu & Arama**: Open-Meteo destekli canlı hava durumu, Türkçe şehir arama desteği, otomatik koordinat doğrulama ve çevrimdışı önbellek koruması.
 - 🔍 **Çoklu Arama Çubuğu**: Google, DuckDuckGo, Bing, Yandex, Brave ve GitHub arama motorları arasında anında geçiş.
 - 🎨 **Zengin Temalar & Arka Planlar**: Koyu, Açık, Aurora, Siberpunk ve AMOLED temaları, özel duvar kağıdı yükleme ve widget gizleme/gösterme kontrolleri.
-- 🌐 **Çift Dil Desteği (TR / EN)**: Tam kapsamlı Türkçe ve İngilizce dil desteği.
+- 🌐 **Kapsamlı 7 Dil Desteği & Mağaza Yerelleştirmesi**: Türkçe (TR), İngilizce (EN), Almanca (DE), İspanyolca (ES), Fransızca (FR), Rusça (RU) ve Portekizce (PT) olmak üzere 7 ana dilde %100 yerel arayüz desteği. Chrome ve Edge mağaza standartlarına uygun `_locales` entegrasyonu.
 - 💾 **Yedekleme & Dışa Aktarma**: Tek tıkla JSON yedek alma/yükleme ve tarayıcı yer imlerini HTML formatında içe/dışa aktarma.
 
 ---

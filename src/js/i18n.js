@@ -4,8 +4,24 @@ import { Storage } from './storage.js';
  * Default language: English | Custom flag picker supported
  */
 
-const FLAG_MAP  = { en: 'gb', tr: 'tr' };
-const LANG_NAMES = { en: 'EN', tr: 'TR' };
+const FLAG_MAP  = {
+  en: 'gb',
+  tr: 'tr',
+  de: 'de',
+  es: 'es',
+  fr: 'fr',
+  ru: 'ru',
+  pt: 'pt'
+};
+const LANG_NAMES = {
+  en: 'EN',
+  tr: 'TR',
+  de: 'DE',
+  es: 'ES',
+  fr: 'FR',
+  ru: 'RU',
+  pt: 'PT'
+};
 const flagUrl = (lang) =>
   `https://flagcdn.com/20x15/${FLAG_MAP[lang] || lang}.png`;
 
@@ -18,7 +34,12 @@ export const I18n = {
     const saved = await Storage.get('lang', null);
     if (!saved) {
       const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
-      this.currentLang = browserLang.startsWith('tr') ? 'tr' : 'en';
+      const code = browserLang.split('-')[0];
+      if (['tr', 'de', 'es', 'fr', 'ru', 'pt'].includes(code)) {
+        this.currentLang = code;
+      } else {
+        this.currentLang = 'en';
+      }
       await Storage.set('lang', this.currentLang);
     } else {
       this.currentLang = saved;

@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "HaYTooL Cloud StartPage",
+    "description": "Eklentinin adı"
+  },
+  "appDesc": {
+    "message": "Çoklu arama motoru, hızlı erişim, notlar, hava durumu ve çift tema desteğine sahip modern, ultra hızlı, estetik ve modüler Başlangıç Sayfası.",
+    "description": "Eklentinin açıklaması"
+  }
+}

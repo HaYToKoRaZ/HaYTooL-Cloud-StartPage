@@ -7,7 +7,7 @@ import { Settings }  from './settings.js';
 import { Auth }      from './auth.js';
 
 /**
- * HaYTooL Cloud StartPage v4.2.0
+ * HaYTooL Cloud StartPage v4.3.0
  */
 class StartPageApp {
   async init() {
@@ -54,7 +54,7 @@ class StartPageApp {
         this.initQuotes();
       });
       
-      console.log('✨ HaYTooL Cloud StartPage v4.2.0 - hazır.');
+      console.log('✨ HaYTooL Cloud StartPage v4.3.0 - hazır.');
       
       if (window.location.hash === '#settings') {
         setTimeout(() => Settings.openModal(), 300);
