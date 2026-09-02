@@ -14,6 +14,10 @@
 
 Welcome to **HaYTooL Cloud StartPage**. This project is a next-generation, ultra-fast, and highly customizable browser new tab extension designed to supercharge your daily browsing productivity.
 
+<p align="center">
+  <img src="src/assets/screenshots/eng.jpeg" alt="HaYTooL Cloud StartPage English Interface" width="92%" style="border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.5);">
+</p>
+
 ---
 
 ## 🌟 Project Overview
@@ -85,6 +89,10 @@ Visit our live web portal and documentation:
 </p>
 
 **HaYTooL Cloud StartPage**'e hoş geldiniz! Bu proje; günlük tarayıcı deneyiminizi en üst seviyeye çıkarmak, favori linklerinizi ve klasörlerinizi estetik bir biçimde düzenleyip cihazlarınız arasında anında eşitlemek için geliştirilmiş yeni nesil bir Chrome başlangıç sayfası eklentisidir.
+
+<p align="center">
+  <img src="src/assets/screenshots/tr.jpeg" alt="HaYTooL Cloud StartPage Türkçe Arayüz" width="92%" style="border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.5);">
+</p>
 
 ---
 
