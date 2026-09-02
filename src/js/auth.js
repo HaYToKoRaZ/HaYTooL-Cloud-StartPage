@@ -8,6 +8,9 @@ export const Auth = {
   _unsubSnapshot: null,
 
   async init() {
+    // Önce storage'da bekleyen token var mı kontrol et (background.js'den gelmis olabilir)
+    await this._processPendingToken();
+
     return new Promise((resolve) => {
       onAuthStateChanged(auth, async (user) => {
         this.currentUser = user;
@@ -23,6 +26,36 @@ export const Auth = {
         }
       });
     });
+  },
+
+  // Storage'da bekleyen token varsa Firebase'e giriş yap
+  async _processPendingToken() {
+    try {
+      const result = await new Promise(r =>
+        chrome.storage.local.get(['_pending_auth_token'], r)
+      );
+      const token = result._pending_auth_token;
+      if (!token) return;
+
+      // Hemen temizle (bir daha kullanılmasın)
+      await new Promise(r => chrome.storage.local.remove(['_pending_auth_token'], r));
+
+      const credential = GithubAuthProvider.credential(token);
+      const fbResult   = await signInWithCredential(auth, credential);
+      this.currentUser = fbResult.user;
+      await this.checkAndSyncCloudData(fbResult.user);
+
+      // _authResolve varsa (popup açıkken geldi) onu da çöz
+      if (this._authResolve) {
+        this._authResolve(fbResult.user);
+        this._authResolve = null;
+        this._authReject  = null;
+      }
+    } catch (e) {
+      // Token geçersizse sessizce geç
+      chrome.storage.local.remove(['_pending_auth_token']);
+      console.warn('[Auth] Pending token işlenemedi:', e.message);
+    }
   },
 
   showWelcomeModal(resolve) {
@@ -57,7 +90,6 @@ export const Auth = {
     }
   },
 
-  // Popup kapanınca reddetme kaldırıldı — sadece başarı veya 5dk timeout
   loginWithGitHub() {
     return new Promise((resolve, reject) => {
       if (this._authReject) {
@@ -70,7 +102,7 @@ export const Auth = {
                   + Date.now() + '&extid=' + chrome.runtime.id;
       window.open(url, 'haytool_auth', 'width=500,height=660,left=200,top=100');
 
-      // Tek reddetme mekanizması: 5 dakika timeout
+      // 5 dakika timeout - tek reddetme mekanizması
       setTimeout(() => {
         if (this._authReject) {
           this._authResolve = null;
@@ -177,7 +209,7 @@ export const Auth = {
   }
 };
 
-// EXTERNAL_AUTH_SUCCESS → loginWithGitHub Promise'ını çöz
+// Tab mesajı ile EXTERNAL_AUTH_SUCCESS gelirse doğrudan işle
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'EXTERNAL_AUTH_SUCCESS') {
     (async () => {
@@ -188,21 +220,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         await Auth.checkAndSyncCloudData(result.user);
         await Auth.updateProfileUI(result.user);
 
+        // Storage'daki pending token'ı temizle (zaten işlendi)
+        chrome.storage.local.remove(['_pending_auth_token']);
+
         if (Auth._authResolve) {
           Auth._authResolve(result.user);
           Auth._authResolve = null;
           Auth._authReject  = null;
-        } else {
-          window.location.reload();
         }
         sendResponse({ ok: true });
       } catch (e) {
         console.error('EXTERNAL_AUTH_SUCCESS hatası:', e);
-        if (Auth._authReject) {
-          Auth._authReject(e);
-          Auth._authReject  = null;
-          Auth._authResolve = null;
-        }
         sendResponse({ ok: false, error: e.message });
       }
     })();

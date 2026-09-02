@@ -13,38 +13,33 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 // ─── GitHub OAuth Köprüsü ───────────────────────────────────────────────────
-// auth.html (websites) girişten sonra buraya AUTH_SUCCESS mesajı atar.
-// background.js bunu yakalar ve tüm chrome:// sekmeleri dahil newtab'a iletir.
 chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
   if (request.action === 'AUTH_SUCCESS' && request.token) {
     const token = request.token;
 
-    // chrome.tabs.query ile override edilen newtab sayfasını bul
-    // Hem chrome://newtab/ hem de eklenti URL'si ile eşleşir
-    chrome.tabs.query({}, (allTabs) => {
-      let sent = false;
-      allTabs.forEach(tab => {
-        const url = tab.url || '';
-        if (
-          url.startsWith(chrome.runtime.getURL('src/pages/newtab.html')) ||
-          url === 'chrome://newtab/' ||
-          url.includes('newtab')
-        ) {
-          chrome.tabs.sendMessage(tab.id, {
-            action: 'EXTERNAL_AUTH_SUCCESS',
-            token: token
-          }, () => {
-            if (chrome.runtime.lastError) {
-              console.warn('[BG] Tab mesaj hatası:', chrome.runtime.lastError.message);
-            }
-          });
-          sent = true;
-        }
+    // 1) Token'ı storage'a kaydet (mesaj başarısız olsa bile sonraki açılışta kullanılır)
+    chrome.storage.local.set({ _pending_auth_token: token }, () => {
+      // 2) Açık newtab sekmelerine mesaj gönder
+      chrome.tabs.query({}, (allTabs) => {
+        allTabs.forEach(tab => {
+          if (!tab.id) return;
+          const url = tab.url || '';
+          if (
+            url.startsWith(chrome.runtime.getURL('src/pages/')) ||
+            url === 'chrome://newtab/' ||
+            url.includes('newtab')
+          ) {
+            chrome.tabs.sendMessage(tab.id, {
+              action: 'EXTERNAL_AUTH_SUCCESS',
+              token: token
+            }, () => {
+              if (chrome.runtime.lastError) {
+                console.warn('[BG] Tab msg error:', chrome.runtime.lastError.message);
+              }
+            });
+          }
+        });
       });
-
-      if (!sent) {
-        console.warn('[BG] Aktif newtab sekmesi bulunamadı, yeni sekme açılıyor...');
-      }
     });
 
     sendResponse({ ok: true });
