@@ -1,29 +1,37 @@
 /**
  * HaYTooL Cloud StartPage - Evrensel Storage Katmanı
  * chrome.storage.local öncelikli, localStorage fallback ile
+ * #5: Firestore sync artık sadece değişen anahtarı yazıyor (merge: true)
  */
 import { auth, db, doc, setDoc } from './firebase-config.js';
 
 let syncTimeout = null;
-function scheduleCloudSync() {
+
+// #5: Tüm veriyi değil, yalnızca değişen key'i cloud'a yaz
+function scheduleCloudSync(changedKey, changedValue) {
   if (!auth || !auth.currentUser) return;
   if (syncTimeout) clearTimeout(syncTimeout);
-  
+
   syncTimeout = setTimeout(async () => {
     try {
-      const allData = await Storage.getAll();
       const userRef = doc(db, 'users', auth.currentUser.uid);
-      await setDoc(userRef, {
-        settings: allData,
-        shortcuts: allData.shortcuts || [],
-        favorites: allData.favorites || [],
-        updatedAt: new Date().toISOString()
-      }, { merge: true });
+      const payload = { updatedAt: new Date().toISOString() };
+
+      // Özel anahtarlar doğrudan ayrı alanlar olarak tutulur
+      if (changedKey === 'shortcuts' || changedKey === 'favorites') {
+        payload[changedKey] = changedValue;
+      } else {
+        // Diğer tüm ayarlar settings objesinin içine merge edilir
+        payload['settings.' + changedKey] = changedValue;
+      }
+
+      await setDoc(userRef, payload, { merge: true });
     } catch (e) {
       console.error('Cloud sync error:', e);
     }
-  }, 1000);
+  }, 1500); // 1.5s debounce
 }
+
 export const Storage = {
   async get(key, defaultValue = null) {
     try {
@@ -38,6 +46,7 @@ export const Storage = {
       return defaultValue;
     }
   },
+
   async set(key, value) {
     try {
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
@@ -45,13 +54,14 @@ export const Storage = {
       } else {
         localStorage.setItem('haytool_' + key, JSON.stringify(value));
       }
-      scheduleCloudSync();
+      scheduleCloudSync(key, value); // #5: sadece bu key'i gönder
       return true;
     } catch (e) {
       console.error('[Storage] set hatası:', key, e);
       return false;
     }
   },
+
   async remove(key) {
     try {
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
@@ -59,10 +69,10 @@ export const Storage = {
       } else {
         localStorage.removeItem('haytool_' + key);
       }
-      scheduleCloudSync();
       return true;
     } catch (e) { return false; }
   },
+
   async getAll() {
     try {
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {

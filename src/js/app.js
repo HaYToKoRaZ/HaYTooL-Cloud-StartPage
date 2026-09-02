@@ -36,7 +36,7 @@ class StartPageApp {
         Favorites.render();
       });
       
-      console.log('✨ HaYTooL Cloud StartPage v4.0.0 - hazır.');
+      console.log('✨ HaYTooL Cloud StartPage v4.1.1 - hazır.');
       
       if (window.location.hash === '#settings') {
         setTimeout(() => Settings.openModal(), 300);
@@ -144,8 +144,8 @@ class StartPageApp {
           case 'youtube': url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q); break;
           case 'chatgpt': url = 'https://chatgpt.com/?q=' + encodeURIComponent(q); break;
           case 'perplexity': url = 'https://www.perplexity.ai/search?q=' + encodeURIComponent(q); break;
-          case 'gemini': url = 'https://gemini.google.com/app'; break;
-          case 'claude': url = 'https://claude.ai/new'; break;
+          case 'gemini': url = 'https://gemini.google.com/app?q=' + encodeURIComponent(q); break;
+          case 'claude': url = 'https://claude.ai/new?q=' + encodeURIComponent(q); break;
           default: url = 'https://www.google.com/search?q=' + encodeURIComponent(q); break;
         }
         window.open(url, '_blank');
