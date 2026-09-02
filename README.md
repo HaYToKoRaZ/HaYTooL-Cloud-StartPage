@@ -13,6 +13,10 @@
 
 This repository branch (`websites`) hosts the official landing page, live documentation, and secure GitHub OAuth authentication gateway for the **HaYTooL Cloud StartPage** Chromium extension.
 
+<p align="center">
+  <img src="assets/screenshots/tr.jpeg" alt="HaYTooL StartPage Preview" width="92%" style="border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.5);">
+</p>
+
 ---
 
 ## 🚀 Live Website & Portal
