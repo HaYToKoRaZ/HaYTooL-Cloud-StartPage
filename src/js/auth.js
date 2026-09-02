@@ -3,16 +3,15 @@ import { Storage } from './storage.js';
 
 export const Auth = {
   currentUser: null,
-  _authResolve: null,   // #1: loginWithGitHub Promise köprüsü
+  _authResolve: null,
   _authReject:  null,
-  _unsubSnapshot: null, // #6: onSnapshot temizleme referansı
+  _unsubSnapshot: null,
 
   async init() {
     return new Promise((resolve) => {
       onAuthStateChanged(auth, async (user) => {
         this.currentUser = user;
         const hasSeenWelcome = await Storage.get('has_seen_welcome', false);
-
         if (user) {
           await this.updateProfileUI(user);
           resolve(user);
@@ -29,7 +28,6 @@ export const Auth = {
   showWelcomeModal(resolve) {
     const modal = document.getElementById('welcomeModal');
     if (!modal) { resolve(null); return; }
-
     modal.classList.add('active');
 
     const btnLogin = document.getElementById('btnGoogleLogin');
@@ -37,11 +35,9 @@ export const Auth = {
       btnLogin.innerHTML = '<span style="font-size:1.2rem; margin-right:8px;">🐙</span> GitHub ile Giriş Yap';
       btnLogin.onclick = async () => {
         try {
-          // #1: Promise düzgün await edilecek, giriş bitince devam eder
           const user = await this.loginWithGitHub();
           modal.classList.remove('active');
           await Storage.set('has_seen_welcome', true);
-          // #7: Çift reload önlendi - updateProfileUI zaten çağrılıyor
           resolve(user);
         } catch (err) {
           console.error('Login error:', err);
@@ -61,11 +57,8 @@ export const Auth = {
     }
   },
 
-  // #1: loginWithGitHub artık gerçek bir Promise döndürüyor.
-  // Giriş tamamlanana kadar (auth.html token gönderene kadar) bekler.
   loginWithGitHub() {
     return new Promise((resolve, reject) => {
-      // Önceki bekleyen işlemi iptal et
       if (this._authReject) {
         this._authReject(new Error('Yeni giriş isteği başlatıldı.'));
       }
@@ -82,17 +75,20 @@ export const Auth = {
         reject(new Error('Giriş zaman aşımına uğradı (5 dakika).'));
       }, 5 * 60 * 1000);
 
-      // Popup kapatılırsa temizle
+      // Popup kapanınca: 2sn bekle (başarı mesajı uçuşta olabilir)
       const interval = setInterval(() => {
         if (popup && popup.closed) {
           clearInterval(interval);
           clearTimeout(timeout);
-          // Eğer resolve çağrılmadıysa (kullanıcı pencereyi kapattı)
-          if (this._authReject) {
-            this._authReject = null;
-            this._authResolve = null;
-            reject(new Error('Giriş penceresi kapatıldı.'));
-          }
+          setTimeout(() => {
+            // Eğer bu sürede _authResolve hâlâ doluysa → kullanıcı manuel kapattı
+            if (this._authReject) {
+              this._authReject = null;
+              this._authResolve = null;
+              reject(new Error('Giriş penceresi kapatıldı.'));
+            }
+            // _authReject null ise → resolve zaten çağrıldı, bir şey yapma
+          }, 2000);
         }
       }, 500);
     });
@@ -100,11 +96,7 @@ export const Auth = {
 
   async logout() {
     try {
-      // #6: Snapshot listener'ı temizle
-      if (this._unsubSnapshot) {
-        this._unsubSnapshot();
-        this._unsubSnapshot = null;
-      }
+      if (this._unsubSnapshot) { this._unsubSnapshot(); this._unsubSnapshot = null; }
       await signOut(auth);
       this.currentUser = null;
       this.updateProfileUI(null);
@@ -129,15 +121,9 @@ export const Auth = {
       const allLocal  = await Storage.getAll();
       const shortcuts = await Storage.get('shortcuts', []);
       const favorites = await Storage.get('favorites', []);
-      await setDoc(userRef, {
-        settings:  allLocal,
-        shortcuts: shortcuts,
-        favorites: favorites,
-        createdAt: new Date().toISOString()
-      });
+      await setDoc(userRef, { settings: allLocal, shortcuts, favorites, createdAt: new Date().toISOString() });
     }
 
-    // #6: unsubscribe referansını sakla
     if (this._unsubSnapshot) this._unsubSnapshot();
     this._unsubSnapshot = onSnapshot(userRef, async (snapshot) => {
       if (!snapshot.exists()) return;
@@ -146,9 +132,8 @@ export const Auth = {
         if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
           await chrome.storage.local.set(data.settings);
         } else {
-          for (const [k, v] of Object.entries(data.settings)) {
+          for (const [k, v] of Object.entries(data.settings))
             localStorage.setItem('haytool_' + k, JSON.stringify(v));
-          }
         }
       }
       window.dispatchEvent(new Event('render_shortcuts_and_favorites'));
@@ -158,8 +143,7 @@ export const Auth = {
   async updateProfileUI(user) {
     const profileBox = document.getElementById('userProfileBox');
     const authBtn    = document.getElementById('settingsAuthBtn');
-
-    const modal = document.getElementById('welcomeModal');
+    const modal      = document.getElementById('welcomeModal');
     if (modal && modal.classList.contains('active')) modal.classList.remove('active');
 
     if (profileBox) {
@@ -175,13 +159,11 @@ export const Auth = {
         authBtn.innerHTML = `<span>🚪</span><span data-i18n="logout">Oturumu Kapat</span>`;
         authBtn.onclick = () => this.logout();
       } else {
-        authBtn.innerHTML = `
-          <span style="font-size:1.1rem; margin-right:4px;">🐙</span>
+        authBtn.innerHTML = `<span style="font-size:1.1rem;margin-right:4px;">🐙</span>
           <span data-i18n="login_cloud">Oturum Aç (GitHub)</span>`;
         authBtn.onclick = async () => {
           try {
             await this.loginWithGitHub();
-            // #7: Çift reload yok - onMessage handler reload yapıyor
           } catch (err) {
             console.error('Settings Login error:', err);
             alert('Giriş başarısız oldu: ' + (err.message || JSON.stringify(err)));
@@ -190,14 +172,11 @@ export const Auth = {
       }
     }
 
-    if (window.I18n && typeof window.I18n.updateDOM === 'function') {
-      window.I18n.updateDOM();
-    }
+    if (window.I18n && typeof window.I18n.updateDOM === 'function') window.I18n.updateDOM();
   }
 };
 
-// #1 + #8: EXTERNAL_AUTH_SUCCESS geldiğinde loginWithGitHub Promise'ını çöz
-// #8: async kullanılmıyor - sendResponse'u kaybetmemek için
+// EXTERNAL_AUTH_SUCCESS gelince loginWithGitHub Promise'ını çöz
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'EXTERNAL_AUTH_SUCCESS') {
     (async () => {
@@ -208,13 +187,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         await Auth.updateProfileUI(result.user);
         Auth.currentUser = result.user;
 
-        // loginWithGitHub()'ı bekleyen Promise varsa çöz
         if (Auth._authResolve) {
           Auth._authResolve(result.user);
           Auth._authResolve = null;
           Auth._authReject  = null;
         } else {
-          // Settings menüsünden giriş yapılmış olabilir
           window.location.reload();
         }
         sendResponse({ ok: true });
@@ -228,6 +205,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ ok: false, error: e.message });
       }
     })();
-    return true; // async sendResponse için
+    return true;
   }
 });
