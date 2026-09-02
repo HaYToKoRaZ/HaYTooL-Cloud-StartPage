@@ -26,6 +26,22 @@ export function setApplyingCloudData(val) {
   isApplyingCloudData = val;
 }
 
+/**
+ * Firestore'un 'undefined' değerlerde çökmesini engelleyen derin temizleyici
+ */
+export function sanitizeForFirestore(val) {
+  if (val === undefined) return null;
+  try {
+    return JSON.parse(JSON.stringify(val, (key, value) => {
+      if (value === undefined) return null;
+      return value;
+    }));
+  } catch (e) {
+    console.warn('[CloudSync] Sanitize hatası:', e);
+    return val;
+  }
+}
+
 export async function flushCloudSync() {
   if (Object.keys(pendingSyncPayload).length === 0) return;
   if (!auth || !auth.currentUser) return;
@@ -40,10 +56,13 @@ export async function flushCloudSync() {
   try {
     const userRef = doc(db, 'users', auth.currentUser.uid);
     const nowIso = new Date().toISOString();
+    const cleanData = sanitizeForFirestore(toSend);
+
     await setDoc(userRef, {
-      syncData: toSend,
+      syncData: cleanData,
       updatedAt: nowIso
     }, { merge: true });
+
     console.log('[CloudSync] Senkronizasyon tamamlandı:', Object.keys(toSend));
   } catch (e) {
     console.error('[CloudSync] Senkronizasyon hatası:', e);
@@ -66,7 +85,7 @@ function scheduleCloudSync(changedKey, changedValue) {
   if (syncTimeout) clearTimeout(syncTimeout);
   syncTimeout = setTimeout(() => {
     flushCloudSync();
-  }, 250); // Hızlı 250ms debounce
+  }, 200); // 200ms hızlı debounce
 }
 
 export const Storage = {
@@ -147,12 +166,13 @@ export const Storage = {
 
       const nowIso = new Date().toISOString();
       const userRef = doc(db, 'users', auth.currentUser.uid);
+      const safeData = sanitizeForFirestore(cleanSyncData);
+
       await setDoc(userRef, {
-        syncData: cleanSyncData,
+        syncData: safeData,
         updatedAt: nowIso
       }, { merge: true });
 
-      // Yerel update zamanını da güncelle
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
         await chrome.storage.local.set({ _last_local_update: nowIso });
       } else {

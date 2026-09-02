@@ -261,15 +261,24 @@ export const Favorites = {
   },
 
     async add(item) {
-    this.items = await Storage.get(this.FAV_KEY, this.items || []);
+    const rawItems = await Storage.get(this.FAV_KEY, []);
+    this.items = Array.isArray(rawItems) ? rawItems.map(it => ({
+      id: it.id || Date.now().toString(),
+      title: it.title || 'Untitled',
+      url: it.url || '#',
+      icon: typeof it.icon === 'string' ? it.icon : ''
+    })) : [];
+
     let url = (item.url || '').trim();
     if (!url.startsWith('http')) url = 'https://' + url;
+
     const newItem = {
       id: Date.now().toString(),
       title: (item.title || 'Untitled').trim(),
       url: url,
-      icon: item.icon || ''
+      icon: (typeof item.icon === 'string' && item.icon.trim()) ? item.icon.trim() : ''
     };
+
     this.items.push(newItem);
     await Storage.set(this.FAV_KEY, this.items);
     this.render();
@@ -308,3 +317,4 @@ export const Favorites = {
     }
   }
 };
+

@@ -153,6 +153,12 @@ export const Auth = {
           if (!cloudData.favorites_bar) cloudData.favorites_bar = rawData.favorites;
         }
 
+        const localLastUpdateStr = await Storage.get('_last_local_update', null);
+        const cloudUpdatedAtStr  = rawData.updatedAt || null;
+
+        const localTime = localLastUpdateStr ? new Date(localLastUpdateStr).getTime() : 0;
+        const cloudTime = cloudUpdatedAtStr  ? new Date(cloudUpdatedAtStr).getTime()  : 0;
+
         // Bulutta link veya ayar var mı kontrol et
         const hasContent = !!(
           (cloudData.shortcuts_v2 && cloudData.shortcuts_v2.length > 0) ||
@@ -160,7 +166,11 @@ export const Auth = {
           cloudData.app_settings
         );
 
-        if (hasContent) {
+        // Eğer rutin sayfa yenilemesi ise ve yereldeki veriler buluttan daha yeniyse (son 1 sn içinde eklenmiş vb.):
+        if (!forceReload && localTime > (cloudTime + 1000)) {
+          console.log('[Auth] Yerel veriler buluttan daha güncel, buluta aktarılıyor...');
+          await Storage.pushAllToCloud();
+        } else if (hasContent) {
           console.log('[Auth] Buluttan veriler indiriliyor...', Object.keys(cloudData));
           setApplyingCloudData(true);
           try {
@@ -171,7 +181,7 @@ export const Auth = {
               localStorage.setItem('haytool_' + k, JSON.stringify(v));
             }
           } finally {
-            setTimeout(() => setApplyingCloudData(false), 1500);
+            setTimeout(() => setApplyingCloudData(false), 1000);
           }
 
           if (forceReload) {
@@ -339,3 +349,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 });
+
