@@ -8,6 +8,7 @@
 
 <p align="center">
   <a href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/"><img src="https://img.shields.io/badge/Web%20Portal-Live%20Demo-blue?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live Demo"></a>
+  <a href="https://microsoftedge.microsoft.com/addons/detail/jkefcejfnbeifclgpkfkpidoegohcchp"><img src="https://img.shields.io/badge/Microsoft%20Edge-Add--ons-0078D7?style=for-the-badge&logo=microsoftedge&logoColor=white" alt="Edge Add-ons"></a>
   <img src="https://img.shields.io/badge/Manifest-V3-purple?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Manifest V3">
   <img src="https://img.shields.io/badge/Version-v4.3.0-success?style=for-the-badge" alt="Version 4.3.0">
 </p>
@@ -121,6 +122,10 @@ HaYTooL Cloud StartPage; göz alıcı Glassmorphism (buzlu cam) estetiğini, esn
 
 Tanıtım portalımızı ve dokümantasyonumuzu ziyaret edin:
 👉 **[https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/](https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/)**
+
+## 📦 Official Store Links / Resmi Mağaza Bağlantıları
+- 🔷 **Microsoft Edge Add-ons**: [HaYTooL Cloud StartPage on Edge Add-ons Store](https://microsoftedge.microsoft.com/addons/detail/jkefcejfnbeifclgpkfkpidoegohcchp)
+- 🌐 **Web Portal & Live Demo**: [https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/](https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/)
 
 ---
 
