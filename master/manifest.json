@@ -29,5 +29,13 @@
       "48": "src/assets/icons/icon48.png"
     },
     "default_popup": "src/pages/popup.html"
+  },
+  "host_permissions": [
+    "https://api.open-meteo.com/*"
+  ],
+  "externally_connectable": {
+    "matches": [
+      "https://haytokoraz.github.io/*"
+    ]
   }
 }
