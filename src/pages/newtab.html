@@ -69,6 +69,9 @@
       </div>
       <button id="expandAllBtn" class="icon-btn" data-i18n-title="expand_all_folders">&#128194;</button>
       <button id="collapseAllBtn" class="icon-btn" data-i18n-title="collapse_all_folders">&#128193;</button>
+            <button id="createFolderBtn" class="bookmark-import-btn" style="background:var(--bg-layer-2, #1e293b); border:1px solid var(--border-color, rgba(255,255,255,0.12));">
+        <span>📁+</span><span data-i18n="btn_new_folder">New Folder</span>
+      </button>
       <button id="bookmarkImportBtn" class="bookmark-import-btn">
         <span>⭐</span><span data-i18n="import_bookmarks">Import Bookmarks</span>
       </button>
@@ -178,6 +181,35 @@
         <button type="button" id="cancelRenameModal" class="btn-secondary" data-i18n="btn_cancel">Cancel</button>
         <button type="button" id="confirmRenameModal" class="btn-primary" data-i18n="btn_save">Save</button>
       </div>
+    </div>
+  </div>
+
+    <!-- ====== YENİ KLASÖR OLUŞTUR MODAL ====== -->
+  <div id="createFolderModal" class="modal-overlay">
+    <div class="modal-content" style="max-width:390px;">
+      <div class="modal-header">
+        <h3 id="createFolderModalTitle" data-i18n="modal_create_folder_title">📁 New Folder</h3>
+        <button id="closeCreateFolderModal" class="icon-btn" style="width:28px;height:28px;">✕</button>
+      </div>
+      <form id="createFolderForm">
+        <div class="form-group">
+          <label data-i18n="modal_folder_name">Folder Name</label>
+          <input type="text" id="createFolderNameInput" class="form-input" placeholder="Örn: Oyunlar, İş, Araçlar..." required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="modal_folder_icon">Icon (Emoji)</label>
+          <input type="text" id="createFolderIconInput" class="form-input" placeholder="📁 (Örn: 🚀, 🎮, 💻, 🎵)">
+        </div>
+        <div class="form-group">
+          <label data-i18n="modal_folder_color">Accent Color</label>
+          <div id="createFolderColorList" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;"></div>
+          <input type="hidden" id="createFolderColorInput" value="#6366f1">
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="cancelCreateFolderModal" class="btn-secondary" data-i18n="btn_cancel">Cancel</button>
+          <button type="submit" class="btn-primary" data-i18n="btn_create_folder">Create Folder</button>
+        </div>
+      </form>
     </div>
   </div>
 

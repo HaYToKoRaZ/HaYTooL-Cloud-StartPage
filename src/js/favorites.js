@@ -260,6 +260,22 @@ export const Favorites = {
     this.render();
   },
 
+    async add(item) {
+    this.items = await Storage.get(this.FAV_KEY, this.items || []);
+    let url = (item.url || '').trim();
+    if (!url.startsWith('http')) url = 'https://' + url;
+    const newItem = {
+      id: Date.now().toString(),
+      title: (item.title || 'Untitled').trim(),
+      url: url,
+      icon: item.icon || ''
+    };
+    this.items.push(newItem);
+    await Storage.set(this.FAV_KEY, this.items);
+    this.render();
+    return newItem;
+  },
+
   setupAddModal() {
     const modal     = document.getElementById('favAddModal');
     const closeBtn  = document.getElementById('closeFavModal');

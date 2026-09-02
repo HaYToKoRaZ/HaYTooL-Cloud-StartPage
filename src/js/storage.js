@@ -19,10 +19,41 @@ export const SYNCABLE_KEYS = [
 ];
 
 let syncTimeout = null;
+let pendingSyncPayload = {};
 let isApplyingCloudData = false;
 
 export function setApplyingCloudData(val) {
   isApplyingCloudData = val;
+}
+
+export async function flushCloudSync() {
+  if (Object.keys(pendingSyncPayload).length === 0) return;
+  if (!auth || !auth.currentUser) return;
+
+  const toSend = { ...pendingSyncPayload };
+  pendingSyncPayload = {};
+  if (syncTimeout) {
+    clearTimeout(syncTimeout);
+    syncTimeout = null;
+  }
+
+  try {
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    const nowIso = new Date().toISOString();
+    await setDoc(userRef, {
+      syncData: toSend,
+      updatedAt: nowIso
+    }, { merge: true });
+    console.log('[CloudSync] Senkronizasyon tamamlandı:', Object.keys(toSend));
+  } catch (e) {
+    console.error('[CloudSync] Senkronizasyon hatası:', e);
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', () => {
+    flushCloudSync();
+  });
 }
 
 function scheduleCloudSync(changedKey, changedValue) {
@@ -30,23 +61,12 @@ function scheduleCloudSync(changedKey, changedValue) {
   if (!auth || !auth.currentUser) return;
   if (!SYNCABLE_KEYS.includes(changedKey)) return;
 
-  if (syncTimeout) clearTimeout(syncTimeout);
+  pendingSyncPayload[changedKey] = changedValue;
 
-  syncTimeout = setTimeout(async () => {
-    try {
-      if (!auth.currentUser) return;
-      const userRef = doc(db, 'users', auth.currentUser.uid);
-      await setDoc(userRef, {
-        syncData: {
-          [changedKey]: changedValue
-        },
-        updatedAt: new Date().toISOString()
-      }, { merge: true });
-      console.log(`[CloudSync] '${changedKey}' buluta eşitlendi.`);
-    } catch (e) {
-      console.error('[CloudSync] Senkronizasyon hatası:', e);
-    }
-  }, 1000);
+  if (syncTimeout) clearTimeout(syncTimeout);
+  syncTimeout = setTimeout(() => {
+    flushCloudSync();
+  }, 250); // Hızlı 250ms debounce
 }
 
 export const Storage = {
@@ -66,10 +86,12 @@ export const Storage = {
 
   async set(key, value) {
     try {
+      const nowIso = new Date().toISOString();
       if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-        await chrome.storage.local.set({ [key]: value });
+        await chrome.storage.local.set({ [key]: value, _last_local_update: nowIso });
       } else {
         localStorage.setItem('haytool_' + key, JSON.stringify(value));
+        localStorage.setItem('haytool__last_local_update', JSON.stringify(nowIso));
       }
       scheduleCloudSync(key, value);
       return true;
@@ -123,11 +145,20 @@ export const Storage = {
       cleanSyncData.is_fav_first_run_v3 = false;
       cleanSyncData.has_seen_welcome = true;
 
+      const nowIso = new Date().toISOString();
       const userRef = doc(db, 'users', auth.currentUser.uid);
       await setDoc(userRef, {
         syncData: cleanSyncData,
-        updatedAt: new Date().toISOString()
+        updatedAt: nowIso
       }, { merge: true });
+
+      // Yerel update zamanını da güncelle
+      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+        await chrome.storage.local.set({ _last_local_update: nowIso });
+      } else {
+        localStorage.setItem('haytool__last_local_update', JSON.stringify(nowIso));
+      }
+
       console.log('[CloudSync] Tüm yerel veriler başarıyla buluta yüklendi.');
       return true;
     } catch (e) {

@@ -208,5 +208,12 @@
   "logout": "Oturumu Kapat",
   "login_cloud": "Oturum Aç (Bulut)",
   "settings_account": "Hesap / Eşzamanlama",
-  "settings_auth_loading": "Yükleniyor..."
+  "settings_auth_loading": "Yükleniyor...",
+  "btn_new_folder": "Yeni Klasör",
+  "modal_create_folder_title": "📁 Yeni Klasör Oluştur",
+  "modal_folder_name": "Klasör Adı",
+  "modal_folder_icon": "Simge / Emoji",
+  "modal_folder_color": "Vurgu Rengi",
+  "btn_create_folder": "Klasör Oluştur",
+  "toast_folder_created": "Klasör başarıyla oluşturuldu!"
 }

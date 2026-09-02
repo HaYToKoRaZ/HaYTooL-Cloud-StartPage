@@ -49,6 +49,7 @@ export const Shortcuts = {
     this.setupBookmarkImport();
     this.setupCollapseExpandAll();
     this.setupRenameModal();
+    this.setupCreateFolderModal();
     
     const topGear = document.getElementById('settingsBtn');
     if (topGear) {
@@ -749,6 +750,102 @@ export const Shortcuts = {
     modal.setAttribute('data-edit-id', item.id);
     modal.classList.add('active');
     setTimeout(() => document.getElementById('shortcutTitleInput')?.focus(), 100);
+  },
+
+    setupCreateFolderModal() {
+    const modal = document.getElementById('createFolderModal');
+    const form = document.getElementById('createFolderForm');
+    const closeBtn = document.getElementById('closeCreateFolderModal');
+    const cancelBtn = document.getElementById('cancelCreateFolderModal');
+    const openBtn = document.getElementById('createFolderBtn');
+    const colorList = document.getElementById('createFolderColorList');
+    const colorInput = document.getElementById('createFolderColorInput');
+
+    if (openBtn) {
+      openBtn.addEventListener('click', () => this.openCreateFolderModal());
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', () => modal?.classList.remove('active'));
+    if (cancelBtn) cancelBtn.addEventListener('click', () => modal?.classList.remove('active'));
+    if (modal) {
+      modal.addEventListener('click', e => {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+    }
+
+    if (colorList && colorList.children.length === 0) {
+      this.COLORS.forEach(c => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.style.cssText = `width:26px; height:26px; border-radius:50%; background:${c}; border:2px solid transparent; cursor:pointer; transition:transform 0.15s, border-color 0.15s;`;
+        dot.addEventListener('click', () => {
+          colorList.querySelectorAll('button').forEach(b => {
+            b.style.borderColor = 'transparent';
+            b.style.transform = 'scale(1)';
+          });
+          dot.style.borderColor = '#ffffff';
+          dot.style.transform = 'scale(1.15)';
+          if (colorInput) colorInput.value = c;
+        });
+        colorList.appendChild(dot);
+      });
+      if (colorList.firstElementChild) {
+        colorList.firstElementChild.style.borderColor = '#ffffff';
+        colorList.firstElementChild.style.transform = 'scale(1.15)';
+      }
+    }
+
+    if (form) {
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const nameInput = document.getElementById('createFolderNameInput');
+        const iconInput = document.getElementById('createFolderIconInput');
+        const name = (nameInput?.value || '').trim();
+        const icon = (iconInput?.value || '').trim() || '📁';
+        const color = colorInput?.value || '#6366f1';
+
+        if (!name) return;
+
+        const numCols = parseInt(document.body.getAttribute('data-cols')) || 3;
+        const newCat = {
+          id: 'cat_' + Date.now(),
+          name: name,
+          icon: icon,
+          color: color,
+          col: (this.categories.length % numCols) + 1,
+          order: this.categories.length,
+          isHidden: false
+        };
+
+        this.categories.push(newCat);
+        await Storage.set(this.CAT_KEY, this.categories);
+        this.renderFolders();
+
+        modal.classList.remove('active');
+        form.reset();
+        this._toast('✅ ' + I18n.t('toast_folder_created', 'Klasör başarıyla oluşturuldu!'));
+      });
+    }
+  },
+
+  openCreateFolderModal() {
+    const modal = document.getElementById('createFolderModal');
+    if (!modal) return;
+    const form = document.getElementById('createFolderForm');
+    if (form) form.reset();
+    const colorInput = document.getElementById('createFolderColorInput');
+    if (colorInput) colorInput.value = '#6366f1';
+    const colorList = document.getElementById('createFolderColorList');
+    if (colorList && colorList.firstElementChild) {
+      colorList.querySelectorAll('button').forEach(b => {
+        b.style.borderColor = 'transparent';
+        b.style.transform = 'scale(1)';
+      });
+      colorList.firstElementChild.style.borderColor = '#ffffff';
+      colorList.firstElementChild.style.transform = 'scale(1.15)';
+    }
+    modal.classList.add('active');
+    setTimeout(() => document.getElementById('createFolderNameInput')?.focus(), 100);
   },
 
   setupRenameModal() {
