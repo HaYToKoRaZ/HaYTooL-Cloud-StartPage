@@ -9,7 +9,7 @@
 **Modern, ultra-fast, aesthetic, modular, and privacy-focused Browser StartPage & New Tab Extension.**
 
 [![Status](https://img.shields.io/badge/Status-Active%20%26%20Maintained-brightgreen?style=for-the-badge&logo=git)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage)
-[![Platform](https://img.shields.io/badge/Platform-Chrome%20%7C%20Brave%20%7C%20Edge%20%7C%20Opera%20%7C%20Helium-blue?style=for-the-badge&logo=googlechrome)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage)
+[![Platform](https://img.shields.io/badge/Platform-Helium%20%7C%20Chrome%20%7C%20Brave%20%7C%20Edge%20%7C%20Opera-blue?style=for-the-badge&logo=googlechrome)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage)
 [![Manifest](https://img.shields.io/badge/Manifest-MV3-orange?style=for-the-badge&logo=google-chrome)](https://developer.chrome.com/docs/extensions/mv3/intro/)
 [![Language](https://img.shields.io/badge/Language-JavaScript%20ESNext-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![UI](https://img.shields.io/badge/UI-Vanilla%20CSS%20%7C%20Glassmorphism-264de4?style=for-the-badge&logo=css3&logoColor=white)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage)
@@ -61,9 +61,9 @@
 
 <div align="center">
 
-| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="32" /><br/>**Chrome** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="32" /><br/>**Brave** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="32" /><br/>**Edge** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="32" /><br/>**Opera** | <img src="https://github.com/imputnet/helium/raw/main/resources/branding/app_icon/raw.png" width="32" /><br/>**Helium** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="32" /><br/>**Vivaldi** |
+| <img src="https://github.com/imputnet/helium/raw/main/resources/branding/app_icon/raw.png" width="32" /><br/>**Helium** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="32" /><br/>**Chrome** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="32" /><br/>**Brave** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="32" /><br/>**Edge** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="32" /><br/>**Opera** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="32" /><br/>**Vivaldi** |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| `chrome://extensions` | `brave://extensions` | `edge://extensions` | `opera://extensions` | `helium://extensions` | `vivaldi://extensions` |
+| `helium://extensions` | `chrome://extensions` | `brave://extensions` | `edge://extensions` | `opera://extensions` | `vivaldi://extensions` |
 
 </div>
 
@@ -77,13 +77,13 @@
    ```
    *Alternatively, download the `.zip` from the [Latest Release](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases) and extract it.*
 
-2. Open your browser and navigate to the Extensions management page:
-   - 🌐 **Google Chrome:** `chrome://extensions/`
-   - 🦁 **Brave Browser:** `brave://extensions/`
-   - 🎈 **Helium Browser:** `helium://extensions/` or `chrome://extensions/`
-   - 🌊 **Microsoft Edge:** `edge://extensions/`
-   - 🎭 **Opera / Opera GX:** `opera://extensions/`
-   - 🔴 **Vivaldi:** `vivaldi://extensions/`
+2. Open your Chromium-based browser and navigate to the Extensions management page:
+   - <img src="https://github.com/imputnet/helium/raw/main/resources/branding/app_icon/raw.png" width="18" height="18" valign="middle" /> **Helium Browser:** `helium://extensions/` or `chrome://extensions/`
+   - <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="18" height="18" valign="middle" /> **Google Chrome:** `chrome://extensions/`
+   - <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="18" height="18" valign="middle" /> **Brave Browser:** `brave://extensions/`
+   - <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="18" height="18" valign="middle" /> **Microsoft Edge:** `edge://extensions/`
+   - <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="18" height="18" valign="middle" /> **Opera / Opera GX:** `opera://extensions/`
+   - <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="18" height="18" valign="middle" /> **Vivaldi:** `vivaldi://extensions/`
 
 3. Turn ON the **Developer mode** toggle in the top-right corner.
 4. Click **Load unpacked** (*Paketlenmemiş öge yükle*).
@@ -96,7 +96,7 @@
 
 | Component | Technology | Description |
 | :--- | :--- | :--- |
-| **Platform** | Manifest V3 (MV3) | Chrome & Chromium Web Extension Standard |
+| **Platform** | Manifest V3 (MV3) | Chromium Web Extension Standard |
 | **Logic** | Vanilla JavaScript (ESNext) | Modular, zero-framework, dependency-free architecture |
 | **Styling** | Vanilla CSS3 | Custom properties, glassmorphism, responsive grid layout |
 | **Storage** | `chrome.storage.local` | Asynchronous, fast, and local data persistence |
@@ -144,9 +144,9 @@
 
 <div align="center">
 
-| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="32" /><br/>**Chrome** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="32" /><br/>**Brave** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="32" /><br/>**Edge** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="32" /><br/>**Opera** | <img src="https://github.com/imputnet/helium/raw/main/resources/branding/app_icon/raw.png" width="32" /><br/>**Helium** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="32" /><br/>**Vivaldi** |
+| <img src="https://github.com/imputnet/helium/raw/main/resources/branding/app_icon/raw.png" width="32" /><br/>**Helium** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="32" /><br/>**Chrome** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="32" /><br/>**Brave** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="32" /><br/>**Edge** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="32" /><br/>**Opera** | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="32" /><br/>**Vivaldi** |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| `chrome://extensions` | `brave://extensions` | `edge://extensions` | `opera://extensions` | `helium://extensions` | `vivaldi://extensions` |
+| `helium://extensions` | `chrome://extensions` | `brave://extensions` | `edge://extensions` | `opera://extensions` | `vivaldi://extensions` |
 
 </div>
 
@@ -160,13 +160,13 @@
    ```
    *Veya [Son Sürüm (Releases)](https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases) sayfasından `.zip` indirip bir klasöre çıkartın.*
 
-2. Kullandığınız tarayıcının Eklentiler sayfasına gidin:
-   - 🌐 **Google Chrome:** `chrome://extensions/`
-   - 🦁 **Brave Browser:** `brave://extensions/`
-   - 🎈 **Helium Browser:** `helium://extensions/` veya `chrome://extensions/`
-   - 🌊 **Microsoft Edge:** `edge://extensions/`
-   - 🎭 **Opera / Opera GX:** `opera://extensions/`
-   - 🔴 **Vivaldi:** `vivaldi://extensions/`
+2. Kullandığınız Chromium tabanlı tarayıcının Eklentiler sayfasına gidin:
+   - <img src="https://github.com/imputnet/helium/raw/main/resources/branding/app_icon/raw.png" width="18" height="18" valign="middle" /> **Helium Browser:** `helium://extensions/` veya `chrome://extensions/`
+   - <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" width="18" height="18" valign="middle" /> **Google Chrome:** `chrome://extensions/`
+   - <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/brave/brave_48x48.png" width="18" height="18" valign="middle" /> **Brave Browser:** `brave://extensions/`
+   - <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" width="18" height="18" valign="middle" /> **Microsoft Edge:** `edge://extensions/`
+   - <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" width="18" height="18" valign="middle" /> **Opera / Opera GX:** `opera://extensions/`
+   - <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/vivaldi/vivaldi_48x48.png" width="18" height="18" valign="middle" /> **Vivaldi:** `vivaldi://extensions/`
 
 3. Sağ üst köşedeki **Geliştirici Modu**'nu (Developer mode) açık konuma getirin.
 4. Sol üstteki **Paketlenmemiş öge yükle** (Load unpacked) butonuna tıklayın.
