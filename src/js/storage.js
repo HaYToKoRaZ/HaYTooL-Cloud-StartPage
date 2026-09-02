@@ -10,6 +10,7 @@ export const SYNCABLE_KEYS = [
   'favorites_bar',
   'collapsed_folders',
   'folder_views',
+  'fav_bar_view',
   'show_hidden_folders',
   'search_engine',
   'lang',
@@ -187,4 +188,5 @@ export const Storage = {
     }
   }
 };
+
 
