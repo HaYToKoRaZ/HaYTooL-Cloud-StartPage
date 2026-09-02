@@ -1,5 +1,5 @@
 import { auth, db, GithubAuthProvider, signInWithCredential, signOut, onAuthStateChanged, doc, getDoc, setDoc, onSnapshot } from './firebase-config.js';
-import { Storage } from './storage.js';
+import { Storage, setApplyingCloudData } from './storage.js';
 
 export const Auth = {
   currentUser: null,
@@ -8,15 +8,18 @@ export const Auth = {
   _unsubSnapshot: null,
 
   async init() {
-    // Önce storage'da bekleyen token var mı kontrol et (background.js'den gelmis olabilir)
+    // 1) Storage'da bekleyen token varsa işle
     await this._processPendingToken();
 
     return new Promise((resolve) => {
       onAuthStateChanged(auth, async (user) => {
         this.currentUser = user;
         const hasSeenWelcome = await Storage.get('has_seen_welcome', false);
+
         if (user) {
           await this.updateProfileUI(user);
+          // Kullanıcı zaten giriş yapmışsa buluttaki verileri kontrol et
+          await this.checkAndSyncCloudData(user, false);
           resolve(user);
         } else if (!hasSeenWelcome) {
           this.showWelcomeModal(resolve);
@@ -34,25 +37,24 @@ export const Auth = {
       const result = await new Promise(r =>
         chrome.storage.local.get(['_pending_auth_token'], r)
       );
-      const token = result._pending_auth_token;
+      const token = result ? result._pending_auth_token : null;
       if (!token) return;
 
-      // Hemen temizle (bir daha kullanılmasın)
       await new Promise(r => chrome.storage.local.remove(['_pending_auth_token'], r));
 
       const credential = GithubAuthProvider.credential(token);
       const fbResult   = await signInWithCredential(auth, credential);
       this.currentUser = fbResult.user;
-      await this.checkAndSyncCloudData(fbResult.user);
 
-      // _authResolve varsa (popup açıkken geldi) onu da çöz
+      // İlk giriş: buluttan çek ve sayfayı YENİLE
+      await this.checkAndSyncCloudData(fbResult.user, true);
+
       if (this._authResolve) {
         this._authResolve(fbResult.user);
         this._authResolve = null;
         this._authReject  = null;
       }
     } catch (e) {
-      // Token geçersizse sessizce geç
       chrome.storage.local.remove(['_pending_auth_token']);
       console.warn('[Auth] Pending token işlenemedi:', e.message);
     }
@@ -102,7 +104,7 @@ export const Auth = {
                   + Date.now() + '&extid=' + chrome.runtime.id;
       window.open(url, 'haytool_auth', 'width=500,height=660,left=200,top=100');
 
-      // 5 dakika timeout - tek reddetme mekanizması
+      // 5 dakika timeout
       setTimeout(() => {
         if (this._authReject) {
           this._authResolve = null;
@@ -125,38 +127,96 @@ export const Auth = {
     }
   },
 
-  async checkAndSyncCloudData(user) {
-    const userRef = doc(db, 'users', user.uid);
-    const docSnap = await getDoc(userRef);
+  /**
+   * Buluttan verileri çeker veya ilk cihazsa yerel veriyi buluta aktarır.
+   * @param {Object} user 
+   * @param {boolean} forceReload İndirme bittiğinde sayfayı yenilesin mi?
+   */
+  async checkAndSyncCloudData(user, forceReload = false) {
+    if (!user) return;
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(userRef);
 
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      if (data.settings)  await chrome.storage.local.set(data.settings);
-      if (data.shortcuts) await Storage.set('shortcuts', data.shortcuts);
-      if (data.favorites) await Storage.set('favorites', data.favorites);
-      window.dispatchEvent(new Event('render_shortcuts_and_favorites'));
-      window.dispatchEvent(new Event('cloud_data_loaded'));
-    } else {
-      const allLocal  = await Storage.getAll();
-      const shortcuts = await Storage.get('shortcuts', []);
-      const favorites = await Storage.get('favorites', []);
-      await setDoc(userRef, { settings: allLocal, shortcuts, favorites, createdAt: new Date().toISOString() });
-    }
+      if (docSnap.exists()) {
+        const rawData = docSnap.data();
+        let cloudData = rawData.syncData || {};
 
-    if (this._unsubSnapshot) this._unsubSnapshot();
-    this._unsubSnapshot = onSnapshot(userRef, async (snapshot) => {
-      if (!snapshot.exists()) return;
-      const data = snapshot.data();
-      if (data.settings) {
-        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-          await chrome.storage.local.set(data.settings);
-        } else {
-          for (const [k, v] of Object.entries(data.settings))
-            localStorage.setItem('haytool_' + k, JSON.stringify(v));
+        // Eski yapılardan uyumluluk geçişi (legacy fallback)
+        if (rawData.settings && typeof rawData.settings === 'object') {
+          cloudData = { ...rawData.settings, ...cloudData };
         }
+        if (rawData.shortcuts && Array.isArray(rawData.shortcuts) && rawData.shortcuts.length > 0) {
+          if (!cloudData.shortcuts_v2) cloudData.shortcuts_v2 = rawData.shortcuts;
+        }
+        if (rawData.favorites && Array.isArray(rawData.favorites) && rawData.favorites.length > 0) {
+          if (!cloudData.favorites_bar) cloudData.favorites_bar = rawData.favorites;
+        }
+
+        // Bulutta link veya ayar var mı kontrol et
+        const hasContent = !!(
+          (cloudData.shortcuts_v2 && cloudData.shortcuts_v2.length > 0) ||
+          (cloudData.shortcut_categories && cloudData.shortcut_categories.length > 0) ||
+          cloudData.app_settings
+        );
+
+        if (hasContent) {
+          console.log('[Auth] Buluttan veriler indiriliyor...', Object.keys(cloudData));
+          setApplyingCloudData(true);
+          try {
+            if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+              await chrome.storage.local.set(cloudData);
+            }
+            for (const [k, v] of Object.entries(cloudData)) {
+              localStorage.setItem('haytool_' + k, JSON.stringify(v));
+            }
+          } finally {
+            setTimeout(() => setApplyingCloudData(false), 1500);
+          }
+
+          if (forceReload) {
+            console.log('[Auth] Bulut verileri yerleştirildi, sayfa yenileniyor...');
+            window.location.reload();
+            return;
+          }
+        } else {
+          // Bulutta henüz veri yok, bu cihazdaki yerel verileri buluta aktar!
+          console.log('[Auth] Bulut boş, yerel veriler buluta aktarılıyor...');
+          await Storage.pushAllToCloud();
+        }
+      } else {
+        // Kullanıcı Firestore'da ilk defa oluşturuluyor
+        console.log('[Auth] Kullanıcı kaydı oluşturuluyor, yerel veriler yükleniyor...');
+        await Storage.pushAllToCloud();
       }
-      window.dispatchEvent(new Event('render_shortcuts_and_favorites'));
-    });
+
+      // Canlı eşitleme dinleyicisi (Diğer sekmelerden/cihazlardan gelen değişiklikler)
+      if (this._unsubSnapshot) this._unsubSnapshot();
+      this._unsubSnapshot = onSnapshot(userRef, async (snapshot) => {
+        if (!snapshot.exists()) return;
+        const raw = snapshot.data();
+        const incoming = raw.syncData || raw.settings;
+        if (!incoming) return;
+
+        setApplyingCloudData(true);
+        try {
+          if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+            await chrome.storage.local.set(incoming);
+          }
+          for (const [k, v] of Object.entries(incoming)) {
+            localStorage.setItem('haytool_' + k, JSON.stringify(v));
+          }
+        } finally {
+          setTimeout(() => setApplyingCloudData(false), 1000);
+        }
+
+        window.dispatchEvent(new Event('render_shortcuts_and_favorites'));
+        window.dispatchEvent(new Event('cloud_data_loaded'));
+      });
+
+    } catch (err) {
+      console.error('[Auth] checkAndSyncCloudData hatası:', err);
+    }
   },
 
   async updateProfileUI(user) {
@@ -205,11 +265,51 @@ export const Auth = {
       }
     }
 
+    // Settings içine "Buluta Şimdi Eşitle" butonu ekle/güncelle
+    this.updateCloudSyncButton(user);
+
     if (window.I18n && typeof window.I18n.updateDOM === 'function') window.I18n.updateDOM();
+  },
+
+  updateCloudSyncButton(user) {
+    let syncBtn = document.getElementById('manualCloudSyncBtn');
+    const container = document.getElementById('settingsAuthBtn')?.parentElement;
+    if (!container) return;
+
+    if (user) {
+      if (!syncBtn) {
+        syncBtn = document.createElement('button');
+        syncBtn.id = 'manualCloudSyncBtn';
+        syncBtn.className = 'btn-secondary';
+        syncBtn.style.cssText = 'width:100%; margin-top:8px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:0.82rem;';
+        container.appendChild(syncBtn);
+      }
+      syncBtn.innerHTML = '☁️ <span>Buluta Şimdi Eşitle</span>';
+      syncBtn.onclick = async () => {
+        syncBtn.disabled = true;
+        syncBtn.innerHTML = '⏳ <span>Eşitleniyor...</span>';
+        const ok = await Storage.pushAllToCloud();
+        if (ok) {
+          syncBtn.innerHTML = '✅ <span>Buluta Başarıyla Eşitlendi!</span>';
+          setTimeout(() => {
+            syncBtn.disabled = false;
+            syncBtn.innerHTML = '☁️ <span>Buluta Şimdi Eşitle</span>';
+          }, 2500);
+        } else {
+          syncBtn.innerHTML = '❌ <span>Hata Oluştu</span>';
+          setTimeout(() => {
+            syncBtn.disabled = false;
+            syncBtn.innerHTML = '☁️ <span>Buluta Şimdi Eşitle</span>';
+          }, 2500);
+        }
+      };
+    } else if (syncBtn) {
+      syncBtn.remove();
+    }
   }
 };
 
-// Tab mesajı ile EXTERNAL_AUTH_SUCCESS gelirse doğrudan işle
+// EXTERNAL_AUTH_SUCCESS mesajı gelince
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'EXTERNAL_AUTH_SUCCESS') {
     (async () => {
@@ -217,10 +317,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const credential = GithubAuthProvider.credential(request.token);
         const result     = await signInWithCredential(auth, credential);
         Auth.currentUser = result.user;
-        await Auth.checkAndSyncCloudData(result.user);
         await Auth.updateProfileUI(result.user);
 
-        // Storage'daki pending token'ı temizle (zaten işlendi)
         chrome.storage.local.remove(['_pending_auth_token']);
 
         if (Auth._authResolve) {
@@ -228,6 +326,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           Auth._authResolve = null;
           Auth._authReject  = null;
         }
+
+        // Buluttan veriyi indir ve sayfayı kesin olarak yenile!
+        await Auth.checkAndSyncCloudData(result.user, true);
+
         sendResponse({ ok: true });
       } catch (e) {
         console.error('EXTERNAL_AUTH_SUCCESS hatası:', e);

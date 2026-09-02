@@ -1,35 +1,52 @@
 /**
- * HaYTooL Cloud StartPage - Evrensel Storage Katmanı
- * chrome.storage.local öncelikli, localStorage fallback ile
- * #5: Firestore sync artık sadece değişen anahtarı yazıyor (merge: true)
+ * HaYTooL Cloud StartPage - Evrensel Storage & Cloud Sync Katmanı
  */
 import { auth, db, doc, setDoc } from './firebase-config.js';
 
-let syncTimeout = null;
+export const SYNCABLE_KEYS = [
+  'app_settings',
+  'shortcut_categories',
+  'shortcuts_v2',
+  'favorites_bar',
+  'collapsed_folders',
+  'folder_views',
+  'show_hidden_folders',
+  'search_engine',
+  'lang',
+  'is_first_run_v3',
+  'is_fav_first_run_v3',
+  'has_seen_welcome'
+];
 
-// #5: Tüm veriyi değil, yalnızca değişen key'i cloud'a yaz
+let syncTimeout = null;
+let isApplyingCloudData = false;
+
+export function setApplyingCloudData(val) {
+  isApplyingCloudData = val;
+}
+
 function scheduleCloudSync(changedKey, changedValue) {
+  if (isApplyingCloudData) return;
   if (!auth || !auth.currentUser) return;
+  if (!SYNCABLE_KEYS.includes(changedKey)) return;
+
   if (syncTimeout) clearTimeout(syncTimeout);
 
   syncTimeout = setTimeout(async () => {
     try {
+      if (!auth.currentUser) return;
       const userRef = doc(db, 'users', auth.currentUser.uid);
-      const payload = { updatedAt: new Date().toISOString() };
-
-      // Özel anahtarlar doğrudan ayrı alanlar olarak tutulur
-      if (changedKey === 'shortcuts' || changedKey === 'favorites') {
-        payload[changedKey] = changedValue;
-      } else {
-        // Diğer tüm ayarlar settings objesinin içine merge edilir
-        payload['settings.' + changedKey] = changedValue;
-      }
-
-      await setDoc(userRef, payload, { merge: true });
+      await setDoc(userRef, {
+        syncData: {
+          [changedKey]: changedValue
+        },
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+      console.log(`[CloudSync] '${changedKey}' buluta eşitlendi.`);
     } catch (e) {
-      console.error('Cloud sync error:', e);
+      console.error('[CloudSync] Senkronizasyon hatası:', e);
     }
-  }, 1500); // 1.5s debounce
+  }, 1000);
 }
 
 export const Storage = {
@@ -54,7 +71,7 @@ export const Storage = {
       } else {
         localStorage.setItem('haytool_' + key, JSON.stringify(value));
       }
-      scheduleCloudSync(key, value); // #5: sadece bu key'i gönder
+      scheduleCloudSync(key, value);
       return true;
     } catch (e) {
       console.error('[Storage] set hatası:', key, e);
@@ -87,5 +104,35 @@ export const Storage = {
       }
       return data;
     } catch (e) { return {}; }
+  },
+
+  /**
+   * Tüm yerel ayar ve linkleri tek seferde buluta aktarır (Ana Yedek)
+   */
+  async pushAllToCloud() {
+    if (!auth || !auth.currentUser) return false;
+    try {
+      const all = await this.getAll();
+      const cleanSyncData = {};
+      for (const key of SYNCABLE_KEYS) {
+        if (all[key] !== undefined) {
+          cleanSyncData[key] = all[key];
+        }
+      }
+      cleanSyncData.is_first_run_v3 = false;
+      cleanSyncData.is_fav_first_run_v3 = false;
+      cleanSyncData.has_seen_welcome = true;
+
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      await setDoc(userRef, {
+        syncData: cleanSyncData,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+      console.log('[CloudSync] Tüm yerel veriler başarıyla buluta yüklendi.');
+      return true;
+    } catch (e) {
+      console.error('[CloudSync] pushAllToCloud hatası:', e);
+      return false;
+    }
   }
 };
