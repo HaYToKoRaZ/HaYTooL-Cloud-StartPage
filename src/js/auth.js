@@ -57,6 +57,7 @@ export const Auth = {
     }
   },
 
+  // Popup kapanınca reddetme kaldırıldı — sadece başarı veya 5dk timeout
   loginWithGitHub() {
     return new Promise((resolve, reject) => {
       if (this._authReject) {
@@ -65,32 +66,18 @@ export const Auth = {
       this._authResolve = resolve;
       this._authReject  = reject;
 
-      const url = 'https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/auth.html?v=' + Date.now() + '&extid=' + chrome.runtime.id;
-      const popup = window.open(url, 'haytool_auth', 'width=500,height=660,left=200,top=100');
+      const url = 'https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/auth.html?v='
+                  + Date.now() + '&extid=' + chrome.runtime.id;
+      window.open(url, 'haytool_auth', 'width=500,height=660,left=200,top=100');
 
-      // 5 dakika zaman aşımı
-      const timeout = setTimeout(() => {
-        this._authResolve = null;
-        this._authReject  = null;
-        reject(new Error('Giriş zaman aşımına uğradı (5 dakika).'));
-      }, 5 * 60 * 1000);
-
-      // Popup kapanınca: 2sn bekle (başarı mesajı uçuşta olabilir)
-      const interval = setInterval(() => {
-        if (popup && popup.closed) {
-          clearInterval(interval);
-          clearTimeout(timeout);
-          setTimeout(() => {
-            // Eğer bu sürede _authResolve hâlâ doluysa → kullanıcı manuel kapattı
-            if (this._authReject) {
-              this._authReject = null;
-              this._authResolve = null;
-              reject(new Error('Giriş penceresi kapatıldı.'));
-            }
-            // _authReject null ise → resolve zaten çağrıldı, bir şey yapma
-          }, 2000);
+      // Tek reddetme mekanizması: 5 dakika timeout
+      setTimeout(() => {
+        if (this._authReject) {
+          this._authResolve = null;
+          this._authReject  = null;
+          reject(new Error('Giriş zaman aşımına uğradı (5 dakika).'));
         }
-      }, 500);
+      }, 5 * 60 * 1000);
     });
   },
 
@@ -147,11 +134,26 @@ export const Auth = {
     if (modal && modal.classList.contains('active')) modal.classList.remove('active');
 
     if (profileBox) {
-      profileBox.innerHTML = user
-        ? `<img src="${user.photoURL || ''}" alt="Avatar" style="width:24px;height:24px;border-radius:50%;object-fit:cover;">
-           <span>${user.email || user.displayName || 'GitHub User'}</span>`
-        : `<span style="display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--bg-layer-2);">💻</span>
-           <span data-i18n="local_mode">Local</span>`;
+      if (user) {
+        const displayName = user.displayName || user.email || 'GitHub User';
+        const avatarUrl   = user.photoURL || '';
+        profileBox.innerHTML = `
+          <img src="${avatarUrl}" alt="Avatar"
+               style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--accent,#6366f1);"
+               onerror="this.style.display='none'">
+          <div style="display:flex;flex-direction:column;line-height:1.2;">
+            <span style="font-weight:600;font-size:0.78rem;">${displayName}</span>
+            ${user.email && user.email !== displayName
+              ? `<span style="font-size:0.68rem;color:var(--text-muted,#94a3b8);">${user.email}</span>`
+              : ''}
+          </div>`;
+      } else {
+        profileBox.innerHTML = `
+          <span style="display:flex;align-items:center;justify-content:center;
+                       width:28px;height:28px;border-radius:50%;
+                       background:var(--bg-layer-2,#1e293b);">💻</span>
+          <span data-i18n="local_mode" style="font-size:0.8rem;">Yerel Mod</span>`;
+      }
     }
 
     if (authBtn) {
@@ -162,9 +164,8 @@ export const Auth = {
         authBtn.innerHTML = `<span style="font-size:1.1rem;margin-right:4px;">🐙</span>
           <span data-i18n="login_cloud">Oturum Aç (GitHub)</span>`;
         authBtn.onclick = async () => {
-          try {
-            await this.loginWithGitHub();
-          } catch (err) {
+          try { await this.loginWithGitHub(); }
+          catch (err) {
             console.error('Settings Login error:', err);
             alert('Giriş başarısız oldu: ' + (err.message || JSON.stringify(err)));
           }
@@ -176,16 +177,16 @@ export const Auth = {
   }
 };
 
-// EXTERNAL_AUTH_SUCCESS gelince loginWithGitHub Promise'ını çöz
+// EXTERNAL_AUTH_SUCCESS → loginWithGitHub Promise'ını çöz
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'EXTERNAL_AUTH_SUCCESS') {
     (async () => {
       try {
         const credential = GithubAuthProvider.credential(request.token);
         const result     = await signInWithCredential(auth, credential);
+        Auth.currentUser = result.user;
         await Auth.checkAndSyncCloudData(result.user);
         await Auth.updateProfileUI(result.user);
-        Auth.currentUser = result.user;
 
         if (Auth._authResolve) {
           Auth._authResolve(result.user);
@@ -196,7 +197,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
         sendResponse({ ok: true });
       } catch (e) {
-        console.error('Giriş başarısız', e);
+        console.error('EXTERNAL_AUTH_SUCCESS hatası:', e);
         if (Auth._authReject) {
           Auth._authReject(e);
           Auth._authReject  = null;
