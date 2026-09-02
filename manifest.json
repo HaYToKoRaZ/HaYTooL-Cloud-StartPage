@@ -12,13 +12,6 @@
     "contextMenus",
     "identity"
   ],
-  "oauth2": {
-    "client_id": "2909602953-jdif208m2hdcp9bqknn01eudo6jrmea7.apps.googleusercontent.com",
-    "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email",
-      "https://www.googleapis.com/auth/userinfo.profile"
-    ]
-  },
   "background": {
     "service_worker": "src/js/background.js"
   },

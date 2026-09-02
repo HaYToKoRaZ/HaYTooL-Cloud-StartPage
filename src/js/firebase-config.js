@@ -1,5 +1,5 @@
 import { initializeApp } from '../lib/firebase/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithCredential, signOut, onAuthStateChanged } from '../lib/firebase/firebase-auth.js';
+import { getAuth, GithubAuthProvider, signInWithPopup, signInWithCredential, signOut, onAuthStateChanged } from '../lib/firebase/firebase-auth.js';
 import { getFirestore, doc, getDoc, setDoc, onSnapshot } from '../lib/firebase/firebase-firestore.js';
 
 const firebaseConfig = {
@@ -16,4 +16,5 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export { app, auth, db, GoogleAuthProvider, signInWithCredential, signOut, onAuthStateChanged, doc, getDoc, setDoc, onSnapshot };
+export { app, auth, db, GithubAuthProvider, signInWithPopup, signInWithCredential, signOut, onAuthStateChanged, doc, getDoc, setDoc, onSnapshot };
+
