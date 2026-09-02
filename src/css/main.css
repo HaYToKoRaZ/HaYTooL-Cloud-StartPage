@@ -1829,7 +1829,6 @@ body {
     grid-template-columns: repeat(2, 1fr) !important;
   }
   .folder-card { grid-column: auto !important; }
-  }
 }
 @media (max-width: 600px) {
   .folders-grid[data-cols],
@@ -1837,7 +1836,6 @@ body {
     grid-template-columns: 1fr !important;
   }
   .folder-card { grid-column: auto !important; }
-  }
 }
 
 /* BODY LEVEL FALLBACK SÜTUNLARI */
@@ -1846,21 +1844,48 @@ body[data-cols="1"] .folders-grid {
   grid-auto-flow: dense;
   grid-auto-rows: 5px;
   column-gap: 0.65rem;
-  row-gap: 0; /* Managed by JS row span */
-  width: 100%;
-  padding: 0.6rem;
-  background: rgba(255,255,255,0.03);
-  border: none;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  border-top: 1px solid var(--border-glass);
-  transition: all var(--transition-fast);
+  row-gap: 0;
 }
+
+/* Kısa Liste "Daha Fazla Göster" Butonu */
+.show-more-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.35rem !important;
+  width: 100% !important;
+  padding: 0.45rem 0.5rem !important;
+  margin: 0.4rem 0 0.2rem 0 !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--border-glass) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--text-muted) !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  line-height: 1.25 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  transition: all var(--transition-fast) !important;
+}
+
 .show-more-btn:hover {
-  background: rgba(255,255,255,0.08);
-  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: var(--text-main) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+}
+
+.show-more-btn span {
+  white-space: normal;
+  display: inline;
+}
+
+.show-more-btn small {
+  opacity: 0.8;
+  font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 .fav-show-more-btn {

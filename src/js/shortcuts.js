@@ -420,10 +420,13 @@ export const Shortcuts = {
     if (isShortlist && items.length > limit) {
       const moreBtn = document.createElement('button');
       moreBtn.className = 'show-more-btn';
-      moreBtn.textContent = I18n.t('show_more', 'Show more') + ' (' + (items.length - limit) + ') ▾';
-      moreBtn.addEventListener('click', () => {
+      const remainingCount = items.length - limit;
+      moreBtn.innerHTML = '<span>' + I18n.t('show_more', 'Daha fazla göster') + '</span> <small>(' + remainingCount + ') ▾</small>';
+      moreBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         body.querySelectorAll('.shortlist-hidden').forEach(el => el.style.display = 'flex');
         moreBtn.style.display = 'none';
+        this.applyMasonry();
       });
       body.appendChild(moreBtn);
     }
