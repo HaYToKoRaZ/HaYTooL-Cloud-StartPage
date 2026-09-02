@@ -1,4 +1,4 @@
-﻿import { Storage } from './storage.js';
+import { Storage } from './storage.js';
 import { Settings } from './settings.js';
 
 export const Weather = {
@@ -13,23 +13,24 @@ export const Weather = {
     const badge = document.getElementById('weatherBadge');
     if (!badge) return;
 
+    // Settings initialize edildiği için Settings.config yüklü
+    const cityObj = Settings.config.weatherCityObj;
+    const currentCityName = cityObj?.name || 'İstanbul';
+
     const cached = await Storage.get('weather_cache', null);
     const now = Date.now();
-    if (!forceRefresh && cached && (now - cached.timestamp < 30 * 60 * 1000)) {
-      this.render(cached.data); return;
+
+    // Önbellek yalnızca aynı şehir için ve 30 dakikadan yeniyse geçerlidir
+    if (!forceRefresh && cached && cached.data && cached.data.city === currentCityName && (now - cached.timestamp < 30 * 60 * 1000)) {
+      this.render(cached.data);
+      return;
     }
 
     badge.innerHTML = '<span class="weather-icon">⏳</span><span>Yükleniyor...</span>';
 
-    // Settings'den koordinatlı obje alındı mı?
-    // Not: Settings initialize edildiği için Settings.config yüklü
-    const cityObj = Settings.config.weatherCityObj;
-    
     if (cityObj && cityObj.lat !== undefined && cityObj.lon !== undefined) {
-      // Obje varsa doğrudan koordinatı kullanıyoruz (ekstra API isteğine gerek yok)
       await this.fetchWeather(cityObj.lat, cityObj.lon, cityObj.name);
     } else {
-      // Konum yoksa varsayılan (İstanbul)
       await this.fetchWeather(41.0082, 28.9784, 'İstanbul');
     }
   },
