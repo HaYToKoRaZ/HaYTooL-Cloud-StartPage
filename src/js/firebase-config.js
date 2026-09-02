@@ -1,5 +1,5 @@
 import { initializeApp } from '../lib/firebase/firebase-app.js';
-import { getAuth, GithubAuthProvider, signInWithPopup, signInWithCredential, signOut, onAuthStateChanged } from '../lib/firebase/firebase-auth.js';
+import { getAuth, GithubAuthProvider, signInWithPopup, signInWithCredential, signOut, onAuthStateChanged } from '../lib/firebase/firebase-auth-web-extension.js';
 import { getFirestore, doc, getDoc, setDoc, onSnapshot } from '../lib/firebase/firebase-firestore.js';
 
 const firebaseConfig = {
