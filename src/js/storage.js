@@ -1,7 +1,29 @@
-﻿/**
+/**
  * HaYTooL Cloud StartPage - Evrensel Storage Katmanı
  * chrome.storage.local öncelikli, localStorage fallback ile
  */
+import { auth, db, doc, setDoc } from './firebase-config.js';
+
+let syncTimeout = null;
+function scheduleCloudSync() {
+  if (!auth || !auth.currentUser) return;
+  if (syncTimeout) clearTimeout(syncTimeout);
+  
+  syncTimeout = setTimeout(async () => {
+    try {
+      const allData = await Storage.getAll();
+      const userRef = doc(db, 'users', auth.currentUser.uid);
+      await setDoc(userRef, {
+        settings: allData,
+        shortcuts: allData.shortcuts || [],
+        favorites: allData.favorites || [],
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+    } catch (e) {
+      console.error('Cloud sync error:', e);
+    }
+  }, 1000);
+}
 export const Storage = {
   async get(key, defaultValue = null) {
     try {
@@ -23,6 +45,7 @@ export const Storage = {
       } else {
         localStorage.setItem('haytool_' + key, JSON.stringify(value));
       }
+      scheduleCloudSync();
       return true;
     } catch (e) {
       console.error('[Storage] set hatası:', key, e);
@@ -36,6 +59,7 @@ export const Storage = {
       } else {
         localStorage.removeItem('haytool_' + key);
       }
+      scheduleCloudSync();
       return true;
     } catch (e) { return false; }
   },

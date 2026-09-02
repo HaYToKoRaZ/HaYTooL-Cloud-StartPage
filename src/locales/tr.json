@@ -200,5 +200,13 @@
   "delete_all_links_confirm_word": "SİL",
   "delete_all_links_prompt": "DİKKAT! İçindeki tüm linkler ve klasörler kalıcı olarak silinecek.\nDevam etmek için lütfen aşağıdaki kelimenin BİREBİR AYNISINI yazın:\n\n",
   "toast_links_deleted": "Tüm linkler başarıyla silindi. Sayfa yenileniyor...",
-  "toast_links_delete_failed": "Hatalı kelime girdiniz, işlem iptal edildi."
+  "toast_links_delete_failed": "Hatalı kelime girdiniz, işlem iptal edildi.",
+  "welcome_desc": "Yer imlerinizi ve ayarlarınızı tüm cihazlarınızda eşzamanlamak için Google ile giriş yapabilirsiniz.",
+  "login_with_google": "Google ile Giriş Yap",
+  "continue_local": "Geç (Yerel Kullanım)",
+  "local_mode": "Yerel",
+  "logout": "Oturumu Kapat",
+  "login_cloud": "Oturum Aç (Bulut)",
+  "settings_account": "Hesap / Eşzamanlama",
+  "settings_auth_loading": "Yükleniyor..."
 }

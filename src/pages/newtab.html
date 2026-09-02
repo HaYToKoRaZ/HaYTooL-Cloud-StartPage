@@ -90,9 +90,12 @@
   </main>
 
   <!-- ====== FOOTER ====== -->
-  <footer class="bottom-bar">
-    <div id="quoteBox" class="quote-box"></div>
-    <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage" target="_blank" rel="noopener noreferrer" class="footer-brand" style="text-decoration:none; color:inherit; transition: color 0.2s;">HaYTooL StartPage v4.0.0</a>
+  <footer class="bottom-bar" style="display:flex; justify-content:space-between; align-items:center; width:100%; padding:0 20px;">
+    <div id="userProfileBox" class="user-profile-box" style="display:flex; align-items:center; gap:8px; opacity:0.8; font-size: 0.85rem; color: var(--text-muted);">
+      <!-- Doldurulacak -->
+    </div>
+    <div id="quoteBox" class="quote-box" style="position:absolute; left:50%; transform:translateX(-50%); text-align:center;"></div>
+    <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage" target="_blank" rel="noopener noreferrer" class="footer-brand" style="text-decoration:none; color:inherit; transition: color 0.2s;">HaYTooL StartPage v4.1.1</a>
   </footer>
 
   <!-- ====== FAVORİ EKLE MODAL ====== -->
@@ -411,6 +414,14 @@
         <button type="button" id="resetSettingsBtn" class="btn-secondary" style="width:100%;color:var(--accent-rose);border-color:rgba(244,63,94,0.3);" data-i18n="btn_reset_all">Reset All Data</button>
       </div>
 
+      <!-- Oturum Yönetimi -->
+      <div style="margin-top:1.25rem;">
+        <h4 style="font-size:0.88rem;margin-bottom:0.6rem;color:var(--text-muted);" data-i18n="settings_account">Account / Sync</h4>
+        <button type="button" id="settingsAuthBtn" class="btn-secondary" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px;">
+          <span data-i18n="settings_auth_loading">Loading...</span>
+        </button>
+      </div>
+
       <!-- İletişim / Developer -->
       <div style="margin-top:1.5rem; text-align:center;">
         <a href="mailto:korazhayto@gmail.com" class="feedback-link">
@@ -419,6 +430,25 @@
       </div>
 
       <div class="modal-actions"></div>
+    </div>
+  </div>
+
+  <!-- ====== WELCOME MODAL ====== -->
+  <div id="welcomeModal" class="modal-overlay" style="z-index: 9999; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);">
+    <div class="modal-content" style="max-width:450px; text-align:center;">
+      <h2 style="margin-bottom: 1rem; color: var(--text-color);">🚀 HaYTooL Cloud</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--text-muted); font-size: 0.95rem;" data-i18n="welcome_desc">
+        Yer imlerinizi ve ayarlarınızı tüm cihazlarınızda eşzamanlamak için Google ile giriş yapabilirsiniz.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <button id="btnGoogleLogin" class="btn-primary" style="padding: 0.75rem; font-size: 1rem; display:flex; align-items:center; justify-content:center; gap:8px;">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" style="width:18px;height:18px;"/>
+          <span data-i18n="login_with_google">Google ile Giriş Yap</span>
+        </button>
+        <button id="btnSkipLogin" class="btn-secondary" style="padding: 0.75rem; font-size: 1rem;" data-i18n="continue_local">
+          Geç (Yerel Kullanım)
+        </button>
+      </div>
     </div>
   </div>
 

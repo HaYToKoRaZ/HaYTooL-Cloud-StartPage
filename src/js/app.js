@@ -4,6 +4,7 @@ import { Weather }   from './weather.js';
 import { Shortcuts } from './shortcuts.js';
 import { Favorites } from './favorites.js';
 import { Settings }  from './settings.js';
+import { Auth }      from './auth.js';
 
 /**
  * HaYTooL Cloud StartPage v2.0.0
@@ -13,6 +14,10 @@ class StartPageApp {
     try {
       await I18n.init();
       await Settings.init();
+      
+      // Auth'u bekleyelim (Giriş/Karşılama ekranı için)
+      await Auth.init();
+
       await Weather.init();
       await Favorites.init();
       await Shortcuts.init();
