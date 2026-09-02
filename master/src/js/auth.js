@@ -67,7 +67,7 @@ export const Auth = {
 
   async loginWithGitHub() {
     console.log('loginWithGitHub started...');
-    const url = 'https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/auth.html';
+    const url = 'https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/auth.html?v=' + Date.now();
     window.open(url, 'haytool_auth', 'width=500,height=600');
   },
 
