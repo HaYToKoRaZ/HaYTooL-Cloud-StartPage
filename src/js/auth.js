@@ -199,8 +199,10 @@ export const Auth = {
           }
 
           if (forceReload) {
-            console.log('[Auth] Bulut verileri yerleştirildi, sayfa yenileniyor...');
-            window.location.reload();
+            console.log('[Auth] Bulut verileri yerleştirildi, arayüz güncelleniyor...');
+            window.dispatchEvent(new Event('cloud_data_loaded'));
+            // Firestore yazma akışının soketi güvenle kapatması için 300ms nefes payı
+            setTimeout(() => window.location.reload(), 300);
             return;
           }
 
@@ -252,26 +254,79 @@ export const Auth = {
     const modal      = document.getElementById('welcomeModal');
     if (modal && modal.classList.contains('active')) modal.classList.remove('active');
 
+    // Sol üst köşe marka / GitHub avatar değişimi
+    const brandLogo = document.getElementById('appBrandLogo') || document.querySelector('.app-brand img');
+    const brandContainer = document.getElementById('appBrand') || document.querySelector('.app-brand');
+
+    if (brandLogo) {
+      if (user && user.photoURL) {
+        brandLogo.src = user.photoURL;
+        brandLogo.style.borderRadius = '50%';
+        brandLogo.style.border = '2.5px solid var(--accent, #6366f1)';
+        brandLogo.style.boxShadow = '0 0 14px rgba(99, 102, 241, 0.45)';
+        brandLogo.onerror = () => {
+          brandLogo.src = '../assets/icons/favicon.png';
+          brandLogo.style.borderRadius = '10px';
+          brandLogo.style.border = 'none';
+          brandLogo.style.boxShadow = 'var(--glow-accent)';
+        };
+        if (brandContainer) {
+          brandContainer.title = (user.displayName || 'GitHub') + ' - HaYTooL StartPage';
+        }
+      } else {
+        brandLogo.src = '../assets/icons/favicon.png';
+        brandLogo.style.borderRadius = '10px';
+        brandLogo.style.border = 'none';
+        brandLogo.style.boxShadow = 'var(--glow-accent)';
+        if (brandContainer) {
+          brandContainer.title = 'HaYTooL Cloud StartPage';
+        }
+      }
+
+      if (brandContainer && !brandContainer._hasBrandListener) {
+        brandContainer._hasBrandListener = true;
+        brandContainer.addEventListener('click', () => {
+          const settingsBtn = document.getElementById('settingsBtn');
+          if (settingsBtn) settingsBtn.click();
+        });
+      }
+    }
+
     if (profileBox) {
       if (user) {
-        const displayName = user.displayName || user.email || 'GitHub User';
-        const avatarUrl   = user.photoURL || '';
+        const emailOrName = user.email || user.displayName || 'GitHub User';
         profileBox.innerHTML = `
-          <img src="${avatarUrl}" alt="Avatar"
-               style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--accent,#6366f1);"
-               onerror="this.style.display='none'">
-          <div style="display:flex;flex-direction:column;line-height:1.2;">
-            <span style="font-weight:600;font-size:0.78rem;">${displayName}</span>
-            ${user.email && user.email !== displayName
-              ? `<span style="font-size:0.68rem;color:var(--text-muted,#94a3b8);">${user.email}</span>`
-              : ''}
+          <div style="display:flex;align-items:center;cursor:pointer;" title="Ayarları Aç">
+            <span style="font-size:0.75rem;color:var(--text-muted,#94a3b8);font-weight:500;">${emailOrName}</span>
           </div>`;
+        profileBox.onclick = () => {
+          const settingsBtn = document.getElementById('settingsBtn');
+          if (settingsBtn) settingsBtn.click();
+        };
       } else {
         profileBox.innerHTML = `
-          <span style="display:flex;align-items:center;justify-content:center;
-                       width:28px;height:28px;border-radius:50%;
-                       background:var(--bg-layer-2,#1e293b);">💻</span>
-          <span data-i18n="local_mode" style="font-size:0.8rem;">Yerel Mod</span>`;
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="display:flex;align-items:center;justify-content:center;
+                         width:26px;height:26px;border-radius:50%;
+                         background:var(--bg-layer-2,#1e293b);font-size:0.85rem;">💻</span>
+            <span data-i18n="local_mode" style="font-size:0.78rem;color:var(--text-muted,#94a3b8);">${I18n.t('local_mode', 'Yerel Mod')}</span>
+            <button type="button" id="footerLoginBtn" class="footer-login-btn">
+              <span>🐙</span> <span data-i18n="login_action">${I18n.t('login_action', 'Giriş Yap')}</span>
+            </button>
+          </div>`;
+
+        const footerLogin = document.getElementById('footerLoginBtn');
+        if (footerLogin) {
+          footerLogin.onclick = async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            try {
+              await this.loginWithGitHub();
+            } catch (err) {
+              console.error('Footer Login error:', err);
+            }
+          };
+        }
       }
     }
 

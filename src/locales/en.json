@@ -203,7 +203,7 @@
   "welcome_desc": "Sync your bookmarks and settings across all your devices by signing in with Google.",
   "login_with_google": "Sign in with Google",
   "continue_local": "Skip (Local Only)",
-  "local_mode": "Local",
+  "local_mode": "Local Mode",
   "logout": "Sign Out",
   "login_cloud": "Sign In (Cloud Sync)",
   "settings_account": "Account / Sync",
@@ -223,5 +223,6 @@
   "btn_push_cloud_loading": "Uploading to Cloud...",
   "btn_push_cloud_success": "Successfully Sent to Cloud!",
   "btn_push_cloud_error": "Upload Failed",
-  "btn_new_folder_title": "New Folder (Middle-click: Send to Cloud)"
+  "btn_new_folder_title": "New Folder (Middle-click: Send to Cloud)",
+  "login_action": "Sign In"
 }

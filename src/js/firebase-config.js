@@ -1,6 +1,6 @@
 import { initializeApp } from '../lib/firebase/firebase-app.js';
 import { getAuth, GithubAuthProvider, signInWithCredential, signOut, onAuthStateChanged } from '../lib/firebase/firebase-auth-web-extension.js';
-import { getFirestore, doc, getDoc, setDoc, onSnapshot } from '../lib/firebase/firebase-firestore.js';
+import { initializeFirestore, doc, getDoc, setDoc, onSnapshot } from '../lib/firebase/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAC68Qs2ct4TW8i1TS_G2gNVaw9ur4Cyr0",
@@ -15,6 +15,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true
+});
 
 export { app, auth, db, GithubAuthProvider, signInWithCredential, signOut, onAuthStateChanged, doc, getDoc, setDoc, onSnapshot };

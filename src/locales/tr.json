@@ -204,7 +204,7 @@
   "welcome_desc": "Yer imlerinizi ve ayarlarınızı tüm cihazlarınızda eşzamanlamak için Google ile giriş yapabilirsiniz.",
   "login_with_google": "Google ile Giriş Yap",
   "continue_local": "Geç (Yerel Kullanım)",
-  "local_mode": "Yerel",
+  "local_mode": "Yerel Mod",
   "logout": "Oturumu Kapat",
   "login_cloud": "Oturum Aç (Bulut)",
   "settings_account": "Hesap / Eşzamanlama",
@@ -224,5 +224,6 @@
   "btn_push_cloud_loading": "Buluta Gönderiliyor...",
   "btn_push_cloud_success": "Buluta Başarıyla Gönderildi!",
   "btn_push_cloud_error": "Gönderilemedi",
-  "btn_new_folder_title": "Yeni Klasör (Orta tık: Buluta Gönder)"
+  "btn_new_folder_title": "Yeni Klasör (Orta tık: Buluta Gönder)",
+  "login_action": "Giriş Yap"
 }
