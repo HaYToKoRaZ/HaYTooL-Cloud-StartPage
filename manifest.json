@@ -37,6 +37,5 @@
       "https://haytokoraz.github.io/*"
     ]
   },
-  "default_locale": "en",
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA20N4v222ExVQj2iB97EoJOawNuXlNO1hcdvOf2Dot8/neL7lsA4yZKtHS8bvRmYVg3Ar5y0DcJzR9AYa9zZ98r0fVdVGBcRcpq4OSokc3uk8/2vej1CHffs9FI93cZrhVz4PSd3wuFYNwZD+MiufNbJQWolv4P6rkv6n2BYl6cQNEqh2xb0oF9YXEA2Kk9h8epdb6eBlcRBUa5/U9ES/AB02mU6RFNC9EZT6lv6JB3vxJwTbe4ezYhwJ5wrZf0Z05utRyJ7GMkRdQvs9k/F4rUnQnPjin1UN//+Hi9WH61m11GKqg122gzIHPwDMAUoETS/gZu8YAEp8K3NqYU1lMwIDAQAB"
+  "default_locale": "en"
 }
