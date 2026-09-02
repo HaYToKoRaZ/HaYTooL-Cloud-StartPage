@@ -3,6 +3,7 @@ import { I18n } from './i18n.js';
 import { auth, db, doc, setDoc } from './firebase-config.js';
 
 export const Settings = {
+  _listenersInitialized: false,
   config: { 
     theme: 'dark', bgStyle: 'aurora', customBgUrl: '', 
     showClock: true, showSeconds: true, showGreeting: true, 
@@ -81,6 +82,8 @@ export const Settings = {
   },
 
   setupListeners() {
+    if (this._listenersInitialized) return;
+    this._listenersInitialized = true;
     const modal       = document.getElementById('settingsModal');
     const openBtn     = document.getElementById('settingsBtn');
     const closeBtn    = document.getElementById('closeSettingsModal');
@@ -430,5 +433,6 @@ export const Settings = {
     setTimeout(() => t.classList.remove('show'), 3000);
   }
 };
+
 
 
