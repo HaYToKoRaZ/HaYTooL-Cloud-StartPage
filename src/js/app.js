@@ -4,10 +4,10 @@ import { Weather }   from './weather.js';
 import { Shortcuts } from './shortcuts.js';
 import { Favorites } from './favorites.js';
 import { Settings }  from './settings.js';
-import { Auth }      from './auth.js';
+import { GistSync }  from './gist-sync.js';
 
 /**
- * HaYTooL Cloud StartPage v4.3.0
+ * Cloud StartPage HaYTooL v4.4.0
  */
 class StartPageApp {
   async init() {
@@ -19,10 +19,9 @@ class StartPageApp {
       await Shortcuts.init();
       await Weather.init();
 
-      // 2. Bulut eşitlemesi ve kimlik kontrolünü arka planda başlat (Arayüzü bekletmez)
-      Auth.init().catch(err => console.error('[Auth] init hatası:', err));
       this.initClock();
       this.initQuotes();
+      this.initFooterGistStatus();
       
       this.initGlobalKeys();
       this.initSearchBar();
@@ -37,9 +36,6 @@ class StartPageApp {
 
       window.addEventListener('cloud_data_loaded', async () => {
         await Settings.init();
-        if (document.getElementById('settingsModal')?.classList.contains('active')) {
-          Settings.populate();
-        }
         await Weather.fetchAndRender(true);
         Favorites.items = await Storage.get(Favorites.FAV_KEY, []);
         Favorites.render();
@@ -54,7 +50,12 @@ class StartPageApp {
         this.initQuotes();
       });
       
-      console.log('✨ HaYTooL Cloud StartPage v4.3.0 - hazır.');
+      console.log('✨ Cloud StartPage HaYTooL v4.4.0 - hazır.');
+      
+      // Günün ilk açılışında arka planda sessizce otomatik Gist yedeği al
+      setTimeout(() => {
+        GistSync.checkDailyAutoBackup();
+      }, 1500);
       
       if (window.location.hash === '#settings') {
         setTimeout(() => Settings.openModal(), 300);
@@ -147,40 +148,122 @@ class StartPageApp {
   }
 
   async initSearchBar() {
-    const searchContainer = document.getElementById('topSearchBarContainer');
     const searchForm = document.getElementById('topSearchForm');
     const searchInput = document.getElementById('topSearchInput');
-    const engineSelect = document.getElementById('topSearchEngineSelect');
+    const picker = document.getElementById('topSearchEnginePicker');
+    const pickerBtn = document.getElementById('topSearchEngineBtn');
+    const pickerIcon = document.getElementById('topSearchEngineIcon');
+    const pickerLabel = document.getElementById('topSearchEngineLabel');
+    const pickerItems = document.querySelectorAll('.top-search-menu-item');
     
-    const savedEngine = await Storage.get('search_engine', 'google');
-    if (engineSelect) {
-      engineSelect.value = savedEngine;
-      engineSelect.addEventListener('change', (e) => {
-        Storage.set('search_engine', e.target.value);
+    const engineConfig = {
+      google:     { name: 'Google',      icon: 'https://www.google.com/favicon.ico' },
+      yandex:     { name: 'Yandex',      icon: 'https://yandex.com/favicon.ico' },
+      bing:       { name: 'Bing',        icon: 'https://www.bing.com/favicon.ico' },
+      duckduckgo: { name: 'DuckDuckGo',  icon: 'https://duckduckgo.com/favicon.ico' },
+      youtube:    { name: 'YouTube',     icon: 'https://www.youtube.com/favicon.ico' },
+      chatgpt:    { name: 'ChatGPT',     icon: 'https://www.google.com/s2/favicons?domain=chatgpt.com&sz=64' },
+      perplexity: { name: 'Perplexity',  icon: 'https://www.google.com/s2/favicons?domain=perplexity.ai&sz=64' },
+      gemini:     { name: 'Gemini',      icon: 'https://www.google.com/s2/favicons?domain=gemini.google.com&sz=64' },
+      claude:     { name: 'Claude',      icon: 'https://www.google.com/s2/favicons?domain=claude.ai&sz=64' },
+      deepseek:   { name: 'DeepSeek',    icon: 'https://www.google.com/s2/favicons?domain=deepseek.com&sz=64' },
+      qwen:       { name: 'Qwen',        icon: 'https://www.google.com/s2/favicons?domain=chat.qwen.ai&sz=64' }
+    };
+
+    let currentEngine = await Storage.get('search_engine', 'google');
+    if (!engineConfig[currentEngine]) currentEngine = 'google';
+
+    const setEngine = (engKey, save = true) => {
+      const conf = engineConfig[engKey] || engineConfig.google;
+      currentEngine = engKey;
+      if (pickerIcon) pickerIcon.src = conf.icon;
+      if (pickerLabel) pickerLabel.textContent = conf.name;
+      pickerItems.forEach(item => {
+        item.classList.toggle('active', item.getAttribute('data-engine') === engKey);
+      });
+      if (save) Storage.set('search_engine', engKey);
+    };
+
+    setEngine(currentEngine, false);
+
+    if (picker && pickerBtn) {
+      pickerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = picker.classList.contains('open');
+        // Kapat diğer menüleri
+        document.querySelectorAll('.lang-picker.open').forEach(p => p.classList.remove('open'));
+        picker.classList.toggle('open', !isOpen);
+      });
+
+      pickerItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const eng = item.getAttribute('data-engine');
+          if (eng) setEngine(eng, true);
+          picker.classList.remove('open');
+          if (searchInput) searchInput.focus();
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!picker.contains(e.target)) {
+          picker.classList.remove('open');
+        }
       });
     }
 
     if (searchForm) {
-      searchForm.addEventListener('submit', (e) => {
+      searchForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const q = searchInput.value.trim();
+        const q = (searchInput?.value || '').trim();
         if (!q) return;
-        const engine = engineSelect.value || 'google';
         let url = '';
-        switch (engine) {
+        switch (currentEngine) {
           case 'yandex': url = 'https://yandex.com/search/?text=' + encodeURIComponent(q); break;
           case 'bing': url = 'https://www.bing.com/search?q=' + encodeURIComponent(q); break;
           case 'duckduckgo': url = 'https://duckduckgo.com/?q=' + encodeURIComponent(q); break;
           case 'youtube': url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q); break;
           case 'chatgpt': url = 'https://chatgpt.com/?q=' + encodeURIComponent(q); break;
           case 'perplexity': url = 'https://www.perplexity.ai/search?q=' + encodeURIComponent(q); break;
-          case 'gemini': url = 'https://gemini.google.com/app?q=' + encodeURIComponent(q); break;
+          case 'gemini':
+          case 'qwen': {
+            const targetName = currentEngine === 'gemini' ? 'Gemini' : 'Qwen';
+            url = currentEngine === 'gemini' ? 'https://gemini.google.com/app' : 'https://chat.qwen.ai/';
+            try {
+              await navigator.clipboard.writeText(q);
+              const t = document.getElementById('toast');
+              if (t) {
+                t.textContent = `📋 ${I18n.t('ai_prompt_copied', 'Metin kopyalandı! {target} sayfasına Ctrl+V ile yapıştırabilirsiniz.').replace('{target}', targetName)}`;
+                t.classList.add('show');
+                setTimeout(() => t.classList.remove('show'), 4000);
+              }
+            } catch(err) {
+              console.warn('Clipboard write failed:', err);
+            }
+            break;
+          }
           case 'claude': url = 'https://claude.ai/new?q=' + encodeURIComponent(q); break;
+          case 'deepseek': url = 'https://chat.deepseek.com/?q=' + encodeURIComponent(q); break;
           default: url = 'https://www.google.com/search?q=' + encodeURIComponent(q); break;
         }
         window.open(url, '_blank');
-        searchInput.value = '';
+        if (searchInput) searchInput.value = '';
       });
+    }
+  }
+  async initFooterGistStatus() {
+    const box = document.getElementById('footerGistStatus');
+    if (!box) return;
+    const userProfile = await Storage.get('gist_user_profile', null);
+    if (userProfile && userProfile.login) {
+      box.innerHTML = `
+        <a href="settings.html#gist" id="gistStatusLink" style="color:inherit; text-decoration:none; display:flex; align-items:center; gap:8px;">
+          <img src="${userProfile.avatarUrl || 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'}" 
+               alt="${userProfile.login}" 
+               style="width:22px; height:22px; border-radius:50%; object-fit:cover; border:1.5px solid var(--accent-primary);">
+          <span>${userProfile.name || userProfile.login}</span>
+        </a>
+      `;
     }
   }
 }

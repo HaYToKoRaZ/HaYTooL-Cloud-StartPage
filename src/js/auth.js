@@ -186,28 +186,43 @@ export const Auth = {
           await Storage.pushAllToCloud();
         } else if (hasContent) {
           console.log('[Auth] Buluttan veriler indiriliyor...', Object.keys(cloudData));
-          setApplyingCloudData(true);
-          try {
-            if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-              await chrome.storage.local.set(cloudData);
+          
+          // Yerel verilerle bulut verilerini karşılaştır - gereksiz ekran titremesini (re-render) önle
+          let hasDiff = false;
+          const currentLocal = {};
+          for (const key of Object.keys(cloudData)) {
+            const val = await Storage.get(key, null);
+            currentLocal[key] = val;
+            if (JSON.stringify(val) !== JSON.stringify(cloudData[key])) {
+              hasDiff = true;
             }
-            for (const [k, v] of Object.entries(cloudData)) {
-              localStorage.setItem('haytool_' + k, JSON.stringify(v));
-            }
-          } finally {
-            setTimeout(() => setApplyingCloudData(false), 1000);
           }
 
-          if (forceReload) {
-            console.log('[Auth] Bulut verileri yerleştirildi, arayüz güncelleniyor...');
+          if (hasDiff || forceReload) {
+            setApplyingCloudData(true);
+            try {
+              if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+                await chrome.storage.local.set(cloudData);
+              }
+              for (const [k, v] of Object.entries(cloudData)) {
+                localStorage.setItem('haytool_' + k, JSON.stringify(v));
+              }
+            } finally {
+              setTimeout(() => setApplyingCloudData(false), 1000);
+            }
+
+            if (forceReload) {
+              console.log('[Auth] Bulut verileri yerleştirildi, arayüz güncelleniyor...');
+              window.dispatchEvent(new Event('cloud_data_loaded'));
+              setTimeout(() => window.location.reload(), 300);
+              return;
+            }
+
+            // Yalnızca gerçekten fark varsa arayüzü güncelle
             window.dispatchEvent(new Event('cloud_data_loaded'));
-            // Firestore yazma akışının soketi güvenle kapatması için 300ms nefes payı
-            setTimeout(() => window.location.reload(), 300);
-            return;
+          } else {
+            console.log('[Auth] Bulut verileri yerel ile birebir aynı, titremeyi önlemek için re-render atlandı.');
           }
-
-          // Buluttan inen taze ayarları ve linkleri arayüze uygula
-          window.dispatchEvent(new Event('cloud_data_loaded'));
         } else {
           // Bulutta henüz veri yok, bu cihazdaki yerel verileri buluta aktar!
           console.log('[Auth] Bulut boş, yerel veriler buluta aktarılıyor...');
@@ -279,7 +294,7 @@ export const Auth = {
         brandLogo.style.border = 'none';
         brandLogo.style.boxShadow = 'var(--glow-accent)';
         if (brandContainer) {
-          brandContainer.title = 'HaYTooL Cloud StartPage';
+          brandContainer.title = 'Cloud StartPage HaYTooL';
         }
       }
 

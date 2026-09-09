@@ -31,10 +31,10 @@ export const Shortcuts = {
     const collapsedArr    = await Storage.get(this.COLLAPSED_KEY, []);
     this.collapsedFolders = new Set(collapsedArr);
     this.folderViews      = await Storage.get(this.VIEW_KEY, {});
-    this.showHidden       = await Storage.get(this.SHOW_HIDDEN_KEY, false);
+    this.showHidden       = false; // Gizli klasörler her açılışta varsayılan olarak kapalı başlar (kaydedilmez)
     this.colorIdx         = this.categories.length % this.COLORS.length;
 
-    const numCols = parseInt(document.body.getAttribute('data-cols')) || 3;
+    const numCols = parseInt(document.body?.getAttribute('data-cols') || document.documentElement?.getAttribute('data-cols')) || Settings.config?.folderColumns || 6;
     this.categories.forEach((cat, idx) => {
       if (typeof cat.col !== 'number') cat.col = (idx % numCols) + 1;
       if (typeof cat.order !== 'number') cat.order = idx;
@@ -73,7 +73,7 @@ export const Shortcuts = {
         if (!draggedId) return;
         
         const rect = grid.getBoundingClientRect();
-        const numCols = parseInt(document.body.getAttribute('data-cols')) || 3;
+        const numCols = parseInt(document.body?.getAttribute('data-cols') || document.documentElement?.getAttribute('data-cols')) || Settings.config?.folderColumns || 6;
         const colWidth = rect.width / numCols;
         const targetCol = Math.min(numCols, Math.max(1, Math.ceil((e.clientX - rect.left) / colWidth)));
         
@@ -221,9 +221,10 @@ export const Shortcuts = {
 
   async toggleHiddenFolders() {
     this.showHidden = !this.showHidden;
-    await Storage.set(this.SHOW_HIDDEN_KEY, this.showHidden);
+    // Güvenlik ve Gizlilik: Durumu kalıcı depolamaya kaydetme, sadece mevcut oturumda geçerli olsun
+    await Storage.remove(this.SHOW_HIDDEN_KEY);
     this.renderFolders();
-    this._toast(I18n.t('toast_hidden_toggled', '🕵️ Hidden folders visibility toggled!'));
+    this._toast(I18n.t('toast_hidden_toggled', '🕵️ Gizli klasör görünürlüğü değiştirildi!'));
   },
 
   renderFolders() {
@@ -272,7 +273,7 @@ export const Shortcuts = {
     card.setAttribute('data-folder-id', cat.id);
     card.style.setProperty('--fc', cat.color || '#6366f1');
     if (cat.id !== '__other__') {
-      const numCols = parseInt(document.body.getAttribute('data-cols')) || 3;
+      const numCols = parseInt(document.body?.getAttribute('data-cols') || document.documentElement?.getAttribute('data-cols')) || Settings.config?.folderColumns || 6;
       card.style.gridColumn = Math.min(cat.col || 1, numCols);
     }
     
@@ -384,10 +385,23 @@ export const Shortcuts = {
       this._showFolderMenu(e, cat, items.length, card);
     });
 
-    header.appendChild(arrow);
-    header.appendChild(ico);
-    header.appendChild(namEl);
-    header.appendChild(cnt);
+    if (cat.isIncognito) {
+      const incBadge = document.createElement('span');
+      incBadge.className = 'folder-incognito-badge';
+      incBadge.textContent = '🕶️';
+      incBadge.title = I18n.t('modal_folder_open_incognito', 'Bu klasördeki linkler gizli sekmede açılır');
+      incBadge.style.cssText = 'font-size:0.8rem; margin-left:0.25rem; opacity:0.85; cursor:help;';
+      header.appendChild(arrow);
+      header.appendChild(ico);
+      header.appendChild(namEl);
+      header.appendChild(incBadge);
+      header.appendChild(cnt);
+    } else {
+      header.appendChild(arrow);
+      header.appendChild(ico);
+      header.appendChild(namEl);
+      header.appendChild(cnt);
+    }
     header.appendChild(optBtn);
 
     header.addEventListener('click', async e => {
@@ -409,7 +423,7 @@ export const Shortcuts = {
     const isShortlist = (view === 'shortlist');
     
     items.forEach((item, idx) => {
-      const el = this._makeLinkItem(item, view);
+      const el = this._makeLinkItem(item, view, cat);
       if (isShortlist && idx >= limit) {
         el.style.display = 'none';
         el.classList.add('shortlist-hidden');
@@ -442,21 +456,45 @@ export const Shortcuts = {
     return card;
   },
 
-  _makeLinkItem(item, view) {
+  _makeLinkItem(item, view, cat = null) {
     const wrap = document.createElement('div');
     wrap.className = 'link-item';
 
     const icon = this._iconEl(item);
+
+    const handleLinkClick = (e) => {
+      if (cat && cat.isIncognito) {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+          if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+            chrome.runtime.sendMessage({ action: 'OPEN_INCOGNITO', url: item.url });
+          }
+        } catch(err) {
+          console.error('[Shortcuts] Incognito açma hatası:', err);
+        }
+      }
+    };
 
     if (view === 'icon') {
       // Wrapper: flex column, icon + action bar ayrı ayrı
       wrap.className = 'link-item link-item-icon';
 
       const a = document.createElement('a');
-      a.href = item.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      if (cat && cat.isIncognito) {
+        a.href = '#';
+        a.setAttribute('data-incognito-url', item.url);
+      } else {
+        a.href = item.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      }
       a.className = 'link-icon-card';
-      a.title = item.title;
+      a.title = item.title + (cat && cat.isIncognito ? ' (Gizli Sekme)' : '');
       a.appendChild(icon);
+
+      a.addEventListener('click', handleLinkClick);
+      a.addEventListener('auxclick', handleLinkClick);
 
       a.addEventListener('contextmenu', e => {
         e.preventDefault();
@@ -464,14 +502,23 @@ export const Shortcuts = {
         this._showItemMenu(e, item);
       });
 
-
       wrap.appendChild(a);
 
     } else {
       const a = document.createElement('a');
-      a.href = item.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      if (cat && cat.isIncognito) {
+        a.href = '#';
+        a.setAttribute('data-incognito-url', item.url);
+      } else {
+        a.href = item.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+      }
       a.className = 'link-list-row';
-      a.title = item.url;
+      a.title = item.url + (cat && cat.isIncognito ? ' (Gizli Sekme)' : '');
+
+      a.addEventListener('click', handleLinkClick);
+      a.addEventListener('auxclick', handleLinkClick);
 
       a.addEventListener('contextmenu', e => {
         e.preventDefault();
@@ -575,6 +622,12 @@ export const Shortcuts = {
       { label: '✏️ ' + I18n.t('menu_rename', 'Rename'), action: () => this._openRenameModal(cat) },
       { label: cat.isHidden ? '👁️ ' + I18n.t('menu_unhide', 'Unhide Folder') : '🕵️ ' + I18n.t('menu_hide', 'Hide Folder'), action: async () => {
           cat.isHidden = !cat.isHidden;
+          await Storage.set(this.CAT_KEY, this.categories);
+          this.renderFolders();
+        } 
+      },
+      { label: cat.isIncognito ? '🕶️ ' + I18n.t('menu_disable_incognito', 'Gizli Sekmede Açmayı Kapat') : '🕶️ ' + I18n.t('menu_enable_incognito', 'Gizli Sekmede Açmayı Etkinleştir'), action: async () => {
+          cat.isIncognito = !cat.isIncognito;
           await Storage.set(this.CAT_KEY, this.categories);
           this.renderFolders();
         } 
@@ -827,6 +880,7 @@ export const Shortcuts = {
         if (!name) return;
 
         const numCols = parseInt(document.body.getAttribute('data-cols')) || 3;
+        const isIncognito = document.getElementById('createFolderIncognitoCheck')?.checked || false;
         const newCat = {
           id: 'cat_' + Date.now(),
           name: name,
@@ -834,7 +888,8 @@ export const Shortcuts = {
           color: color,
           col: (this.categories.length % numCols) + 1,
           order: this.categories.length,
-          isHidden: false
+          isHidden: false,
+          isIncognito: isIncognito
         };
 
         this.categories.push(newCat);
@@ -884,9 +939,11 @@ export const Shortcuts = {
         const newName = document.getElementById('renameInput').value.trim();
         const newIcon = document.getElementById('renameIconInput').value.trim();
         const isHidden = document.getElementById('renameHiddenCheck').checked;
+        const isIncognito = document.getElementById('renameIncognitoCheck')?.checked || false;
         if (newName) cat.name = newName;
         if (newIcon !== undefined) cat.icon = newIcon;
         cat.isHidden = isHidden;
+        cat.isIncognito = isIncognito;
         await Storage.set(this.CAT_KEY, this.categories);
         this.renderFolders();
         modal.classList.remove('active');
@@ -901,6 +958,8 @@ export const Shortcuts = {
     document.getElementById('renameIconInput').value = cat.icon || '';
     const hc = document.getElementById('renameHiddenCheck');
     if (hc) hc.checked = !!cat.isHidden;
+    const ic = document.getElementById('renameIncognitoCheck');
+    if (ic) ic.checked = !!cat.isIncognito;
     modal.removeAttribute('data-edit-id');
     document.getElementById('shortcutForm').reset();
     modal.classList.add('active');
@@ -1044,16 +1103,16 @@ export const Shortcuts = {
     const grid = document.getElementById('shortcutsGrid');
     if (!grid) return;
     const cards = grid.querySelectorAll('.folder-card');
-    cards.forEach(card => card.style.gridRowEnd = 'auto');
-    
-    // Give browser a moment to paint the natural heights
-    setTimeout(() => {
-      cards.forEach(card => {
-        const height = card.getBoundingClientRect().height;
-        const rowSpan = Math.ceil((height + 15) / 5); // 15px is the gap we want
+    if (cards.length === 0) return;
+
+    cards.forEach(card => {
+      // Yalnızca henüz hesaplanmamış veya boyutu değişen kartları pürüzsüz ayarla
+      const height = card.getBoundingClientRect().height;
+      if (height > 0) {
+        const rowSpan = Math.ceil((height + 15) / 5);
         card.style.gridRowEnd = 'span ' + rowSpan;
-      });
-    }, 10);
+      }
+    });
   },
 
   _emptyState() {

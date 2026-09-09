@@ -10,7 +10,7 @@
   <a href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/"><img src="https://img.shields.io/badge/Web%20Portal-Live%20Demo-blue?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live Demo"></a>
   <a href="https://microsoftedge.microsoft.com/addons/detail/jkefcejfnbeifclgpkfkpidoegohcchp"><img src="https://img.shields.io/badge/Microsoft%20Edge-Add--ons-0078D7?style=for-the-badge&logo=microsoftedge&logoColor=white" alt="Edge Add-ons"></a>
   <img src="https://img.shields.io/badge/Manifest-V3-purple?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Manifest V3">
-  <img src="https://img.shields.io/badge/Version-v4.3.0-success?style=for-the-badge" alt="Version 4.3.0">
+  <img src="https://img.shields.io/badge/Version-v4.4.0-success?style=for-the-badge" alt="Version 4.4.0">
 </p>
 
 Welcome to **HaYTooL Cloud StartPage**. This project is a next-generation, ultra-fast, and highly customizable browser new tab extension designed to supercharge your daily browsing productivity.
@@ -27,15 +27,19 @@ Welcome to **HaYTooL Cloud StartPage**. This project is a next-generation, ultra
 
 ### ✨ Key Features:
 - ⚡ **Zero-Flicker & Instant Startup (<50ms)**: Built with pure Vanilla JS and CSS, using a synchronous theme bootstrapper to eliminate FOIT (flash of incorrect theme).
-- ☁️ **GitHub & Firebase Cloud Sync**: Seamlessly synchronize your bookmarks, folders, folder views, and custom layout settings across multiple devices using GitHub OAuth.
+- ☁️ **GitHub Gist Cloud Backup & Timeline**:
+  - Zero-server, 100% private and encrypted backup to your own GitHub Gist.
+  - **Daily Auto-Backup**: Silently backs up on the first launch of every day in the background.
+  - **Version History & Timeline**: Browse past backup commits and roll back anytime with a single click.
 - 📁 **Smart Folder & Shortlist Architecture**:
   - Drag & Drop folder organization across customizable columns (1 to 10 columns).
   - Flexible folder view modes: **Icon Grid (⊞)**, **Full List (📋)**, and **Shortlist (📃 10 Links)**.
+  - **Incognito Folders (🕶️)**: Automatically open all links in designated folders in a private/incognito window.
   - One-click A–Z folder link sorting.
   - Quick middle-click shortcut to toggle hidden folders visibility on the fly.
-- ⭐ **Favorites Bar**: Quick access bar at the top with customizable icon or list views.
+- ⭐ **Favorites Bar with Drag & Drop**: Top quick-access bar supporting drag-and-drop reordering with responsive visual guides.
 - 🌦️ **Live Weather & Geocoding**: Powered by Open-Meteo with automatic/manual location search, offline fallback, and real-time weather badges.
-- 🔍 **Multi-Engine Search Bar**: Instant switching between Google, DuckDuckGo, Bing, Yandex, Brave, and GitHub search.
+- 🔍 **AI-Powered & Multi-Engine Search**: Instant switching between Google, DuckDuckGo, Bing, Yandex, YouTube, ChatGPT, Perplexity, Claude AI, Google Gemini, DeepSeek, and Qwen AI with custom favicon menus and auto-clipboard integration.
 - 🎨 **Rich Customization & Dynamic Themes**: Multiple glassmorphism themes (Dark, Light, Aurora, Cyberpunk, AMOLED), custom background image support, and granular widget visibility controls.
 - 🌐 **Global Multi-Language Support (7 Languages)**: Full native translation support for English (EN), Turkish (TR), German (DE), Spanish (ES), French (FR), Russian (RU), and Portuguese (PT). Built with native Chromium `_locales` store localization.
 - 💾 **Data Portability**: Full JSON backup export/import and standard Netscape Bookmarks HTML import/export.
@@ -103,15 +107,19 @@ HaYTooL Cloud StartPage; göz alıcı Glassmorphism (buzlu cam) estetiğini, esn
 
 ### ✨ Öne Çıkan Özellikler:
 - ⚡ **Sıfır Parlama & Anında Açılış (<50ms)**: Saf Vanilla JS/CSS mimarisi ve senkron tema önyükleyicisi sayesinde sayfa açılırken hiçbir tema parlaması (FOIT) yaşanmaz.
-- ☁️ **GitHub & Firebase Bulut Senkronizasyonu**: Linklerinizi, klasörlerinizi, görünüm ayarlarınızı ve widget tercihlerinizi GitHub hesabınızla tüm bilgisayarlarınız arasında zahmetsizce eşitleyin.
+- ☁️ **GitHub Gist Bulut Yedekleme & Zaman Tüneli**:
+  - Üçüncü taraf sunucu olmadan, doğrudan kendi GitHub Gist'inize %100 gizli ve güvenli yedekleme.
+  - **Günlük Otomatik Yedek**: Her günün ilk açılışında arka planda sessizce otomatik yedek alır.
+  - **Yedek Geçmişi & Zaman Tüneli**: Geçmişteki tüm yedek sürümlerini listeleyip istenen tarihe tek tıkla geri dönme imkanı.
 - 📁 **Gelişmiş Klasör ve Kısa Liste Düzeni**:
   - Sürükle-bırak (Drag & Drop) ile klasörleri ve linkleri dilediğiniz gibi sıralama (1 ila 10 sütun desteği).
   - Klasör bazında bağımsız görünüm modları: **İkon Görünümü (⊞)**, **Tam Liste (📋)** ve **Kısa Liste (📃 İlk 10 Link)**.
+  - **Gizli Sekme Klasörleri (🕶️)**: Belirli klasörlerdeki tüm linkleri doğrudan tek bir gizli sekmede (`incognito`) açma seçeneği.
   - Tek tıkla linkleri A'dan Z'ye alfabetik dizme.
   - **Fare orta tuşuyla (tekerlek)** gizlenmiş özel klasörleri anında açıp kapatma kısayolu.
-- ⭐ **Üst Favori Barı**: En sık kullandığınız sitelere tek tıkla erişim (İkon veya Liste görünümü).
+- ⭐ **Sürükle-Bırak Destekli Favoriler Barı**: En sık kullandığınız siteleri farenizle basılı tutup dilediğiniz sıraya taşıyabilme özelliği.
 - 🌦️ **Canlı Hava Durumu & Arama**: Open-Meteo destekli canlı hava durumu, Türkçe şehir arama desteği, otomatik koordinat doğrulama ve çevrimdışı önbellek koruması.
-- 🔍 **Çoklu Arama Çubuğu**: Google, DuckDuckGo, Bing, Yandex, Brave ve GitHub arama motorları arasında anında geçiş.
+- 🔍 **Yapay Zeka & Çoklu Arama Menüsü**: Google, Yandex, Bing, DuckDuckGo, YouTube arama motorları ile ChatGPT, Perplexity, Google Gemini, Claude AI, DeepSeek ve Qwen AI arasında logolu özel açılır menü ile anında geçiş ve otomatik pano kopyalama desteği.
 - 🎨 **Zengin Temalar & Arka Planlar**: Koyu, Açık, Aurora, Siberpunk ve AMOLED temaları, özel duvar kağıdı yükleme ve widget gizleme/gösterme kontrolleri.
 - 🌐 **Kapsamlı 7 Dil Desteği & Mağaza Yerelleştirmesi**: Türkçe (TR), İngilizce (EN), Almanca (DE), İspanyolca (ES), Fransızca (FR), Rusça (RU) ve Portekizce (PT) olmak üzere 7 ana dilde %100 yerel arayüz desteği. Chrome ve Edge mağaza standartlarına uygun `_locales` entegrasyonu.
 - 💾 **Yedekleme & Dışa Aktarma**: Tek tıkla JSON yedek alma/yükleme ve tarayıcı yer imlerini HTML formatında içe/dışa aktarma.

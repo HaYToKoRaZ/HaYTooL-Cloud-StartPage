@@ -165,6 +165,74 @@ export const Favorites = {
 
     wrap.appendChild(link);
     wrap.appendChild(optBtn);
+
+    /* --- Sürükle & Bırak ile Sıralama (Drag and Drop) --- */
+    wrap.setAttribute('draggable', 'true');
+
+    wrap.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', String(idx));
+      e.dataTransfer.effectAllowed = 'move';
+      wrap.classList.add('fav-dragging');
+    });
+
+    wrap.addEventListener('dragend', () => {
+      wrap.classList.remove('fav-dragging');
+      const bar = document.getElementById('favBar');
+      if (bar) {
+        bar.querySelectorAll('.fav-item').forEach(el => {
+          el.classList.remove('drag-over-left', 'drag-over-right');
+        });
+      }
+    });
+
+    wrap.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const rect = wrap.getBoundingClientRect();
+      const midX = rect.left + (rect.width / 2);
+      if (e.clientX < midX) {
+        wrap.classList.add('drag-over-left');
+        wrap.classList.remove('drag-over-right');
+      } else {
+        wrap.classList.add('drag-over-right');
+        wrap.classList.remove('drag-over-left');
+      }
+    });
+
+    wrap.addEventListener('dragleave', () => {
+      wrap.classList.remove('drag-over-left', 'drag-over-right');
+    });
+
+    wrap.addEventListener('drop', async e => {
+      e.preventDefault();
+      wrap.classList.remove('drag-over-left', 'drag-over-right');
+
+      const draggedIdxStr = e.dataTransfer.getData('text/plain');
+      if (!draggedIdxStr && draggedIdxStr !== '0') return;
+      const draggedIdx = parseInt(draggedIdxStr, 10);
+      if (isNaN(draggedIdx) || draggedIdx === idx) return;
+
+      const rect = wrap.getBoundingClientRect();
+      const midX = rect.left + (rect.width / 2);
+      const placeAfter = e.clientX >= midX;
+
+      const [draggedItem] = this.items.splice(draggedIdx, 1);
+
+      let targetIdx = idx;
+      if (draggedIdx < idx) {
+        targetIdx = placeAfter ? idx : idx - 1;
+      } else {
+        targetIdx = placeAfter ? idx + 1 : idx;
+      }
+
+      if (targetIdx < 0) targetIdx = 0;
+      if (targetIdx > this.items.length) targetIdx = this.items.length;
+
+      this.items.splice(targetIdx, 0, draggedItem);
+      await Storage.set(this.FAV_KEY, this.items);
+      this.render();
+    });
+
     return wrap;
   },
 

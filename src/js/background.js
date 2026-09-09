@@ -12,6 +12,25 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
 });
 
+// ─── Gizli Sekmede Açma Köprüsü (Incognito) ──────────────────────────────────
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === 'OPEN_INCOGNITO' && request.url) {
+    if (chrome.windows && chrome.windows.create) {
+      chrome.windows.create({ url: request.url, incognito: true }, (win) => {
+        if (chrome.runtime.lastError || !win) {
+          console.warn('[Background] Gizli pencere açılamadı (İzin verilmemiş olabilir):', chrome.runtime.lastError);
+          sendResponse({ ok: false, error: chrome.runtime.lastError ? chrome.runtime.lastError.message : 'Gizli mod izni verilmemiş' });
+        } else {
+          sendResponse({ ok: true });
+        }
+      });
+      return true; // Asenkron yanıt için
+    } else {
+      sendResponse({ ok: false, error: 'chrome.windows API mevcut değil' });
+    }
+  }
+});
+
 // ─── GitHub OAuth Köprüsü (Güvenlik Korumalı & Anında Tetikleyici) ─────────────
 chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
   // GÜVENLİK KONTROLÜ: Yalnızca kendi GitHub Pages auth sitemizden gelen çağrıları kabul et

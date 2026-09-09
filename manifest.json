@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_appName__",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "description": "__MSG_appDesc__",
   "chrome_url_overrides": {
     "newtab": "src/pages/newtab.html"
@@ -9,7 +9,8 @@
   "permissions": [
     "storage",
     "activeTab",
-    "contextMenus"
+    "contextMenus",
+    "windows"
   ],
   "background": {
     "service_worker": "src/js/background.js"
@@ -29,8 +30,13 @@
     },
     "default_popup": "src/pages/popup.html"
   },
+  "options_ui": {
+    "page": "src/pages/settings.html",
+    "open_in_tab": true
+  },
   "host_permissions": [
-    "https://*.open-meteo.com/*"
+    "https://*.open-meteo.com/*",
+    "https://api.github.com/*"
   ],
   "externally_connectable": {
     "matches": [

@@ -1,6 +1,5 @@
 import { Storage } from './storage.js';
 import { I18n } from './i18n.js';
-import { auth, db, doc, setDoc } from './firebase-config.js';
 
 export const Settings = {
   _listenersInitialized: false,
@@ -27,9 +26,6 @@ export const Settings = {
     if (!this._initialized) {
       this._initialized = true;
       this.setupListeners();
-      this.setupCityAutocomplete();
-      this.setupBackup();
-      this.setupReset();
     }
   },
 
@@ -78,24 +74,28 @@ export const Settings = {
 
   vis(id, show) { const el = document.getElementById(id); if (el) el.style.display = show ? '' : 'none'; },
 
+  openSettingsPage() {
+    if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.create) {
+      chrome.tabs.create({ url: chrome.runtime.getURL('src/pages/settings.html') });
+    } else {
+      window.location.href = 'settings.html';
+    }
+  },
+
   openModal() {
-    this.populate();
-    const modal = document.getElementById('settingsModal');
-    if (modal) modal.classList.add('active');
+    this.openSettingsPage();
   },
 
   setupListeners() {
     if (this._listenersInitialized) return;
     this._listenersInitialized = true;
-    const modal       = document.getElementById('settingsModal');
-    const openBtn     = document.getElementById('settingsBtn');
-    const closeBtn    = document.getElementById('closeSettingsModal');
-    const saveBtn     = document.getElementById('saveSettingsBtn');
-    const colSelect   = document.getElementById('folderColumnsSelect');
-
-    if (openBtn)  openBtn.addEventListener('click', () => { this.populate(); modal.classList.add('active'); });
-    if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-    if (modal)    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
+    const openBtn = document.getElementById('settingsBtn');
+    if (openBtn) {
+      openBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.openSettingsPage();
+      });
+    }
 
     const topThemeBtn = document.getElementById('topThemeBtn');
     if (topThemeBtn) {
@@ -104,98 +104,14 @@ export const Settings = {
         let idx = themes.indexOf(this.config.theme);
         idx = (idx + 1) % themes.length;
         this.config.theme = themes[idx];
-        const themeSelect = document.getElementById('themeSelect');
-        if (themeSelect) themeSelect.value = this.config.theme;
         await Storage.set('app_settings', this.config);
         this.apply();
         import('./weather.js').then(m => m.Weather.fetchAndRender(true));
       });
     }
 
-    // === ANINDA KAYDET (AUTO-SAVE) ===
-    if (modal) {
-      modal.addEventListener('change', async (e) => {
-        if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT') return;
-        
-        let changed = false;
-        const config = this.config;
-        
-        const nTheme = document.getElementById('themeSelect').value;
-        if (nTheme !== config.theme) { config.theme = nTheme; changed = true; }
-        
-        const nCustBg = document.getElementById('customBgInput').value.trim();
-        if (nCustBg !== config.customBgUrl) { config.customBgUrl = nCustBg; changed = true; }
-
-        const nCols = parseInt(document.getElementById('folderColumnsSelect').value) || 6;
-        if (nCols !== config.folderColumns) { config.folderColumns = nCols; changed = true; }
-        
-        const nIcon = parseInt(document.getElementById('iconSizeSelect')?.value) || 32;
-        if (nIcon !== config.folderIconSize) { config.folderIconSize = nIcon; changed = true; }
-        
-        const nIconApi = document.getElementById('iconApiSelect')?.value || 'iconhorse';
-        if (nIconApi !== config.iconApi) { config.iconApi = nIconApi; changed = true; }
-        
-        const nClk = document.getElementById('toggleClock').checked;
-        if (nClk !== config.showClock) { config.showClock = nClk; changed = true; }
-        
-        const nSec = document.getElementById('toggleSeconds').checked;
-        if (nSec !== config.showSeconds) { config.showSeconds = nSec; changed = true; }
-        
-        const nGreet = document.getElementById('toggleGreeting').checked;
-        if (nGreet !== config.showGreeting) { config.showGreeting = nGreet; changed = true; }
-        
-        const nWea = document.getElementById('toggleWeather').checked;
-        if (nWea !== config.showWeather) { config.showWeather = nWea; changed = true; }
-        
-        const nSearch = document.getElementById('toggleSearchBar').checked;
-        const nTopLang = document.getElementById('toggleTopLang').checked;
-        const nThemeBtnToggle = document.getElementById('toggleThemeBtn')?.checked;
-        
-        if (nTopLang !== config.showTopLangSelector) { config.showTopLangSelector = nTopLang; changed = true; }
-        if (nSearch !== config.showSearchBar) { config.showSearchBar = nSearch; changed = true; }
-        if (nThemeBtnToggle !== undefined && nThemeBtnToggle !== config.showThemeBtn) { config.showThemeBtn = nThemeBtnToggle; changed = true; }
-          
-        const nFav = document.getElementById('toggleFavBar').checked;
-        if (nFav !== config.showFavBar) { config.showFavBar = nFav; changed = true; }
-
-        const nImport = document.getElementById('toggleImportBtn')?.checked;
-        if (nImport !== undefined && nImport !== config.showImportBtn) { config.showImportBtn = nImport; changed = true; }
-
-        const tzSel = document.getElementById('timezoneSelect');
-        if (tzSel && tzSel.value !== config.timezone) { config.timezone = tzSel.value; changed = true; }
-
-        if (changed) {
-          await Storage.set('app_settings', config);
-          this.apply();
-          // Eğer klasör veya ikon ayarı değiştiyse yeniden renderla
-          if (nIcon !== undefined || nIconApi !== undefined || nCols !== undefined) {
-             window.dispatchEvent(new Event('render_shortcuts_and_favorites'));
-          }
-          if (e.target.id === 'toggleWeather' || e.target.id === 'themeSelect') {
-             import('./weather.js').then(m => m.Weather.fetchAndRender(true));
-          }
-        }
-      });
-      
-      modal.addEventListener('input', async (e) => {
-         if (e.target.id === 'customBgInput') {
-             this.config.customBgUrl = e.target.value.trim();
-             await Storage.set('app_settings', this.config);
-             this.apply();
-         }
-      });
-    }
-
-    // Sütun sayısı anlık önizleme
-    if (colSelect) {
-      colSelect.addEventListener('change', () => {
-        document.body.setAttribute('data-cols', colSelect.value); const grid = document.getElementById('shortcutsGrid'); if (grid) grid.setAttribute('data-cols', colSelect.value);
-      });
-    }
-
-    // Dil değiştiğinde uygula (i18n.js zaten picker'ları günceller)
+    // Dil değiştiğinde uygula
     window.addEventListener('langchange', () => {
-      // toggleTopLang'ın görünürlüğünü korumak için apply'ı tetikle
       this.vis('topLangPicker', this.config.showTopLangSelector !== false);
     });
 

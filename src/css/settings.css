@@ -1,0 +1,341 @@
+/* ==========================================================================
+   Cloud StartPage HaYTooL - Settings Page Styles
+   ========================================================================== */
+
+.settings-page-body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  overflow-y: auto;
+}
+
+.settings-container {
+  width: 100%;
+  max-width: 1100px;
+  min-height: 85vh;
+  margin: 2.5rem auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl, 18px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Header */
+.settings-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border-glass);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.settings-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.settings-header-brand img {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  box-shadow: var(--glow-accent);
+}
+
+.settings-header-brand h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.settings-header-brand small {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.btn-back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.btn-back-home:hover {
+  background: var(--surface-glass-hover);
+  border-color: var(--accent-primary);
+  transform: translateX(-2px);
+}
+
+/* Main Layout: Sidebar & Content */
+.settings-main-layout {
+  display: flex;
+  flex: 1;
+  min-height: 600px;
+}
+
+/* Sidebar Navigation */
+.settings-sidebar {
+  width: 250px;
+  border-right: 1px solid var(--border-glass);
+  background: rgba(0, 0, 0, 0.15);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.settings-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  font-weight: 500;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.settings-nav-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.settings-nav-btn.active {
+  color: #fff;
+  background: var(--accent-primary);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+  font-weight: 600;
+}
+
+.settings-nav-btn span.nav-icon {
+  font-size: 1.15rem;
+}
+
+/* Content Area */
+.settings-content-area {
+  flex: 1;
+  padding: 2.25rem 2.5rem;
+  overflow-y: auto;
+  max-height: 75vh;
+}
+
+.settings-section-pane {
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.settings-section-pane.active {
+  display: block;
+}
+
+.pane-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+}
+
+.pane-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+  line-height: 1.5;
+}
+
+.settings-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.settings-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Gist Box Styling */
+.gist-token-box {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.gist-token-hint {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+  margin-top: 0.4rem;
+}
+
+.gist-token-hint a {
+  color: var(--accent-primary);
+  text-decoration: underline;
+}
+
+.gist-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.gist-actions-row {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+/* Gist History List & Items */
+.gist-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.gist-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  transition: all var(--transition-fast);
+}
+
+.gist-history-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.gist-history-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.gist-history-date {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.gist-history-meta {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.btn-restore-version {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-restore-version:hover {
+  background: rgba(56, 189, 248, 0.25);
+  color: #fff;
+  border-color: #38bdf8;
+}
+
+/* Gist Profile Avatar */
+.gist-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-primary);
+  object-fit: cover;
+  background: var(--bg-card);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.gist-account-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .settings-container {
+    margin: 1rem;
+    min-height: 90vh;
+  }
+  .settings-main-layout {
+    flex-direction: column;
+  }
+  .settings-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-glass);
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0.75rem;
+  }
+  .settings-nav-btn {
+    white-space: nowrap;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  .settings-content-area {
+    padding: 1.5rem;
+  }
+}
