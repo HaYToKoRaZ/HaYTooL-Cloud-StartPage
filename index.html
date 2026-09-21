@@ -1006,5 +1006,35 @@
     setLang(savedLang);
   </script>
 
+  <!-- HaYTooL Pulse Telemetri (Merkezi Web Sayacı) -->
+  <script>
+  (function() {
+    var TELEMETRY_URL = 'https://hayto-telemetry.korazhayto.workers.dev/api/ping';
+    var APP_ID = 'web_cloud_startpage';
+
+    function sendPulse() {
+      if (!navigator.onLine) return;
+      try {
+        var sid = sessionStorage.getItem('hayto_site_sid');
+        var isNew = false;
+        if (!sid) {
+          sid = 's_' + Math.random().toString(36).substring(2, 15);
+          sessionStorage.setItem('hayto_site_sid', sid);
+          isNew = true;
+        }
+        fetch(TELEMETRY_URL, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ app: APP_ID, session_id: sid, is_new_session: isNew }),
+          keepalive: true
+        }).catch(function() {});
+      } catch(e) {}
+    }
+    sendPulse();
+    setInterval(sendPulse, 2 * 60 * 1000);
+  })();
+  </script>
+
 </body>
 </html>
