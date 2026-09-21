@@ -6,5 +6,17 @@
   "appDesc": {
     "message": "Çoklu arama motoru, hızlı erişim, notlar, hava durumu ve çift tema desteğine sahip modern, ultra hızlı, estetik ve modüler Başlangıç Sayfası.",
     "description": "Eklentinin açıklaması"
+  },
+  "menuOpenSettings": {
+    "message": "⚙️ Ayarları Aç",
+    "description": "Sağ tık ayarlar menüsü"
+  },
+  "menuOpenWebsite": {
+    "message": "🌐 Resmi Web Sitesi",
+    "description": "Sağ tık web sitesi menüsü"
+  },
+  "menuOpenPortal": {
+    "message": "🚀 HaYTooL Portalı",
+    "description": "Sağ tık portal menüsü"
   }
 }

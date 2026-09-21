@@ -6,5 +6,17 @@
   "appDesc": {
     "message": "Modern, ultra fast, aesthetic and modular StartPage with multi-engine search, speed dial, notes, weather and dual theme.",
     "description": "The description of the extension"
+  },
+  "menuOpenSettings": {
+    "message": "⚙️ Settings",
+    "description": "Context menu settings"
+  },
+  "menuOpenWebsite": {
+    "message": "🌐 Official Website",
+    "description": "Context menu website"
+  },
+  "menuOpenPortal": {
+    "message": "🚀 HaYTooL Portal",
+    "description": "Context menu portal"
   }
 }

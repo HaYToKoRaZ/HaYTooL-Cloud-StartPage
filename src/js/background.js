@@ -1,7 +1,17 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "open_settings",
-    title: "Ayarları Aç / Open Settings",
+    title: chrome.i18n.getMessage("menuOpenSettings") || "⚙️ Ayarları Aç / Settings",
+    contexts: ["action"]
+  });
+  chrome.contextMenus.create({
+    id: "open_website",
+    title: chrome.i18n.getMessage("menuOpenWebsite") || "🌐 Resmi Web Sitesi / Official Website",
+    contexts: ["action"]
+  });
+  chrome.contextMenus.create({
+    id: "open_portal",
+    title: chrome.i18n.getMessage("menuOpenPortal") || "🚀 HaYTooL Portalı / HaYTo Portal",
     contexts: ["action"]
   });
 });
@@ -9,6 +19,10 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "open_settings") {
     chrome.tabs.create({ url: chrome.runtime.getURL("src/pages/newtab.html#settings") });
+  } else if (info.menuItemId === "open_website") {
+    chrome.tabs.create({ url: "https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/" });
+  } else if (info.menuItemId === "open_portal") {
+    chrome.tabs.create({ url: "https://haytokoraz.github.io/" });
   }
 });
 

@@ -6,5 +6,17 @@
   "appDesc": {
     "message": "Página de inicio moderna, ultrarrápida, estética y modular con búsqueda múltiple, marcación rápida, notas, clima y tema dual.",
     "description": "Descripción de la extensión"
+  },
+  "menuOpenSettings": {
+    "message": "⚙️ Configuración",
+    "description": "Context menu settings"
+  },
+  "menuOpenWebsite": {
+    "message": "🌐 Sitio web oficial",
+    "description": "Context menu website"
+  },
+  "menuOpenPortal": {
+    "message": "🚀 Portal HaYTooL",
+    "description": "Context menu portal"
   }
 }

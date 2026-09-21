@@ -284,5 +284,12 @@
   "settings_link_target": "Link Açılış Hedefi",
   "settings_link_target_same": "Aynı Sekmede Aç (Varsayılan)",
   "settings_link_target_new": "Yeni Sekmede Aç",
-  "active_users_label": "Aktif Kullanıcı:"
+  "active_users_label": "Aktif Kullanıcı:",
+  "menu_open_settings": "⚙️ Ayarları Aç",
+  "menu_open_website": "🌐 Resmi Web Sitesi",
+  "menu_open_portal": "🚀 HaYTooL Portalı",
+  "sidebar_links_title": "Bağlantılar",
+  "sidebar_link_website": "Resmi Web Sitesi",
+  "sidebar_link_portal": "HaYTo Portal",
+  "sidebar_link_webstore": "Chrome Mağazası"
 }

@@ -264,5 +264,12 @@
   "settings_link_target": "Destino de apertura de enlace",
   "settings_link_target_same": "Abrir en la misma pestaña (Predeterminado)",
   "settings_link_target_new": "Abrir en una nueva pestaña",
-  "active_users_label": "Usuarios activos:"
+  "active_users_label": "Usuarios activos:",
+  "menu_open_settings": "⚙️ Abrir configuración",
+  "menu_open_website": "🌐 Sitio web oficial",
+  "menu_open_portal": "🚀 Portal HaYTooL",
+  "sidebar_links_title": "Enlaces",
+  "sidebar_link_website": "Sitio web oficial",
+  "sidebar_link_portal": "Portal HaYTo",
+  "sidebar_link_webstore": "Chrome Web Store"
 }

@@ -264,5 +264,12 @@
   "settings_link_target": "Destino de abertura do link",
   "settings_link_target_same": "Abrir na mesma aba (Padrão)",
   "settings_link_target_new": "Abrir em nova aba",
-  "active_users_label": "Usuários ativos:"
+  "active_users_label": "Usuários ativos:",
+  "menu_open_settings": "⚙️ Abrir configurações",
+  "menu_open_website": "🌐 Site oficial",
+  "menu_open_portal": "🚀 Portal HaYTooL",
+  "sidebar_links_title": "Links",
+  "sidebar_link_website": "Site oficial",
+  "sidebar_link_portal": "Portal HaYTo",
+  "sidebar_link_webstore": "Chrome Web Store"
 }

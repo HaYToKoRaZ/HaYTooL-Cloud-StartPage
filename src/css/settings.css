@@ -339,3 +339,24 @@
     padding: 1.5rem;
   }
 }
+
+/* Sidebar Hızlı Dış Bağlantılar */
+.sidebar-ext-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  margin-bottom: 2px;
+}
+
+.sidebar-ext-link:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateX(3px);
+}

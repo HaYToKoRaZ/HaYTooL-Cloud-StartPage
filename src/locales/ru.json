@@ -264,5 +264,12 @@
   "settings_link_target": "Открытие ссылок",
   "settings_link_target_same": "В той же вкладке (По умолчанию)",
   "settings_link_target_new": "В новой вкладке",
-  "active_users_label": "Активные пользователи:"
+  "active_users_label": "Активные пользователи:",
+  "menu_open_settings": "⚙️ Открыть настройки",
+  "menu_open_website": "🌐 Официальный сайт",
+  "menu_open_portal": "🚀 Портал HaYTooL",
+  "sidebar_links_title": "Ссылки",
+  "sidebar_link_website": "Официальный сайт",
+  "sidebar_link_portal": "Портал HaYTo",
+  "sidebar_link_webstore": "Chrome Web Store"
 }
