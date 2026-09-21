@@ -103,6 +103,7 @@ class SettingsPageController {
     f('folderColumnsSelect', String(this.config.folderColumns || 6));
     f('iconSizeSelect', String(this.config.folderIconSize || 32));
     f('iconApiSelect', this.config.iconApi || 'iconhorse');
+    f('linkTargetSelect', this.config.linkOpenTarget || 'same');
 
     t('toggleSearchBar', this.config.showSearchBar !== false);
     t('toggleTopLang', this.config.showTopLangSelector !== false);
@@ -133,6 +134,7 @@ class SettingsPageController {
       this.config.folderColumns = parseInt(document.getElementById('folderColumnsSelect').value) || 6;
       this.config.folderIconSize = parseInt(document.getElementById('iconSizeSelect').value) || 32;
       this.config.iconApi = document.getElementById('iconApiSelect').value;
+      this.config.linkOpenTarget = document.getElementById('linkTargetSelect')?.value || 'same';
 
       this.config.showSearchBar = document.getElementById('toggleSearchBar').checked;
       this.config.showTopLangSelector = document.getElementById('toggleTopLang').checked;

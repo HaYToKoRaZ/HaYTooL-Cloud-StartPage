@@ -103,10 +103,11 @@ export const Favorites = {
     wrap.className = 'fav-item';
     wrap.setAttribute('data-fav-idx', idx);
 
+    const openTarget = Settings.config?.linkOpenTarget === 'new' ? '_blank' : '_self';
     const link = document.createElement('a');
     link.href   = fav.url;
-    link.target = '_blank';
-    link.rel    = 'noopener noreferrer';
+    link.target = openTarget;
+    if (openTarget === '_blank') link.rel = 'noopener noreferrer';
     link.className = 'fav-item-link';
 
     const iconBox = document.createElement('div');

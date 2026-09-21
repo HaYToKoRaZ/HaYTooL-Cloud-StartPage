@@ -279,5 +279,9 @@
   "gist_auto_backup_label": "Daily Automatic Backup",
   "gist_auto_backup_desc": "Silently backs up your data to GitHub Gist on the first launch of each day in the background.",
   "gist_auto_backup_enabled": "Daily automatic Gist backup enabled.",
-  "gist_auto_backup_disabled": "Daily automatic Gist backup disabled."
+  "gist_auto_backup_disabled": "Daily automatic Gist backup disabled.",
+  "settings_link_target": "Link Open Target",
+  "settings_link_target_same": "Open in Same Tab (Default)",
+  "settings_link_target_new": "Open in New Tab",
+  "active_users_label": "Active Users:"
 }

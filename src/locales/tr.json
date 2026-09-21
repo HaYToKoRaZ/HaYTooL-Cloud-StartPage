@@ -280,5 +280,9 @@
   "gist_auto_backup_label": "Günlük Otomatik Yedekleme",
   "gist_auto_backup_desc": "Her günün ilk açılışında verilerinizi arka planda sessizce GitHub Gist'e yedekler.",
   "gist_auto_backup_enabled": "Günlük otomatik Gist yedeklemesi açıldı.",
-  "gist_auto_backup_disabled": "Günlük otomatik Gist yedeklemesi kapatıldı."
+  "gist_auto_backup_disabled": "Günlük otomatik Gist yedeklemesi kapatıldı.",
+  "settings_link_target": "Link Açılış Hedefi",
+  "settings_link_target_same": "Aynı Sekmede Aç (Varsayılan)",
+  "settings_link_target_new": "Yeni Sekmede Aç",
+  "active_users_label": "Aktif Kullanıcı:"
 }

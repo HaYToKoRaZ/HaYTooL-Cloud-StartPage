@@ -9,7 +9,8 @@ export const Settings = {
     showWeather: true, showFavBar: true, showQuote: true,
     folderColumns: 6, folderIconSize: 32, showSearchBar: true, showTopLangSelector: true, showThemeBtn: true,
     timezone: 'auto', iconApi: 'iconhorse', showImportBtn: true,
-    weatherCityObj: null // { name: "Kadıköy", country: "Türkiye", lat: 40.9, lon: 29.0 }
+    weatherCityObj: null, // { name: "Kadıköy", country: "Türkiye", lat: 40.9, lon: 29.0 }
+    linkOpenTarget: 'same' // 'same' (aynı sekme - varsayılan) | 'new' (yeni sekme)
   },
   
   async init() {

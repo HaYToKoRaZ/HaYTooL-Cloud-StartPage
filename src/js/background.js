@@ -68,3 +68,31 @@ chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => 
   }
   return true;
 });
+
+// ─── HaYTooL Pulse Telemetri (Merkezi Canlı Kullanıcı Sayacı) ──────────────────
+(function() {
+  const TELEMETRY_URL = 'https://hayto-telemetry.korazhayto.workers.dev/api/ping';
+  const APP_ID = 'cloud_startpage';
+  const sessionId = 'ext_' + Math.random().toString(36).substring(2, 15);
+  let isFirst = true;
+
+  async function sendPulse() {
+    try {
+      await fetch(TELEMETRY_URL, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ app: APP_ID, session_id: sessionId, is_new_session: isFirst })
+      });
+      isFirst = false;
+    } catch (e) {}
+  }
+
+  sendPulse();
+  if (chrome.alarms) {
+    chrome.alarms.create('pulse_alarm', { periodInMinutes: 2 });
+    chrome.alarms.onAlarm.addListener(a => { if (a.name === 'pulse_alarm') sendPulse(); });
+  } else {
+    setInterval(sendPulse, 2 * 60 * 1000);
+  }
+})();

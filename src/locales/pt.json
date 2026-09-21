@@ -260,5 +260,9 @@
   "gist_auth_success": "GitHub account verified and connected successfully!",
   "gist_confirm_disconnect": "Are you sure you want to disconnect your GitHub account?",
   "gist_disconnected": "GitHub account disconnected.",
-  "gist_error_missing_id": "Please enter the Gist ID to restore from or perform a backup first."
+  "gist_error_missing_id": "Please enter the Gist ID to restore from or perform a backup first.",
+  "settings_link_target": "Destino de abertura do link",
+  "settings_link_target_same": "Abrir na mesma aba (Padrão)",
+  "settings_link_target_new": "Abrir em nova aba",
+  "active_users_label": "Usuários ativos:"
 }

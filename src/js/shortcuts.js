@@ -476,6 +476,8 @@ export const Shortcuts = {
       }
     };
 
+    const openTarget = Settings.config?.linkOpenTarget === 'new' ? '_blank' : '_self';
+
     if (view === 'icon') {
       // Wrapper: flex column, icon + action bar ayrı ayrı
       wrap.className = 'link-item link-item-icon';
@@ -486,8 +488,8 @@ export const Shortcuts = {
         a.setAttribute('data-incognito-url', item.url);
       } else {
         a.href = item.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
+        a.target = openTarget;
+        if (openTarget === '_blank') a.rel = 'noopener noreferrer';
       }
       a.className = 'link-icon-card';
       a.title = item.title + (cat && cat.isIncognito ? ' (Gizli Sekme)' : '');
@@ -511,8 +513,8 @@ export const Shortcuts = {
         a.setAttribute('data-incognito-url', item.url);
       } else {
         a.href = item.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
+        a.target = openTarget;
+        if (openTarget === '_blank') a.rel = 'noopener noreferrer';
       }
       a.className = 'link-list-row';
       a.title = item.url + (cat && cat.isIncognito ? ' (Gizli Sekme)' : '');
