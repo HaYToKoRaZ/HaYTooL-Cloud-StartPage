@@ -7,10 +7,11 @@
 </p>
 
 <p align="center">
-  <a href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/"><img src="https://img.shields.io/badge/Web%20Portal-Live%20Demo-blue?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live Demo"></a>
+  <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn"><img src="https://img.shields.io/badge/Chrome%20Web%20Store-Published-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Chrome Web Store"></a>
   <a href="https://microsoftedge.microsoft.com/addons/detail/jkefcejfnbeifclgpkfkpidoegohcchp"><img src="https://img.shields.io/badge/Microsoft%20Edge-Add--ons-0078D7?style=for-the-badge&logo=microsoftedge&logoColor=white" alt="Edge Add-ons"></a>
+  <a href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/"><img src="https://img.shields.io/badge/Web%20Portal-Live%20Demo-blue?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live Demo"></a>
   <img src="https://img.shields.io/badge/Manifest-V3-purple?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Manifest V3">
-  <img src="https://img.shields.io/badge/Version-v4.4.0-success?style=for-the-badge" alt="Version 4.4.0">
+  <img src="https://img.shields.io/badge/Version-v4.5.4-success?style=for-the-badge" alt="Version 4.5.4">
 </p>
 
 Welcome to **HaYTooL Cloud StartPage**. This project is a next-generation, ultra-fast, and highly customizable browser new tab extension designed to supercharge your daily browsing productivity.
