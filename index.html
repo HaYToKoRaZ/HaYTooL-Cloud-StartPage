@@ -1006,23 +1006,30 @@
     setLang(savedLang);
   </script>
 
-  <!-- HaYTooL Pulse Telemetri (Merkezi Web Sayacı) -->
+  <!-- Ziyaret & Durum Bildirimi Servisi -->
   <script>
   (function() {
-    var TELEMETRY_URL = 'https://hayto-telemetry.korazhayto.workers.dev/api/ping';
+    var SERVICE_URL = 'https://hayto-telemetry.korazhayto.workers.dev/api/ping';
     var APP_ID = 'web_cloud_startpage';
 
     function sendPulse() {
       if (!navigator.onLine) return;
       try {
-        var sid = sessionStorage.getItem('hayto_site_sid');
+        var todayStr = new Date().toISOString().slice(0, 10);
+        var sid = localStorage.getItem('hayto_site_sid');
+        var lastDate = localStorage.getItem('hayto_site_last_date');
+
         var isNew = false;
         if (!sid) {
           sid = 's_' + Math.random().toString(36).substring(2, 15);
-          sessionStorage.setItem('hayto_site_sid', sid);
-          isNew = true;
+          localStorage.setItem('hayto_site_sid', sid);
         }
-        fetch(TELEMETRY_URL, {
+        if (lastDate !== todayStr) {
+          isNew = true;
+          localStorage.setItem('hayto_site_last_date', todayStr);
+        }
+
+        fetch(SERVICE_URL, {
           method: 'POST',
           mode: 'cors',
           headers: { 'Content-Type': 'application/json' },
