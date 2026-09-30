@@ -7,7 +7,7 @@ import { Settings }  from './settings.js';
 import { GistSync }  from './gist-sync.js';
 
 /**
- * Cloud StartPage HaYTooL v4.5.6
+ * Cloud StartPage HaYTooL v4.6.1
  */
 class StartPageApp {
   async init() {
@@ -50,7 +50,7 @@ class StartPageApp {
         this.initQuotes();
       });
       
-      console.log('✨ Cloud StartPage HaYTooL v4.5.6 - hazır.');
+      console.log('✨ Cloud StartPage HaYTooL v4.6.1 - hazır.');
       
       // Günün ilk açılışında arka planda sessizce otomatik Gist yedeği al
       setTimeout(() => {
@@ -167,11 +167,22 @@ class StartPageApp {
       gemini:     { name: 'Gemini',      icon: 'https://www.google.com/s2/favicons?domain=gemini.google.com&sz=64' },
       claude:     { name: 'Claude',      icon: 'https://www.google.com/s2/favicons?domain=claude.ai&sz=64' },
       deepseek:   { name: 'DeepSeek',    icon: 'https://www.google.com/s2/favicons?domain=deepseek.com&sz=64' },
-      qwen:       { name: 'Qwen',        icon: 'https://www.google.com/s2/favicons?domain=chat.qwen.ai&sz=64' }
+      qwen:       { name: 'Qwen',        icon: 'https://www.google.com/s2/favicons?domain=chat.qwen.ai&sz=64' },
+      bookmarks:  { name: I18n.t('search_engine_local', 'Kayıtlı Linkler'), icon: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' }
     };
 
     let currentEngine = await Storage.get('search_engine', 'google');
     if (!engineConfig[currentEngine]) currentEngine = 'google';
+
+    const updateSearchMode = () => {
+      if (searchInput) {
+        if (currentEngine === 'bookmarks') {
+          searchInput.placeholder = I18n.t('search_placeholder_links', 'Kayıtlı linklerde veya klasörlerde ara...');
+        } else {
+          searchInput.placeholder = I18n.t('search_placeholder_ai', 'Web\'de arayın veya AI\'a sorun...');
+        }
+      }
+    };
 
     const setEngine = (engKey, save = true) => {
       const conf = engineConfig[engKey] || engineConfig.google;
@@ -181,10 +192,50 @@ class StartPageApp {
       pickerItems.forEach(item => {
         item.classList.toggle('active', item.getAttribute('data-engine') === engKey);
       });
+      updateSearchMode();
       if (save) Storage.set('search_engine', engKey);
+
+      // Motor değiştiğinde arama kutusunda yazı varsa filtrelemeyi anında tetikle veya sıfırla
+      if (currentEngine === 'bookmarks') {
+        const q = (searchInput?.value || '').trim();
+        Favorites.searchQuery = q;
+        Favorites.render();
+        Shortcuts.searchQuery = q;
+        Shortcuts.renderFolders();
+      } else if (Shortcuts.searchQuery || Favorites.searchQuery) {
+        Favorites.searchQuery = '';
+        Favorites.render();
+        Shortcuts.searchQuery = '';
+        Shortcuts.renderFolders();
+      }
     };
 
     setEngine(currentEngine, false);
+
+    // Kayıtlı linkler modunda anlık (live) arama / filtreleme
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        if (currentEngine === 'bookmarks') {
+          const q = searchInput.value;
+          Favorites.searchQuery = q;
+          Favorites.render();
+          Shortcuts.searchQuery = q;
+          Shortcuts.renderFolders();
+        }
+      });
+    }
+
+    // Üst bardaki 🔍 hızlı arama butonu
+    const quickLinksBtn = document.getElementById('quickLinksSearchBtn');
+    if (quickLinksBtn) {
+      quickLinksBtn.addEventListener('click', () => {
+        setEngine('bookmarks', true);
+        if (searchInput) {
+          searchInput.focus();
+          searchInput.select();
+        }
+      });
+    }
 
     if (picker && pickerBtn) {
       pickerBtn.addEventListener('click', (e) => {
@@ -217,6 +268,15 @@ class StartPageApp {
         e.preventDefault();
         const q = (searchInput?.value || '').trim();
         if (!q) return;
+
+        if (currentEngine === 'bookmarks') {
+          Favorites.searchQuery = q;
+          Favorites.render();
+          Shortcuts.searchQuery = q;
+          Shortcuts.renderFolders();
+          return;
+        }
+
         let url = '';
         switch (currentEngine) {
           case 'yandex': url = 'https://yandex.com/search/?text=' + encodeURIComponent(q); break;
@@ -225,23 +285,8 @@ class StartPageApp {
           case 'youtube': url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q); break;
           case 'chatgpt': url = 'https://chatgpt.com/?q=' + encodeURIComponent(q); break;
           case 'perplexity': url = 'https://www.perplexity.ai/search?q=' + encodeURIComponent(q); break;
-          case 'gemini':
-          case 'qwen': {
-            const targetName = currentEngine === 'gemini' ? 'Gemini' : 'Qwen';
-            url = currentEngine === 'gemini' ? 'https://gemini.google.com/app' : 'https://chat.qwen.ai/';
-            try {
-              await navigator.clipboard.writeText(q);
-              const t = document.getElementById('toast');
-              if (t) {
-                t.textContent = `📋 ${I18n.t('ai_prompt_copied', 'Metin kopyalandı! {target} sayfasına Ctrl+V ile yapıştırabilirsiniz.').replace('{target}', targetName)}`;
-                t.classList.add('show');
-                setTimeout(() => t.classList.remove('show'), 4000);
-              }
-            } catch(err) {
-              console.warn('Clipboard write failed:', err);
-            }
-            break;
-          }
+          case 'gemini': url = 'https://gemini.google.com/app?prompt=' + encodeURIComponent(q); break;
+          case 'qwen': url = 'https://chat.qwen.ai/?prompt=' + encodeURIComponent(q); break;
           case 'claude': url = 'https://claude.ai/new?q=' + encodeURIComponent(q); break;
           case 'deepseek': url = 'https://chat.deepseek.com/?q=' + encodeURIComponent(q); break;
           default: url = 'https://www.google.com/search?q=' + encodeURIComponent(q); break;

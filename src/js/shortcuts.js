@@ -2,6 +2,7 @@ import { I18n } from './i18n.js';
 import { Storage } from './storage.js';
 import { Favorites } from './favorites.js';
 import { Settings } from './settings.js';
+import { IconCache } from './icon-cache.js';
 
 export const Shortcuts = {
   CAT_KEY:       'shortcut_categories',
@@ -15,6 +16,7 @@ export const Shortcuts = {
   collapsedFolders:new Set(),
   folderViews:     {},
   showHidden:      false,
+  searchQuery:     '',
 
   COLORS: ['#6366f1','#ec4899','#10b981','#f59e0b','#06b6d4','#8b5cf6','#f43f5e','#14b8a6','#3b82f6','#a78bfa','#fb923c','#34d399','#e11d48','#0891b2'],
   colorIdx: 0,
@@ -237,10 +239,19 @@ export const Shortcuts = {
       return;
     }
 
+    const q = (this.searchQuery || '').trim().toLowerCase();
+
     const grouped = {};
     this.categories.forEach(c => { grouped[c.id] = []; });
     grouped['__other__'] = [];
     this.items.forEach(item => {
+      // Eğer arama yapılıyorsa link başlığı veya URL'si ile filtrele
+      if (q) {
+        const titleMatch = (item.title || '').toLowerCase().includes(q);
+        const urlMatch   = (item.url || '').toLowerCase().includes(q);
+        if (!titleMatch && !urlMatch) return;
+      }
+
       if (grouped[item.categoryId] !== undefined) grouped[item.categoryId].push(item);
       else grouped['__other__'].push(item);
     });
@@ -248,19 +259,40 @@ export const Shortcuts = {
     // Filtrele: gizli klasörler ancak showHidden açıksa gösterilir
     const visibleCats = this.categories.filter(cat => this.showHidden || !cat.isHidden);
     
+    let renderedFolderCount = 0;
     visibleCats.forEach(cat => {
-      grid.appendChild(this._makeFolderCard(cat, grouped[cat.id] || []));
+      const folderItems = grouped[cat.id] || [];
+      const catMatch = q && (cat.name || '').toLowerCase().includes(q);
+      // Arama varsa: ya klasör adı eşleşmeli ya da içinde eşleşen link olmalı
+      if (q && !catMatch && folderItems.length === 0) {
+        return;
+      }
+      grid.appendChild(this._makeFolderCard(cat, folderItems));
+      renderedFolderCount++;
     });
+
     if (grouped['__other__'].length > 0) {
       const other = { id: '__other__', name: I18n.t('folder_other', 'Other'), icon: '📁', color: '#64748b' };
       grid.appendChild(this._makeFolderCard(other, grouped['__other__']));
+      renderedFolderCount++;
     }
 
-    const addCard = document.createElement('div');
-    addCard.className = 'folder-card folder-add-card';
-    addCard.innerHTML = '<button class="folder-add-btn" id="globalAddLinkBtn"><span style="font-size:1.5rem">+</span><span>' + I18n.t('add_shortcut', 'Add Link') + '</span></button>';
-    grid.appendChild(addCard);
-    document.getElementById('globalAddLinkBtn')?.addEventListener('click', () => this.openAddLinkModal());
+    if (q && renderedFolderCount === 0) {
+      const noRes = document.createElement('div');
+      noRes.className = 'empty-state-main';
+      noRes.style.gridColumn = '1 / -1';
+      noRes.innerHTML = `<div class="empty-icon">🔍</div><div class="empty-title">Sonuç Bulunamadı</div><div class="empty-desc">"${this._esc(q)}" ile eşleşen bir kısayol veya klasör bulunamadı.</div>`;
+      grid.appendChild(noRes);
+      return;
+    }
+
+    if (!q) {
+      const addCard = document.createElement('div');
+      addCard.className = 'folder-card folder-add-card';
+      addCard.innerHTML = '<button class="folder-add-btn" id="globalAddLinkBtn"><span style="font-size:1.5rem">+</span><span>' + I18n.t('add_shortcut', 'Add Link') + '</span></button>';
+      grid.appendChild(addCard);
+      document.getElementById('globalAddLinkBtn')?.addEventListener('click', () => this.openAddLinkModal());
+    }
     this.applyMasonry();
   },
 
@@ -578,9 +610,13 @@ export const Shortcuts = {
     box.className = 'link-fav-icon';
     if (item.icon && (item.icon.startsWith('http') || item.icon.startsWith('data:'))) {
       const img = document.createElement('img');
-      img.src = item.icon;
       img.alt = '';
       img.addEventListener('error', () => { box.textContent = '🌐'; });
+      if (item.icon.startsWith('http')) {
+        IconCache.applyToImg(img, item.icon, item.icon);
+      } else {
+        img.src = item.icon;
+      }
       box.appendChild(img);
     } else if (item.icon && item.icon.trim()) {
       box.textContent = item.icon;
@@ -597,9 +633,9 @@ export const Shortcuts = {
         else src = 'https://www.google.com/s2/favicons?domain=' + d + '&sz=64';
         
         const img = document.createElement('img');
-        img.src = src;
         img.alt = '';
         img.addEventListener('error', () => { box.textContent = '🌐'; });
+        IconCache.applyToImg(img, d + '_' + api, src);
         box.appendChild(img);
       } catch(e) { box.textContent = '🌐'; }
     }

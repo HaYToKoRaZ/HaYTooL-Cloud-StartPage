@@ -41,6 +41,12 @@
             <span class="top-search-engine-arrow">▾</span>
           </button>
           <div class="top-search-engine-menu" id="topSearchEngineMenu">
+            <div class="top-search-menu-group" data-i18n="search_group_local">Kayıtlı Linkler</div>
+            <button type="button" class="top-search-menu-item" data-engine="bookmarks">
+              <span class="top-search-engine-icon" style="font-size:1.05rem;display:inline-flex;align-items:center;justify-content:center;">⭐</span>
+              <span data-i18n="search_engine_local" style="font-weight:600;color:var(--accent-primary);">Kayıtlı Linklerde Ara</span>
+            </button>
+
             <div class="top-search-menu-group" data-i18n="search_group_engines">Arama Motorları</div>
             <button type="button" class="top-search-menu-item" data-engine="google">
               <img src="https://www.google.com/favicon.ico" alt="" class="top-search-engine-icon">
@@ -125,6 +131,9 @@
         </div>
       </div>
       <div class="header-btn-group">
+        <button id="quickLinksSearchBtn" class="icon-btn" data-i18n-title="search_btn_quick_links_filter" title="Kayıtlı Linklerde Ara">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
         <button id="expandAllBtn" class="icon-btn" data-i18n-title="expand_all_folders" title="Tümünü Genişlet">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7 6 5 5 5-5"/><path d="m7 13 5 5 5-5"/></svg>
         </button>
@@ -163,7 +172,7 @@
       </a>
     </div>
     <div id="quoteBox" class="quote-box" style="position:absolute; left:50%; transform:translateX(-50%); text-align:center;"></div>
-    <a href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/" target="_blank" rel="noopener noreferrer" class="footer-brand" style="text-decoration:none; color:inherit; transition: color 0.2s;">Cloud StartPage HaYTooL v4.5.6</a>
+    <a href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/" target="_blank" rel="noopener noreferrer" class="footer-brand" style="text-decoration:none; color:inherit; transition: color 0.2s;">Cloud StartPage HaYTooL v4.6.1</a>
   </footer>
 
   <!-- ====== FAVORİ EKLE MODAL ====== -->

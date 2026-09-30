@@ -2,12 +2,14 @@ import { Storage } from './storage.js';
 import { Settings } from './settings.js';
 import { Shortcuts } from './shortcuts.js';
 import { I18n } from './i18n.js';
+import { IconCache } from './icon-cache.js';
 
 export const Favorites = {
   FAV_KEY: 'favorites_bar',
   VIEW_KEY: 'fav_bar_view', // 'icon', 'list', 'shortlist'
   items: [],
   view: 'icon',
+  searchQuery: '',
 
   async init() {
     const isFirstRun = await Storage.get('is_fav_first_run_v3', true);
@@ -39,21 +41,24 @@ export const Favorites = {
     // Uygula CSS sınıfı
     bar.className = 'fav-bar fav-bar-container view-' + this.view;
 
+    const q = (this.searchQuery || '').trim().toLowerCase();
+    const displayItems = q
+      ? this.items.filter(f => (f.title || '').toLowerCase().includes(q) || (f.url || '').toLowerCase().includes(q))
+      : this.items;
+
     const limit = 10;
     const isShortlist = (this.view === 'shortlist');
 
-    
-
-    this.items.forEach((fav, idx) => {
+    displayItems.forEach((fav, idx) => {
       const item = this._makeFavItem(fav, idx);
-      if (isShortlist && idx >= limit) {
+      if (isShortlist && !q && idx >= limit) {
         item.style.display = 'none';
         item.classList.add('shortlist-hidden');
       }
       bar.appendChild(item);
     });
 
-    if (isShortlist && this.items.length > limit) {
+    if (isShortlist && !q && this.items.length > limit) {
       const moreBtn = document.createElement('button');
       moreBtn.className = 'fav-show-more-btn';
       moreBtn.textContent = 'Daha fazla (' + (this.items.length - limit) + ') ▾';
@@ -115,9 +120,13 @@ export const Favorites = {
 
     if (fav.icon && (fav.icon.startsWith('http') || fav.icon.startsWith('data:'))) {
       const img = document.createElement('img');
-      img.src = fav.icon;
       img.alt = '';
       img.addEventListener('error', () => { iconBox.textContent = '🌐'; });
+      if (fav.icon.startsWith('http')) {
+        IconCache.applyToImg(img, fav.icon, fav.icon);
+      } else {
+        img.src = fav.icon;
+      }
       iconBox.appendChild(img);
     } else if (fav.icon && fav.icon.trim()) {
       iconBox.textContent = fav.icon;
@@ -134,9 +143,9 @@ export const Favorites = {
         else src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
         
         const img = document.createElement('img');
-        img.src = src;
         img.alt = '';
         img.addEventListener('error', () => { iconBox.textContent = '🌐'; });
+        IconCache.applyToImg(img, domain + '_' + api, src);
         iconBox.appendChild(img);
       } catch(e) { iconBox.textContent = '🌐'; }
     }
