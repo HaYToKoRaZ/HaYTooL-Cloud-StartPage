@@ -16,6 +16,20 @@
   <a href="https://haytokoraz.github.io/" target="_blank"><img src="src/assets/badges/portal.svg" alt="HaYTooL PoRTaL"></a>
 </p>
 
+
+### 🌐 Supported Browsers & Store Downloads
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn" title="Chrome Web Store">
+    <img src="src/assets/badges/chrome.svg" alt="Chrome Web Store" width="40" height="40" style="margin: 0 10px;" />
+  </a>
+  <a href="https://microsoftedge.microsoft.com/addons/detail/jkefcejfnbeifclgpkfkpidoegohcchp" title="Microsoft Edge Add-ons">
+    <img src="src/assets/badges/edge.svg" alt="Microsoft Edge" width="40" height="40" style="margin: 0 10px;" />
+  </a>
+  <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn" title="Helium Browser">
+    <img src="src/assets/badges/helium.png" alt="Helium Browser" width="40" height="40" style="margin: 0 10px;" />
+  </a>
+</p>
+
 Welcome to **HaYTooL Cloud StartPage**. This project is a next-generation, ultra-fast, and highly customizable browser new tab extension designed to supercharge your daily browsing productivity.
 
 <p align="center">
