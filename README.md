@@ -7,8 +7,8 @@
 </p>
 
 <p align="center">
-  <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn"><img src="https://img.shields.io/badge/Chrome%20Web%20Store-Published-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Chrome Web Store"></a>
-  <a href="https://microsoftedge.microsoft.com/addons/detail/jkefcejfnbeifclgpkfkpidoegohcchp"><img src="https://img.shields.io/badge/Microsoft%20Edge-Add--ons-0078D7?style=for-the-badge&logo=microsoftedge&logoColor=white" alt="Edge Add-ons"></a>
+  
+  
   <img src="src/assets/badges/version.svg" alt="Version 4.5.4">
   <img src="src/assets/badges/manifest.svg" alt="Manifest V3">
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Cloud-StartPage/latest/total?style=for-the-badge&logo=github&color=2ea44f&label=LATEST%20DOWNLOADS" alt="Latest Release Downloads"></a>
