@@ -9,11 +9,11 @@
 <p align="center">
   <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn"><img src="https://img.shields.io/badge/Chrome%20Web%20Store-Published-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Chrome Web Store"></a>
   <a href="https://microsoftedge.microsoft.com/addons/detail/jkefcejfnbeifclgpkfkpidoegohcchp"><img src="https://img.shields.io/badge/Microsoft%20Edge-Add--ons-0078D7?style=for-the-badge&logo=microsoftedge&logoColor=white" alt="Edge Add-ons"></a>
-  <a href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/"><img src="https://img.shields.io/badge/Web%20Portal-Live%20Demo-blue?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live Demo"></a>
-  <img src="https://img.shields.io/badge/Manifest-V3-purple?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Manifest V3">
-  <img src="https://img.shields.io/badge/Version-v4.5.4-success?style=for-the-badge" alt="Version 4.5.4">
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Cloud-StartPage/latest/total?color=success&label=Latest%20Release%20Downloads" alt="Latest Release Downloads"></a>
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Cloud-StartPage/total?color=2ea44f&label=Total%20Downloads" alt="Total Downloads"></a>
+  <img src="src/assets/badges/version.svg" alt="Version 4.5.4">
+  <img src="src/assets/badges/manifest.svg" alt="Manifest V3">
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Cloud-StartPage/latest/total?style=for-the-badge&logo=github&color=2ea44f&label=LATEST%20DOWNLOADS" alt="Latest Release Downloads"></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Cloud-StartPage/total?style=for-the-badge&logo=github&color=0969da&label=TOTAL%20DOWNLOADS" alt="Total Downloads"></a>
+  <a href="https://haytokoraz.github.io/" target="_blank"><img src="src/assets/badges/portal.svg" alt="HaYTooL PoRTaL"></a>
 </p>
 
 Welcome to **HaYTooL Cloud StartPage**. This project is a next-generation, ultra-fast, and highly customizable browser new tab extension designed to supercharge your daily browsing productivity.
