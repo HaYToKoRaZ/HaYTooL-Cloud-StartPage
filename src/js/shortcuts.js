@@ -313,74 +313,95 @@ export const Shortcuts = {
       card.classList.add('folder-is-hidden');
     }
 
-    // --- Srkle brak mant (Drag & Drop) ---
+    // --- Sürükle bırak mantığı (Drag & Drop) ---
+    let isFolderDragging = false;
     if (cat.id !== '__other__') {
       card.setAttribute('draggable', 'true');
       card.style.cursor = 'grab';
 
       card.addEventListener('dragstart', e => {
-        if (e.target.closest('.folder-body')) {
-          e.preventDefault(); return; // Folder iini srklemeyi engelle
+        // Link sürüklenirken klasör kartının sürüklenmesini engelle
+        if (e.target.closest('.folder-body') || e.target.closest('.link-item')) {
+          e.stopPropagation();
+          return;
         }
+        isFolderDragging = true;
+        this._dragType = 'folder';
         e.dataTransfer.setData('text/plain', cat.id);
-        setTimeout(() => card.style.opacity = '0.5', 0);
+        e.dataTransfer.setData('application/x-drag-type', 'folder');
+        e.dataTransfer.effectAllowed = 'move';
+        card.classList.add('folder-dragging');
       });
 
       card.addEventListener('dragend', () => {
-        card.style.opacity = '1';
+        card.classList.remove('folder-dragging');
+        this._dragType = null;
+        setTimeout(() => { isFolderDragging = false; }, 150);
         document.querySelectorAll('.folder-card').forEach(c => {
-          c.style.borderTop = '';
-          c.style.borderBottom = '';
+          c.classList.remove('folder-drag-over-top', 'folder-drag-over-bottom');
         });
       });
 
       card.addEventListener('dragover', e => {
+        if (this._dragType !== 'folder') return;
         e.preventDefault();
+        e.stopPropagation();
+        e.dataTransfer.dropEffect = 'move';
+
         const bounding = card.getBoundingClientRect();
         const offset = bounding.y + (bounding.height / 2);
-        if (e.clientY - offset > 0) {
-          card.style.borderBottom = '2px solid var(--accent)';
-          card.style.borderTop = '';
+        if (e.clientY > offset) {
+          card.classList.add('folder-drag-over-bottom');
+          card.classList.remove('folder-drag-over-top');
         } else {
-          card.style.borderTop = '2px solid var(--accent)';
-          card.style.borderBottom = '';
+          card.classList.add('folder-drag-over-top');
+          card.classList.remove('folder-drag-over-bottom');
         }
       });
 
       card.addEventListener('dragleave', e => {
-        card.style.borderTop = '';
-        card.style.borderBottom = '';
+        // Eğer alt elemanlara geçildiyse hemen temizleme
+        if (!card.contains(e.relatedTarget)) {
+          card.classList.remove('folder-drag-over-top', 'folder-drag-over-bottom');
+        }
       });
 
       card.addEventListener('drop', async e => {
+        if (this._dragType !== 'folder') return;
         e.preventDefault();
-        card.style.borderTop = '';
-        card.style.borderBottom = '';
+        e.stopPropagation();
+        card.classList.remove('folder-drag-over-top', 'folder-drag-over-bottom');
         
         const draggedId = e.dataTransfer.getData('text/plain');
         if (!draggedId || draggedId === cat.id) return;
 
         const draggedIdx = this.categories.findIndex(c => c.id === draggedId);
         const dropIdx = this.categories.findIndex(c => c.id === cat.id);
-        
         if (draggedIdx === -1 || dropIdx === -1) return;
 
         const bounding = card.getBoundingClientRect();
         const offset = bounding.y + (bounding.height / 2);
-        const insertAfter = (e.clientY - offset > 0);
+        const insertAfter = (e.clientY > offset);
 
-        const draggedCat = this.categories[draggedIdx];
-        const dropCat = this.categories[dropIdx];
+        const [draggedCat] = this.categories.splice(draggedIdx, 1);
+        const dropCat = this.categories.find(c => c.id === cat.id);
+        if (dropCat) {
+          draggedCat.col = dropCat.col;
+        }
 
-        draggedCat.col = dropCat.col;
-        draggedCat.order = dropCat.order + (insertAfter ? 0.5 : -0.5);
+        const newDropIdx = this.categories.findIndex(c => c.id === cat.id);
+        const insertIndex = insertAfter ? newDropIdx + 1 : newDropIdx;
+        this.categories.splice(insertIndex, 0, draggedCat);
 
-        this.categories.sort((a, b) => {
-          if (a.col !== b.col) return a.col - b.col;
-          return a.order - b.order;
+        // Her sütundaki klasörlerin order değerini sütun içi sıraya göre 0, 1, 2... düzenle
+        const colGroups = {};
+        this.categories.forEach(c => {
+          colGroups[c.col] = colGroups[c.col] || [];
+          colGroups[c.col].push(c);
         });
-        
-        this.categories.forEach((c, i) => c.order = i);
+        Object.values(colGroups).forEach(colCats => {
+          colCats.forEach((c, idx) => { c.order = idx; });
+        });
 
         await Storage.set(this.CAT_KEY, this.categories);
         this.renderFolders();
@@ -437,6 +458,7 @@ export const Shortcuts = {
     header.appendChild(optBtn);
 
     header.addEventListener('click', async e => {
+      if (isFolderDragging) return; // Sürükleme yapıldıysa klasörü katlama/açma
       if (e.target.closest('.folder-opt-btn')) return;
       card.classList.toggle('collapsed');
       if (card.classList.contains('collapsed')) this.collapsedFolders.add(cat.id);
@@ -461,6 +483,32 @@ export const Shortcuts = {
         el.classList.add('shortlist-hidden');
       }
       body.appendChild(el);
+    });
+
+    // --- Klasör içi link sürükle-bırak sıralama (drop zone) ---
+    body.addEventListener('dragover', e => {
+      // Sadece link sürüklemesini kabul et, klasör sürüklemesini değil
+      if (this._dragType === 'link') {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+      }
+    });
+
+    body.addEventListener('drop', async e => {
+      if (this._dragType !== 'link') return;
+      e.preventDefault();
+      e.stopPropagation();
+      body.querySelectorAll('.link-item').forEach(el => el.classList.remove('link-drag-over-top', 'link-drag-over-bottom'));
+
+      const draggedId = e.dataTransfer.getData('application/x-link-id');
+      const sourceCatId = e.dataTransfer.getData('application/x-link-cat');
+      if (!draggedId) return;
+
+      // Drop edilen hedef link item'ı bul
+      const targetEl = e.target.closest('.link-item');
+      const targetId = targetEl?.getAttribute('data-link-id');
+
+      await this._reorderLinkInFolder(draggedId, sourceCatId, cat.id, targetId, e, targetEl);
     });
 
     if (isShortlist && items.length > limit) {
@@ -491,6 +539,7 @@ export const Shortcuts = {
   _makeLinkItem(item, view, cat = null) {
     const wrap = document.createElement('div');
     wrap.className = 'link-item';
+    wrap.setAttribute('data-link-id', item.id);
 
     const icon = this._iconEl(item);
 
@@ -510,9 +559,66 @@ export const Shortcuts = {
 
     const openTarget = Settings.config?.linkOpenTarget === 'new' ? '_blank' : '_self';
 
+    // --- Link doğrudan sürükle-bırak sıralama ---
+    wrap.setAttribute('draggable', 'true');
+
+    wrap.addEventListener('dragstart', e => {
+      // Butonlara (sil, favori, düzenle) basılıyorsa sürüklemeyi başlatma
+      if (e.target.closest('button')) {
+        e.preventDefault();
+        return;
+      }
+      e.stopPropagation(); // Klasör kartı sürüklemesini tetikleme
+      this._dragType = 'link';
+      e.dataTransfer.setData('application/x-link-id', item.id);
+      e.dataTransfer.setData('application/x-link-cat', item.categoryId || '');
+      e.dataTransfer.setData('application/x-drag-type', 'link');
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => { wrap.style.opacity = '0.4'; wrap.classList.add('link-dragging'); }, 0);
+    });
+
+    wrap.addEventListener('dragend', () => {
+      wrap.style.opacity = '1';
+      wrap.classList.remove('link-dragging');
+      this._dragType = null;
+      document.querySelectorAll('.link-item').forEach(el => el.classList.remove('link-drag-over-top', 'link-drag-over-bottom'));
+    });
+
+    wrap.addEventListener('dragover', e => {
+      if (this._dragType !== 'link') return;
+      e.preventDefault();
+      e.stopPropagation();
+      e.dataTransfer.dropEffect = 'move';
+      const rect = wrap.getBoundingClientRect();
+      const midY = rect.y + rect.height / 2;
+      wrap.classList.toggle('link-drag-over-bottom', e.clientY > midY);
+      wrap.classList.toggle('link-drag-over-top', e.clientY <= midY);
+    });
+
+    wrap.addEventListener('dragleave', () => {
+      wrap.classList.remove('link-drag-over-top', 'link-drag-over-bottom');
+    });
+
+    wrap.addEventListener('drop', async e => {
+      if (this._dragType !== 'link') return;
+      e.preventDefault();
+      e.stopPropagation();
+      wrap.classList.remove('link-drag-over-top', 'link-drag-over-bottom');
+
+      const draggedId = e.dataTransfer.getData('application/x-link-id');
+      const sourceCatId = e.dataTransfer.getData('application/x-link-cat');
+      if (!draggedId || draggedId === item.id) return;
+
+      const rect = wrap.getBoundingClientRect();
+      const insertAfter = (e.clientY - (rect.y + rect.height / 2)) > 0;
+      await this._reorderLinkInFolder(draggedId, sourceCatId, item.categoryId || cat?.id, item.id, insertAfter);
+    });
+
     if (view === 'icon') {
       // Wrapper: flex column, icon + action bar ayrı ayrı
       wrap.className = 'link-item link-item-icon';
+      wrap.setAttribute('data-link-id', item.id);
+      wrap.setAttribute('draggable', 'true');
 
       const a = document.createElement('a');
       if (cat && cat.isIncognito) {
@@ -603,6 +709,46 @@ export const Shortcuts = {
       wrap.appendChild(del);
     }
     return wrap;
+  },
+
+  /**
+   * Klasör içi link sıralamasını sürükle-bırakla değiştirir.
+   * @param {string} draggedId - Sürüklenen link ID'si
+   * @param {string} sourceCatId - Kaynak klasör ID'si
+   * @param {string} targetCatId - Hedef klasör ID'si
+   * @param {string|null} targetId - Bırakılan hedef link ID'si
+   * @param {boolean} insertAfter - Hedefin altına mı üstüne mi eklenecek
+   */
+  async _reorderLinkInFolder(draggedId, sourceCatId, targetCatId, targetId, insertAfter) {
+    const draggedIdx = this.items.findIndex(i => i.id === draggedId);
+    if (draggedIdx === -1) return;
+
+    // Sürüklenen item'ı çıkar
+    const [draggedItem] = this.items.splice(draggedIdx, 1);
+
+    // Klasörler arası taşıma: categoryId güncelle
+    if (targetCatId && draggedItem.categoryId !== targetCatId) {
+      draggedItem.categoryId = targetCatId;
+    }
+
+    if (targetId) {
+      // Hedef item'ın yeni indeksini bul (splice sonrası)
+      const targetIdx = this.items.findIndex(i => i.id === targetId);
+      if (targetIdx === -1) {
+        // Hedef bulunamazsa sona ekle
+        this.items.push(draggedItem);
+      } else {
+        const insertIdx = insertAfter ? targetIdx + 1 : targetIdx;
+        this.items.splice(insertIdx, 0, draggedItem);
+      }
+    } else {
+      // Hedef link yoksa, klasörün sonuna ekle
+      const lastIdxInCat = this.items.reduce((last, cur, idx) => cur.categoryId === targetCatId ? idx : last, -1);
+      this.items.splice(lastIdxInCat + 1, 0, draggedItem);
+    }
+
+    await Storage.set(this.ITEMS_KEY, this.items);
+    this.renderFolders();
   },
 
   _iconEl(item) {

@@ -1606,6 +1606,27 @@ body {
   
   margin-bottom: 0;
   box-sizing: border-box;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+/* Klasör Sürükle & Bırak Göstergeleri */
+.folder-card.folder-dragging {
+  opacity: 0.4 !important;
+  transform: scale(0.98);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.45) !important;
+  border: 1.5px dashed var(--accent-primary) !important;
+}
+
+.folder-card.folder-drag-over-top {
+  border-top: 3px solid var(--accent-primary) !important;
+  box-shadow: 0 -8px 20px -2px rgba(99, 102, 241, 0.6) !important;
+  transform: translateY(3px);
+}
+
+.folder-card.folder-drag-over-bottom {
+  border-bottom: 3px solid var(--accent-primary) !important;
+  box-shadow: 0 8px 20px -2px rgba(99, 102, 241, 0.6) !important;
+  transform: translateY(-3px);
 }
 .folder-header {
   display: flex;
@@ -1709,6 +1730,34 @@ body {
 .folder-body.view-list { display: flex; flex-direction: column; gap: 0; }
 .folder-body.view-list .link-item {
   display: flex; align-items: center; position: relative;
+  transition: transform var(--transition-fast), border var(--transition-fast);
+}
+
+/* Link Sürükle & Bırak Sıralama Stilleri */
+.link-item {
+  cursor: grab;
+}
+.link-item:active {
+  cursor: grabbing;
+}
+.link-item.link-dragging {
+  opacity: 0.35 !important;
+  transform: scale(0.97);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+}
+.link-item.link-drag-over-top {
+  border-top: 2px solid var(--accent-primary) !important;
+}
+.link-item.link-drag-over-bottom {
+  border-bottom: 2px solid var(--accent-primary) !important;
+}
+.link-item-icon.link-drag-over-top {
+  border-left: 2px solid var(--accent-primary) !important;
+  border-top: none !important;
+}
+.link-item-icon.link-drag-over-bottom {
+  border-right: 2px solid var(--accent-primary) !important;
+  border-bottom: none !important;
 }
 .link-list-row {
   display: flex; align-items: center; gap: 0.5rem;
