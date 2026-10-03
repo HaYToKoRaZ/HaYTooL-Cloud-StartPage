@@ -3,526 +3,713 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cloud StartPage HaYTooL — Ultra Hızlı & Bulut Eşitlemeli Başlangıç Sayfası</title>
+  <title>HaYTooL Cloud StartPage — Next-Gen New Tab Dashboard</title>
   <link rel="icon" type="image/png" href="assets/icon32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #090d16;
-      --surface: rgba(15, 23, 42, 0.7);
-      --surface-card: rgba(30, 41, 59, 0.55);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(99, 102, 241, 0.4);
-      --text: #f8fafc;
+      --bg: #05070b;
+      --surface-glass: rgba(13, 18, 30, 0.72);
+      --surface-card: rgba(18, 24, 40, 0.65);
+      --surface-card-hover: rgba(28, 38, 64, 0.85);
+      --border-glass: rgba(255, 255, 255, 0.09);
+      --border-glass-light: rgba(255, 255, 255, 0.16);
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
       --accent: #6366f1;
       --accent-cyan: #38bdf8;
       --accent-purple: #a855f7;
-      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-glow: rgba(99, 102, 241, 0.35);
+      --glass-blur: blur(24px) saturate(190%);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --radius-full: 9999px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Outfit', sans-serif;
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
       line-height: 1.6;
-      position: relative;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 55%),
+        radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.12) 0px, transparent 55%),
+        radial-gradient(at 50% 100%, rgba(168, 85, 247, 0.10) 0px, transparent 60%);
+      background-attachment: fixed;
     }
 
-    /* Ambient Glow */
+    /* Ambient Spotlight Glows */
     .ambient-glow {
       position: fixed;
       border-radius: 50%;
-      filter: blur(120px);
+      filter: blur(140px);
       z-index: 0;
       pointer-events: none;
       opacity: 0.45;
     }
-    .glow-1 { top: -100px; left: 15%; width: 500px; height: 500px; background: radial-gradient(circle, #6366f1, transparent 70%); }
-    .glow-2 { top: 40%; right: 10%; width: 550px; height: 550px; background: radial-gradient(circle, #a855f7, transparent 70%); }
-    .glow-3 { bottom: 5%; left: 20%; width: 450px; height: 450px; background: radial-gradient(circle, #38bdf8, transparent 70%); }
+    .glow-1 { top: -140px; left: 20%; width: 600px; height: 600px; background: radial-gradient(circle, #6366f1, transparent 70%); }
+    .glow-2 { top: 40%; right: 5%; width: 550px; height: 550px; background: radial-gradient(circle, #a855f7, transparent 70%); }
+    .glow-3 { bottom: 0; left: 10%; width: 500px; height: 500px; background: radial-gradient(circle, #38bdf8, transparent 70%); }
 
     .container {
-      max-width: 1140px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 0 24px;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
-    /* Header & Navbar */
+    /* Sticky Glass Header */
     header {
-      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      background: rgba(5, 7, 11, 0.82);
+      border-bottom: 1px solid var(--border-glass);
+      transition: all 0.3s ease;
+    }
+
+    .nav-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(9, 13, 22, 0.75);
+      padding: 16px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
+
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
       text-decoration: none;
-      color: var(--text);
-      font-weight: 700;
+      color: var(--text-main);
+      font-weight: 800;
       font-size: 1.25rem;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
     }
+
     .brand img {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      box-shadow: 0 0 16px var(--accent-glow);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px var(--accent-glow);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
+    .brand:hover img {
+      transform: scale(1.1) rotate(-3deg);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 20px;
     }
+
     .nav-link {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: 500;
-      transition: color 0.2s;
+      transition: color 0.2s, transform 0.2s;
     }
-    .nav-link:hover { color: var(--text); }
 
-    /* Dil Seçici (TR / EN) */
-    .lang-switch {
+    .nav-link:hover {
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* Language Switcher Pill */
+    .lang-pill {
       display: flex;
       align-items: center;
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2px 4px;
+      background: rgba(18, 24, 40, 0.7);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-full);
+      padding: 3px 5px;
       gap: 2px;
-      flex-wrap: wrap;
     }
+
     .lang-btn {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 3px 7px;
-      border-radius: 14px;
+      padding: 4px 8px;
+      border-radius: var(--radius-full);
       border: none;
       background: transparent;
       color: var(--text-muted);
       font-family: inherit;
-      font-size: 0.75rem;
+      font-size: 0.76rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     .lang-btn img {
       width: 18px;
       height: 13px;
       border-radius: 2px;
       object-fit: cover;
     }
+
     .lang-btn.active {
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
       color: #fff;
-      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.45);
     }
 
-    .btn-github {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 0.88rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-github:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: var(--border-hover);
-      transform: translateY(-2px);
-    }
-
-    /* Hero */
-    .hero {
+    /* Hero Section */
+    .hero-section {
       text-align: center;
-      padding: 80px 0 50px 0;
+      padding: 85px 0 60px;
     }
-    .badge {
+
+    .release-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 14px;
+      padding: 6px 18px;
       background: rgba(99, 102, 241, 0.12);
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      border-radius: 999px;
-      font-size: 0.82rem;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: var(--radius-full);
+      font-size: 0.84rem;
       font-weight: 600;
-      color: #818cf8;
-      margin-bottom: 24px;
+      color: #a5b4fc;
+      margin-bottom: 28px;
       letter-spacing: 0.02em;
+      box-shadow: 0 0 24px rgba(99, 102, 241, 0.25);
+      backdrop-filter: blur(12px);
+      animation: floatBadge 3s ease-in-out infinite alternate;
     }
-    .hero h1 {
-      font-size: clamp(2.4rem, 5vw, 4.2rem);
-      font-weight: 900;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
+
+    @keyframes floatBadge {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-3px); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
       margin-bottom: 24px;
-      background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 70%, #38bdf8 100%);
+      background: linear-gradient(135deg, #ffffff 30%, #c7d2fe 70%, #38bdf8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     }
-    .hero p {
-      font-size: clamp(1.05rem, 2vw, 1.25rem);
+
+    .hero-desc {
+      font-size: clamp(1.1rem, 2.2vw, 1.3rem);
       color: var(--text-muted);
-      max-width: 720px;
-      margin: 0 auto 36px auto;
+      max-width: 760px;
+      margin: 0 auto 38px auto;
       font-weight: 400;
+      line-height: 1.7;
     }
+
     .cta-group {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 16px;
       flex-wrap: wrap;
+      margin-bottom: 42px;
     }
-    .btn-primary {
+
+    .btn-cta-primary {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 14px 28px;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      border: none;
-      border-radius: 12px;
+      padding: 15px 32px;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: var(--radius-full);
       color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 1.02rem;
+      font-weight: 700;
       text-decoration: none;
       cursor: pointer;
-      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
-      transition: all 0.25s ease;
+      box-shadow: 0 8px 28px rgba(99, 102, 241, 0.45);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(99, 102, 241, 0.5);
+
+    .btn-cta-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 16px 36px rgba(99, 102, 241, 0.65);
     }
-    .btn-secondary {
+
+    .btn-cta-secondary {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 14px 28px;
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 1rem;
+      padding: 15px 30px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-glass-light);
+      border-radius: var(--radius-full);
+      color: var(--text-main);
+      font-size: 1.02rem;
       font-weight: 600;
       text-decoration: none;
-      transition: all 0.25s ease;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(16px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .btn-secondary:hover {
-      background: rgba(30, 41, 59, 0.9);
-      border-color: var(--border-hover);
+
+    .btn-cta-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
       transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
 
-
-    /* Store Buttons Group */
-    .store-buttons {
+    /* Store Badge Row */
+    .store-grid {
       display: flex;
       justify-content: center;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: wrap;
-      margin-top: 28px;
+      margin-bottom: 75px;
     }
-    .store-btn {
+
+    .store-chip {
       display: inline-flex;
       align-items: center;
       gap: 12px;
       padding: 12px 22px;
-      border-radius: 14px;
-      background: rgba(30, 41, 59, 0.7);
-      border: 1px solid var(--border);
-      color: var(--text);
+      border-radius: var(--radius-md);
+      background: var(--surface-card);
+      border: 1px solid var(--border-glass);
+      color: var(--text-main);
       text-decoration: none;
       font-size: 0.92rem;
       font-weight: 600;
-      backdrop-filter: blur(12px);
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      backdrop-filter: var(--glass-blur);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
     }
-    .store-btn svg, .store-btn img {
+
+    .store-chip:hover {
+      transform: translateY(-3px);
+      background: var(--surface-card-hover);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 10px 24px rgba(56, 189, 248, 0.25);
+    }
+
+    .store-chip img {
       width: 24px;
       height: 24px;
-      flex-shrink: 0;
+      object-fit: contain;
     }
-    .store-btn .store-text {
+
+    .store-chip-text {
       display: flex;
       flex-direction: column;
       text-align: left;
       line-height: 1.2;
     }
-    .store-btn .store-sub {
-      font-size: 0.7rem;
+
+    .store-chip-sub {
+      font-size: 0.68rem;
       color: var(--text-muted);
-      font-weight: 400;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      font-weight: 500;
+      letter-spacing: 0.05em;
     }
-    .store-btn .store-name {
-      font-size: 0.95rem;
+
+    .store-chip-name {
+      font-size: 0.94rem;
       font-weight: 700;
       color: #fff;
     }
-    .store-btn:hover {
-      transform: translateY(-3px);
-      border-color: var(--border-hover);
-      background: rgba(30, 41, 59, 0.95);
-      box-shadow: 0 10px 24px rgba(99, 102, 241, 0.25);
+
+    /* INTERACTIVE LIVE DEMO PREVIEW (Linear macOS Window) */
+    .preview-stage {
+      position: relative;
+      max-width: 1040px;
+      margin: 0 auto 90px;
     }
 
-    /* Stats Bar */
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin: 40px 0 80px 0;
-      padding: 24px;
-      background: var(--surface);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+    .mac-window {
+      background: rgba(13, 18, 30, 0.85);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border-glass-light);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7), 0 0 50px rgba(99, 102, 241, 0.35);
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .stat-item { text-align: center; }
-    .stat-num {
-      font-size: 2rem;
+
+    .mac-window:hover {
+      transform: translateY(-4px);
+    }
+
+    .window-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border-glass);
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .dot-close { background: #ff5f56; }
+    .dot-min   { background: #ffbd2e; }
+    .dot-max   { background: #27c93f; }
+
+    .window-search-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-full);
+      padding: 5px 16px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .window-content {
+      position: relative;
+      line-height: 0;
+    }
+
+    .window-content img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* BENTO GRID SECTION (Linear & Apple Style) */
+    .bento-section {
+      margin-bottom: 100px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-badge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.7rem);
       font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 40%, #c7d2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+    }
+
+    .bento-card {
+      background: var(--surface-card);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .bento-card:hover {
+      transform: translateY(-5px);
+      background: var(--surface-card-hover);
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), 0 0 30px rgba(99, 102, 241, 0.2);
+    }
+
+    .bento-col-8 { grid-column: span 8; }
+    .bento-col-4 { grid-column: span 4; }
+    .bento-col-6 { grid-column: span 6; }
+    .bento-col-12 { grid-column: span 12; }
+
+    .bento-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(99, 102, 241, 0.16);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25);
+    }
+
+    .bento-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .bento-desc {
+      font-size: 0.94rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Bento Mini-Widgets */
+    .bento-widget-sync {
+      margin-top: 24px;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+    }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #4ade80;
+    }
+
+    .sync-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 10px #4ade80;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    /* Live Stat Bar */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 30px;
+      background: var(--surface-glass);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-xl);
+      margin-bottom: 100px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-cell {
+      text-align: center;
+    }
+
+    .stat-big {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
       background: linear-gradient(135deg, #38bdf8, #818cf8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 4px;
     }
-    .stat-label {
-      font-size: 0.85rem;
+
+    .stat-caption {
+      font-size: 0.88rem;
       color: var(--text-muted);
       font-weight: 500;
     }
 
-
-    /* App Screenshot Showcase */
-    .showcase-section {
-      text-align: center;
-      margin: 20px 0 70px 0;
-      position: relative;
-    }
-    .showcase-wrapper {
-      position: relative;
-      border-radius: 18px;
-      padding: 10px;
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(56, 189, 248, 0.2), rgba(168, 85, 247, 0.2));
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      max-width: 980px;
-      margin: 0 auto;
-      overflow: hidden;
-    }
-    .showcase-wrapper img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 12px;
-      transition: transform 0.4s ease;
-    }
-    .showcase-wrapper:hover img {
-      transform: scale(1.01);
+    /* Architecture Terminal */
+    .code-terminal {
+      background: rgba(10, 14, 24, 0.9);
+      border: 1px solid var(--border-glass-light);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      margin-bottom: 100px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
 
-    /* Feature Cards */
-    .section-title {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-    .section-title h2 {
-      font-size: 2.25rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
-    .section-title p {
-      color: var(--text-muted);
-      font-size: 1rem;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-      margin-bottom: 90px;
-    }
-    .feature-card {
-      background: var(--surface-card);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px 28px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .feature-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .feature-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-hover);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
-    }
-    .feature-card:hover::before { opacity: 1; }
-    .feature-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: rgba(99, 102, 241, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-      border: 1px solid rgba(99, 102, 241, 0.25);
-    }
-    .feature-card h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      color: var(--text);
-    }
-    .feature-card p {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      line-height: 1.6;
-    }
-
-    /* Architecture */
-    .arch-box {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      margin-bottom: 90px;
-      backdrop-filter: blur(16px);
-    }
-    .arch-header {
+    .terminal-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
       padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-glass);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-dim);
     }
-    .terminal-dots { display: flex; gap: 6px; }
-    .dot { width: 12px; height: 12px; border-radius: 50%; }
-    .dot-red { background: #ef4444; }
-    .dot-yellow { background: #eab308; }
-    .dot-green { background: #22c55e; }
-    .terminal-code {
+
+    .code-lines {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.88rem;
-      color: #38bdf8;
       line-height: 1.8;
+      color: #38bdf8;
     }
-    .terminal-code span.comment { color: var(--text-dim); }
-    .terminal-code span.keyword { color: #a855f7; }
-    .terminal-code span.string { color: #4ade80; }
+    .code-comment { color: #64748b; }
+    .code-keyword { color: #c084fc; font-weight: 600; }
+    .code-str     { color: #4ade80; }
 
     /* Footer */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 40px 0;
+      border-top: 1px solid var(--border-glass);
+      padding: 50px 0 40px;
       text-align: center;
       color: var(--text-muted);
-      font-size: 0.88rem;
+      font-size: 0.9rem;
+      background: rgba(5, 7, 11, 0.6);
+      backdrop-filter: blur(16px);
     }
+
     .footer-links {
       display: flex;
       justify-content: center;
       gap: 24px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       flex-wrap: wrap;
     }
+
     .footer-links a {
       color: var(--text-muted);
       text-decoration: none;
       transition: color 0.2s;
     }
-    .footer-links a:hover { color: var(--accent-cyan); }
+
+    .footer-links a:hover {
+      color: var(--accent-cyan);
+    }
+
     .social-row {
       display: flex;
       justify-content: center;
       gap: 16px;
-      margin: 20px 0;
+      margin-bottom: 28px;
     }
+
     .social-btn {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-glass);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text);
+      color: var(--text-main);
       text-decoration: none;
-      font-size: 1rem;
-      transition: all 0.2s;
+      font-size: 1.1rem;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     .social-btn:hover {
       background: var(--accent);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .bento-col-8, .bento-col-4, .bento-col-6 {
+        grid-column: span 12;
+      }
+      .nav-links {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- Ambient Light Backdrops -->
   <div class="ambient-glow glow-1"></div>
   <div class="ambient-glow glow-2"></div>
   <div class="ambient-glow glow-3"></div>
 
+  <!-- Sticky Glass Navbar -->
   <header>
-    <div class="container" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+    <div class="nav-container">
       <a href="#" class="brand">
         <img src="assets/icon128.png" alt="HaYTooL Logo">
         <span>HaYTooL Cloud</span>
       </a>
 
-      <div class="nav-links">
-        <a href="#features" class="nav-link" data-i18n="nav_features">Özellikler</a>
-        <a href="#specs" class="nav-link" data-i18n="nav_tech">Teknoloji</a>
-        <a href="privacy.html" class="nav-link" data-i18n="nav_privacy">Gizlilik</a>
-        <a href="terms.html" class="nav-link" data-i18n="nav_terms">Şartlar</a>
+      <div class="nav-actions">
+        <nav class="nav-links">
+          <a href="#features" class="nav-link" data-i18n="nav_features">Özellikler</a>
+          <a href="#architecture" class="nav-link" data-i18n="nav_tech">Mimari</a>
+          <a href="privacy.html" class="nav-link" data-i18n="nav_privacy">Gizlilik</a>
+          <a href="terms.html" class="nav-link" data-i18n="nav_terms">Şartlar</a>
+        </nav>
 
-        <!-- Bayraklı 7 Dil Seçici -->
-        <div class="lang-switch">
+        <!-- Dil Seçici (7 Dil) -->
+        <div class="lang-pill">
           <button type="button" class="lang-btn active" id="btnLangTr" onclick="setLang('tr')" title="Türkçe">
             <img src="https://flagcdn.com/20x15/tr.png" alt="TR"> <span>TR</span>
           </button>
@@ -546,7 +733,7 @@
           </button>
         </div>
 
-        <a href="https://haytokoraz.github.io/" target="_blank" class="btn-github" title="HaYTo GitHub Portfolio">
+        <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage" target="_blank" class="btn-cta-secondary" style="padding:8px 18px; font-size:0.88rem;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           <span>GitHub</span>
         </a>
@@ -556,170 +743,222 @@
 
   <main class="container">
 
-    <!-- HERO BÖLÜMÜ -->
-    <section class="hero">
-      <div class="badge">
-        <span data-i18n="badge_ver">✨ Sürüm v4.5.4 Yayında</span>
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="release-badge">
+        <span class="sync-pulse" style="width:7px; height:7px; margin-right:4px;"></span>
+        <span data-i18n="badge_ver">Açık Kaynak & Bulut Senkronizasyonlu</span>
         <span>•</span>
         <span>Manifest V3 Ready</span>
       </div>
-      <h1 data-i18n="hero_title">Tarayıcınızı Geleceğe Taşıyın</h1>
-      <p data-i18n="hero_desc">
-        HaYTooL Cloud StartPage; buzlu cam (Glassmorphism) estetiği, ultra hızlı yerel mimari ve Firebase tabanlı kesintisiz GitHub bulut senkronizasyonu ile donatılmış modern başlangıç sayfanızdır.
+
+      <h1 class="hero-title" data-i18n="hero_title">Tarayıcınızı Geleceğe Taşıyın</h1>
+
+      <p class="hero-desc" data-i18n="hero_desc">
+        Buzlu cam estetiği (Glassmorphism), ultra-hızlı yerel mimari ve GitHub Gist bulut senkronizasyonu ile donatılmış yeni nesil başlangıç sayfası paneli.
       </p>
+
       <div class="cta-group">
-        <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage" target="_blank" class="btn-primary">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span data-i18n="btn_install">GitHub Deposu (Kaynak Kod)</span>
+        <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn" target="_blank" class="btn-cta-primary">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span data-i18n="btn_install">Ücretsiz İndir (Chrome Web Store)</span>
         </a>
-        <a href="#features" class="btn-secondary">
+        <a href="#features" class="btn-cta-secondary">
           <span data-i18n="btn_explore">Özellikleri Keşfet</span>
         </a>
       </div>
 
-      <!-- Tarayıcı Mağaza Butonları -->
-      <div class="store-buttons">
-        <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn" target="_blank" class="store-btn" id="chromeStoreBtn" title="Chrome Web Store">
-          <img src="assets/chrome.svg" alt="Chrome" width="24" height="24" style="object-fit:contain;">
-          <div class="store-text">
-            <span class="store-sub" data-i18n="store_sub_chrome">Chrome Web Mağazası</span>
-            <span class="store-name">Chrome</span>
+      <!-- Tarayıcı Mağazaları Vitrini -->
+      <div class="store-grid">
+        <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn" target="_blank" class="store-chip" title="Chrome Web Store">
+          <img src="assets/chrome.svg" alt="Chrome">
+          <div class="store-chip-text">
+            <span class="store-chip-sub" data-i18n="store_sub_chrome">Chrome Mağazası</span>
+            <span class="store-chip-name">Google Chrome</span>
           </div>
         </a>
 
-        <a href="https://microsoftedge.microsoft.com/addons/detail/jkefcejfnbeifclgpkfkpidoegohcchp" target="_blank" class="store-btn" id="edgeStoreBtn" title="Microsoft Edge Add-ons">
-          <img src="assets/edge.svg" alt="Edge" width="24" height="24" style="object-fit:contain;">
-          <div class="store-text">
-            <span class="store-sub" data-i18n="store_sub_edge">Edge Eklentileri</span>
-            <span class="store-name">Microsoft Edge</span>
+        <a href="https://microsoftedge.microsoft.com/addons/detail/jkefcejfnbeifclgpkfkpidoegohcchp" target="_blank" class="store-chip" title="Microsoft Edge Add-ons">
+          <img src="assets/edge.svg" alt="Edge">
+          <div class="store-chip-text">
+            <span class="store-chip-sub" data-i18n="store_sub_edge">Edge Eklentileri</span>
+            <span class="store-chip-name">Microsoft Edge</span>
           </div>
         </a>
 
-        <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn" target="_blank" class="store-btn" id="heliumStoreBtn" title="Helium Browser (Chrome Store)">
-          <img src="assets/helium.png" alt="Helium" width="24" height="24" style="object-fit:contain; border-radius:4px;">
-          <div class="store-text">
-            <span class="store-sub" data-i18n="store_sub_helium">Chrome Mağazası ile</span>
-            <span class="store-name">Helium Browser</span>
+        <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn" target="_blank" class="store-chip" title="Helium Browser">
+          <img src="assets/helium.png" alt="Helium" style="border-radius:4px;">
+          <div class="store-chip-text">
+            <span class="store-chip-sub" data-i18n="store_sub_helium">Chrome Mağazası ile</span>
+            <span class="store-chip-name">Helium Browser</span>
           </div>
         </a>
       </div>
-    </section>
 
-    <!-- İSTATİSTİKLER -->
-    <section class="stats-bar">
-      <div class="stat-item">
-        <div class="stat-num">&lt; 50ms</div>
-        <div class="stat-label" data-i18n="stat_speed">Açılış Hızı (Sıfır FOIT)</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">100%</div>
-        <div class="stat-label" data-i18n="stat_offline">Yerel-Öncelikli (Offline-First)</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">1 - 10</div>
-        <div class="stat-label" data-i18n="stat_columns">Esnek Sütun Desteği</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">GitHub</div>
-        <div class="stat-label" data-i18n="stat_sync">Bulut Eşitleme Güvencesi</div>
-      </div>
-    </section>
-
-    <!-- CANLI EKRAN GÖRÜNTÜSÜ VİTRİNİ -->
-    <section class="showcase-section">
-      <div class="showcase-wrapper">
-        <img id="appScreenshotImg" src="assets/screenshots/tr.jpeg" alt="HaYTooL Cloud StartPage Preview">
-      </div>
-    </section>
-
-    <!-- ÖZELLİKLER -->
-    <section id="features">
-      <div class="section-title">
-        <h2 data-i18n="sec_title">Güçlü ve Ayrıcalıklı Özellikler</h2>
-        <p data-i18n="sec_sub">Klasik yer imi kalabalığından kurtulun, üretkenliğinizi zirveye taşıyın.</p>
-      </div>
-
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">⚡</div>
-          <h3 data-i18n="feat_1_title">Sıfır Parlama & Anında Açılış</h3>
-          <p data-i18n="feat_1_desc">Senkronize tema önyükleyicisi ile sayfa açılırken hiçbir tema parlaması (FOIT) yaşanmaz. Saf Vanilla JS ile 50ms'nin altında ışık hızında yüklenir.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">☁️</div>
-          <h3 data-i18n="feat_2_title">GitHub Bulut Senkronizasyonu</h3>
-          <p data-i18n="feat_2_desc">GitHub hesabınızla tek tıkla bağlanın. Tüm linkleriniz, klasör dizilimleriniz ve ayarlarınız 10 saniyelik tasarruf moduyla tüm cihazlarınıza anında eşitlensin.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">📁</div>
-          <h3 data-i18n="feat_3_title">Akıllı Klasör & Kısa Liste Modu</h3>
-          <p data-i18n="feat_3_desc">Her klasör için bağımsız İkon (⊞), Liste (📋) veya 10'lu Kısa Liste (📃) modu seçin. Linklerinizi tek tıkla A-Z sıralayın, sürükleyip bırakarak düzenleyin.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🕵️</div>
-          <h3 data-i18n="feat_4_title">Fare Orta Tuşu ile Gizli Klasörler</h3>
-          <p data-i18n="feat_4_desc">Ayarlar veya üst kontrol butonlarına fare tekerleğiyle (orta tık) bastığınızda gizlenmiş özel klasörleriniz anında görünür hale gelir veya gizlenir.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🌦️</div>
-          <h3 data-i18n="feat_5_title">Canlı Hava Durumu & Arama</h3>
-          <p data-i18n="feat_5_desc">Open-Meteo destekli canlı hava durumu widget'ı, küresel şehir arama desteği, otomatik koordinat doğrulama ve çevrimdışı önbellek koruması.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🎨</div>
-          <h3 data-i18n="feat_6_title">Dinamik Temalar & Kişiselleştirme</h3>
-          <p data-i18n="feat_6_desc">Karanlık, Aydınlık, Aurora, Siberpunk ve AMOLED temaları. Özel duvar kağıdı tanımlama, sütun sayısı ve widget görünürlük kontrolleri.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🌐</div>
-          <h3 data-i18n="feat_7_title">7 Dil Desteği & Yerelleştirme</h3>
-          <p data-i18n="feat_7_desc">Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, Rusça ve Portekizce dillerinde tam yerel arayüz ve Chromium mağaza desteği.</p>
+      <!-- INTERACTIVE STAGE (APPLE MACOS SAFARI WINDOW) -->
+      <div class="preview-stage">
+        <div class="mac-window">
+          <div class="window-header">
+            <div class="window-dots">
+              <span class="dot dot-close"></span>
+              <span class="dot dot-min"></span>
+              <span class="dot dot-max"></span>
+            </div>
+            <div class="window-search-pill">
+              <span>🔒 chrome-extension://haytool/newtab.html</span>
+            </div>
+            <div style="width: 48px;"></div>
+          </div>
+          <div class="window-content">
+            <img id="appScreenshotImg" src="assets/screenshots/tr.jpeg" alt="HaYTooL Cloud StartPage Interactive Preview">
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- TEKNOLOJİ & MİMARİ -->
-    <section id="specs" class="arch-box">
-      <div class="arch-header">
-        <div class="terminal-dots">
-          <div class="dot dot-red"></div>
-          <div class="dot dot-yellow"></div>
-          <div class="dot dot-green"></div>
-        </div>
-        <span style="font-family:'JetBrains Mono'; font-size:0.8rem; color:var(--text-dim);">HaYTooL-Architecture-v4.4.0.js</span>
+    <!-- LIVE METRICS BAR -->
+    <div class="stats-strip">
+      <div class="stat-cell">
+        <div class="stat-big">&lt; 50ms</div>
+        <div class="stat-caption" data-i18n="stat_speed">Açılış Hızı (Sıfır FOIT)</div>
       </div>
-      <div class="terminal-code">
-        <span class="comment">// 🛡️ HaYTooL Cloud StartPage — Mimari Standartlar</span><br>
-        <span class="keyword">const</span> <span style="color:#fff;">StartPageConfig</span> = {<br>
-        &nbsp;&nbsp;platform: <span class="string">"Chromium Manifest V3"</span>,<br>
-        &nbsp;&nbsp;performance: <span class="string">"Zero-dependency Vanilla JS & CSS3"</span>,<br>
-        &nbsp;&nbsp;security: <span class="string">"Origin-isolated WebChannel & Long-Polling"</span>,<br>
-        &nbsp;&nbsp;storage: <span class="string">"Local-First + Cloud Firestore Sync"</span>,<br>
-        &nbsp;&nbsp;features: [<span class="string">"Smart Folders"</span>, <span class="string">"Favorites Bar"</span>, <span class="string">"Multi-Engine Search"</span>, <span class="string">"Weather API"</span>]<br>
+      <div class="stat-cell">
+        <div class="stat-big">100%</div>
+        <div class="stat-caption" data-i18n="stat_offline">Yerel-Öncelikli (Offline-First)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-big">1 - 10</div>
+        <div class="stat-caption" data-i18n="stat_columns">Esnek Sütun Desteği</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-big">GitHub</div>
+        <div class="stat-caption" data-i18n="stat_sync">Bulut Gist Eşitlemesi</div>
+      </div>
+    </div>
+
+    <!-- BENTO GRID SHOWCASE SECTION -->
+    <section id="features" class="bento-section">
+      <div class="section-header">
+        <span class="section-badge" data-i18n="sec_badge">BENTO VİTRİNİ</span>
+        <h2 class="section-title" data-i18n="sec_title">Güçlü ve Ayrıcalıklı Özellikler</h2>
+        <p class="section-sub" data-i18n="sec_sub">Klasik yer imi kalabalığından kurtulun, üretkenliğinizi zirveye taşıyın.</p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- Kart 1: GitHub Cloud Sync (Geniş 8 Sütun) -->
+        <div class="bento-card bento-col-8">
+          <div>
+            <div class="bento-icon">☁️</div>
+            <h3 class="bento-title" data-i18n="feat_2_title">GitHub Gist Bulut Senkronizasyonu</h3>
+            <p class="bento-desc" data-i18n="feat_2_desc">
+              GitHub Personal Access Token ile tek tıkla bağlanın. Tüm linkleriniz, özel klasörleriniz ve tercihleriniz şifreli Gist üzerinden tüm bilgisayarlarınıza anında eşitlenir.
+            </p>
+          </div>
+          <div class="bento-widget-sync">
+            <span>Repo / Gist: haytool-startpage.json</span>
+            <div class="sync-status">
+              <span class="sync-pulse"></span>
+              <span>Canlı & Senkronize</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kart 2: Hızlı Başlangıç (4 Sütun) -->
+        <div class="bento-card bento-col-4">
+          <div>
+            <div class="bento-icon">⚡</div>
+            <h3 class="bento-title" data-i18n="feat_1_title">Sıfır Parlama & Anında Açılış</h3>
+            <p class="bento-desc" data-i18n="feat_1_desc">
+              Senkronize tema önyükleyicisi ile hiçbir parlama (FOIT) yaşanmaz. Saf Vanilla JS ile 50ms altında ışık hızında açılır.
+            </p>
+          </div>
+          <div style="margin-top:20px; font-size:2rem; font-weight:800; color:#38bdf8;">0.04s</div>
+        </div>
+
+        <!-- Kart 3: Akıllı Klasörler (6 Sütun) -->
+        <div class="bento-card bento-col-6">
+          <div>
+            <div class="bento-icon">📁</div>
+            <h3 class="bento-title" data-i18n="feat_3_title">Akıllı Klasör & Canlı Arama</h3>
+            <p class="bento-desc" data-i18n="feat_3_desc">
+              Her klasör için bağımsız İkon (⊞), Liste (📋) veya Kısa Liste modları. Klasör başlığındaki 🔍 büyüteç ile klasör içinde anında arama yapın.
+            </p>
+          </div>
+        </div>
+
+        <!-- Kart 4: Orta Tık Gizli Klasörler (6 Sütun) -->
+        <div class="bento-card bento-col-6">
+          <div>
+            <div class="bento-icon">🕶️</div>
+            <h3 class="bento-title" data-i18n="feat_4_title">Fare Orta Tuşu ile Gizli Mod</h3>
+            <p class="bento-desc" data-i18n="feat_4_desc">
+              Dişli çarka veya üst kontrol butonlarına fare tekerleğiyle (orta tık) bastığınızda gizli klasörleriniz anında görünür hale gelir.
+            </p>
+          </div>
+        </div>
+
+        <!-- Kart 5: Canlı Hava Durumu & Çoklu Arama (6 Sütun) -->
+        <div class="bento-card bento-col-6">
+          <div>
+            <div class="bento-icon">🌦️</div>
+            <h3 class="bento-title" data-i18n="feat_5_title">Canlı Hava Durumu & AI Arama</h3>
+            <p class="bento-desc" data-i18n="feat_5_desc">
+              Open-Meteo destekli küresel hava durumu. Üst arama çubuğunda Google, ChatGPT, Perplexity, Gemini ve DeepSeek arasında tek tıkla geçiş.
+            </p>
+          </div>
+        </div>
+
+        <!-- Kart 6: 7 Dil & Özelleştirme (6 Sütun) -->
+        <div class="bento-card bento-col-6">
+          <div>
+            <div class="bento-icon">🎨</div>
+            <h3 class="bento-title" data-i18n="feat_6_title">Dinamik Temalar & 7 Dil</h3>
+            <p class="bento-desc" data-i18n="feat_6_desc">
+              Karanlık, Aydınlık, Aurora ve AMOLED temaları. Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, Rusça ve Portekizce dillerinde tam destek.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE CODE TERMINAL -->
+    <section id="architecture" class="code-terminal">
+      <div class="terminal-bar">
+        <div class="window-dots">
+          <span class="dot dot-close"></span>
+          <span class="dot dot-min"></span>
+          <span class="dot dot-max"></span>
+        </div>
+        <span>HaYTooL-Architecture-v4.6.11.js</span>
+        <span>Vanilla ESNext</span>
+      </div>
+      <div class="code-lines">
+        <span class="code-comment">// 🛡️ HaYTooL Cloud StartPage — Mühendislik Standartları</span><br>
+        <span class="code-keyword">export const</span> StartPageEngine = {<br>
+        &nbsp;&nbsp;platform: <span class="code-str">"Google Chromium Manifest V3"</span>,<br>
+        &nbsp;&nbsp;architecture: <span class="code-str">"Pure Vanilla JS & CSS (Zero React/Node bloat)"</span>,<br>
+        &nbsp;&nbsp;security: <span class="code-str">"Zero Analytics / Privacy-First chrome.storage"</span>,<br>
+        &nbsp;&nbsp;cloudSync: <span class="code-str">"Encrypted GitHub Gist API v3"</span>,<br>
+        &nbsp;&nbsp;performance: <span class="code-str">"Sub-50ms cold start, 100/100 Lighthouse"</span><br>
         };
       </div>
     </section>
 
   </main>
 
+  <!-- Modern Glass Footer -->
   <footer>
     <div class="container">
       <div class="footer-links">
         <a href="#features" data-i18n="nav_features">Özellikler</a>
-        <a href="#specs" data-i18n="nav_tech">Teknoloji</a>
+        <a href="#architecture" data-i18n="nav_tech">Mimari</a>
         <a href="privacy.html" data-i18n="nav_privacy">Gizlilik Politikası</a>
         <a href="terms.html" data-i18n="nav_terms">Kullanım Şartları</a>
         <a href="https://haytokoraz.github.io/" target="_blank">HaYTo Portfolio</a>
       </div>
-      
+
       <div class="social-row">
-        <a href="https://haytokoraz.github.io/" target="_blank" class="social-btn" title="GitHub">🐙</a>
+        <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage" target="_blank" class="social-btn" title="GitHub">🐙</a>
         <a href="https://x.com/HaYTo" target="_blank" class="social-btn" title="X (Twitter)">🐦</a>
         <a href="https://www.instagram.com/haytokoraz/" target="_blank" class="social-btn" title="Instagram">📸</a>
         <a href="https://steamcommunity.com/id/HaYTooL/" target="_blank" class="social-btn" title="Steam">🎮</a>
@@ -729,254 +968,158 @@
     </div>
   </footer>
 
+  <!-- 7 DİL SİSTEMİ & SCROLL REVEAL -->
   <script>
     const translations = {
-  "tr": {
-    "nav_features": "Özellikler",
-    "nav_tech": "Teknoloji",
-    "nav_privacy": "Gizlilik",
-    "nav_terms": "Şartlar",
-    "badge_ver": "✨ Sürüm v4.4.0 Yayında",
-    "hero_title": "Tarayıcınızı Geleceğe Taşıyın",
-    "hero_desc": "Cloud StartPage HaYTooL; buzlu cam (Glassmorphism) estetiği, ultra hızlı yerel mimari ve Firebase tabanlı kesintisiz GitHub bulut senkronizasyonu ile donatılmış modern başlangıç sayfanızdır.",
-    "btn_install": "GitHub Deposu (Kaynak Kod)",
-    "btn_explore": "Özellikleri Keşfet",
-    "store_sub_chrome": "Chrome Web Mağazası",
-    "store_sub_edge": "Edge Eklentileri",
-    "store_sub_helium": "Chrome Mağazası ile",
-    "stat_speed": "Açılış Hızı (Sıfır FOIT)",
-    "stat_offline": "Yerel-Öncelikli (Offline-First)",
-    "stat_columns": "Esnek Sütun Desteği",
-    "stat_sync": "Bulut Eşitleme Güvencesi",
-    "sec_title": "Güçlü ve Ayrıcalıklı Özellikler",
-    "sec_sub": "Klasik yer imi kalabalığından kurtulun, üretkenliğinizi zirveye taşıyın.",
-    "feat_1_title": "Sıfır Parlama & Anında Açılış",
-    "feat_1_desc": "Senkronize tema önyükleyicisi ile sayfa açılırken hiçbir tema parlaması (FOIT) yaşanmaz. Saf Vanilla JS ile 50ms'nin altında ışık hızında yüklenir.",
-    "feat_2_title": "GitHub Bulut Senkronizasyonu",
-    "feat_2_desc": "GitHub hesabınızla tek tıkla bağlanın. Tüm linkleriniz, klasör dizilimleriniz ve ayarlarınız 10 saniyelik tasarruf moduyla tüm cihazlarınıza anında eşitlensin.",
-    "feat_3_title": "Akıllı Klasör & Kısa Liste Modu",
-    "feat_3_desc": "Her klasör için bağımsız İkon (⊞), Liste (📋) veya 10'lu Kısa Liste (📃) modu seçin. Linklerinizi tek tıkla A-Z sıralayın, sürükleyip bırakarak düzenleyin.",
-    "feat_4_title": "Fare Orta Tuşu ile Gizli Klasörler",
-    "feat_4_desc": "Ayarlar veya üst kontrol butonlarına fare tekerleğiyle (orta tık) bastığınızda gizlenmiş özel klasörleriniz anında görünür hale gelir veya gizlenir.",
-    "feat_5_title": "Canlı Hava Durumu & Arama",
-    "feat_5_desc": "Open-Meteo destekli canlı hava durumu widget'ı, küresel şehir arama desteği, otomatik koordinat doğrulama ve çevrimdışı önbellek koruması.",
-    "feat_6_title": "Dinamik Temalar & Kişiselleştirme",
-    "feat_6_desc": "Karanlık, Aydınlık, Aurora, Siberpunk ve AMOLED temaları. Özel duvar kağıdı tanımlama, sütun sayısı ve widget görünürlük kontrolleri.",
-    "feat_7_title": "7 Dil Desteği & Yerelleştirme",
-    "feat_7_desc": "Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, Rusça ve Portekizce dillerinde tam yerel arayüz ve Chromium mağaza desteği.",
-    "all_rights": "Tüm hakları saklıdır."
-  },
-  "en": {
-    "nav_features": "Features",
-    "nav_tech": "Technology",
-    "nav_privacy": "Privacy Policy",
-    "nav_terms": "Terms of Use",
-    "badge_ver": "✨ Version v4.4.0 Live",
-    "hero_title": "Elevate Your Browsing Experience",
-    "hero_desc": "Cloud StartPage HaYTooL is your next-gen new tab dashboard featuring premium glassmorphism aesthetics, zero-latency local-first speed, and seamless GitHub cloud sync.",
-    "btn_install": "GitHub Repository (Source)",
-    "btn_explore": "Explore Features",
-    "store_sub_chrome": "Chrome Web Store",
-    "store_sub_edge": "Edge Add-ons",
-    "store_sub_helium": "Via Chrome Store",
-    "stat_speed": "Startup Speed (Zero FOIT)",
-    "stat_offline": "Local-First Architecture",
-    "stat_columns": "Flexible Column Layout",
-    "stat_sync": "Cloud Sync Assurance",
-    "sec_title": "Powerful & Distinctive Features",
-    "sec_sub": "Declutter your bookmark chaos and supercharge your daily productivity.",
-    "feat_1_title": "Zero-Flicker & Instant Startup",
-    "feat_1_desc": "Synchronous theme bootstrapper completely eliminates theme flashing (FOIT). Loads in under 50ms with zero-framework pure Vanilla JS.",
-    "feat_2_title": "GitHub Cloud Synchronization",
-    "feat_2_desc": "Sign in effortlessly with your GitHub account. All your bookmarks, layouts, and preferences sync seamlessly with an economical 10s debounce.",
-    "feat_3_title": "Smart Folders & Shortlist Mode",
-    "feat_3_desc": "Choose Icon Grid (⊞), Full List (📋), or Shortlist (📃 10 Links) per folder. Sort links A-Z with one click and organize via smooth Drag & Drop.",
-    "feat_4_title": "Middle-Click Hidden Folders",
-    "feat_4_desc": "Click with the mouse wheel (middle-click) on the Settings gear or control buttons to instantly reveal or hide private folders.",
-    "feat_5_title": "Live Weather & Global Search",
-    "feat_5_desc": "Open-Meteo live weather widget with global location search, automatic coordinate validation, and offline cache protection.",
-    "feat_6_title": "Dynamic Themes & Customization",
-    "feat_6_desc": "Dark, Light, Aurora, Cyberpunk, and AMOLED themes. Custom background wallpaper upload, column sizing, and widget controls.",
-    "feat_7_title": "7 Languages & Store i18n",
-    "feat_7_desc": "Full native interface and store localization in Turkish, English, German, Spanish, French, Russian, and Portuguese.",
-    "all_rights": "All rights reserved."
-  },
-  "de": {
-    "nav_features": "Funktionen",
-    "nav_tech": "Technologie",
-    "nav_privacy": "Datenschutz",
-    "nav_terms": "Nutzungsbedingungen",
-    "badge_ver": "✨ Version v4.4.0 Live",
-    "hero_title": "Bringen Sie Ihren Browser in die Zukunft",
-    "hero_desc": "Cloud StartPage HaYTooL ist Ihre Startseite der nächsten Generation mit Glassmorphism-Ästhetik, blitzschneller Leistung und nahtloser GitHub-Cloud-Synchronisierung.",
-    "btn_install": "GitHub-Repository (Quellcode)",
-    "btn_explore": "Funktionen entdecken",
-    "store_sub_chrome": "Chrome Web Store",
-    "store_sub_edge": "Edge-Erweiterungen",
-    "store_sub_helium": "Über Chrome Store",
-    "stat_speed": "Startgeschwindigkeit (< 50ms)",
-    "stat_offline": "Lokale Priorität (Offline-First)",
-    "stat_columns": "Flexible Spaltenunterstützung",
-    "stat_sync": "Cloud-Synchronisationssicherheit",
-    "sec_title": "Leistungsstarke Funktionen",
-    "sec_sub": "Befreien Sie sich vom Lesezeichen-Chaos und steigern Sie Ihre Produktivität.",
-    "feat_1_title": "Sofortiger Start ohne Flackern",
-    "feat_1_desc": "Der synchrone Theme-Bootstrapper verhindert Theme-Flackern. Lädt in unter 50ms mit reinem Vanilla JS.",
-    "feat_2_title": "GitHub-Cloud-Synchronisierung",
-    "feat_2_desc": "Verbinden Sie sich mit GitHub. Lesezeichen, Ordner und Einstellungen werden mit 10s-Sparmodus synchronisiert.",
-    "feat_3_title": "Intelligente Ordner & Kurzwahlliste",
-    "feat_3_desc": "Wählen Sie Symbol-, Listen- oder 10er-Kurzlistenansicht. A–Z Sortierung und Drag & Drop.",
-    "feat_4_title": "Versteckte Ordner mit mittlerer Maustaste",
-    "feat_4_desc": "Klicken Sie mit dem Mausrad auf Steuerungs-Schaltflächen, um private Ordner sofort ein- oder auszublenden.",
-    "feat_5_title": "Live-Wetter & Globale Suche",
-    "feat_5_desc": "Open-Meteo Live-Wetter-Widget, globale Städtesuche und Offline-Zwischenspeicher.",
-    "feat_6_title": "Dynamische Themes & Anpassung",
-    "feat_6_desc": "Dunkle, Helle, Aurora-, Cyberpunk- und AMOLED-Themes. Eigene Hintergrundbilder und flexible Spalten.",
-    "feat_7_title": "7 Sprachen & Store-Lokalisierung",
-    "feat_7_desc": "Vollständige Benutzeroberfläche und Store-Unterstützung auf Türkisch, Englisch, Deutsch, Spanisch, Französisch, Russisch und Portugiesisch.",
-    "all_rights": "Alle Rechte vorbehalten."
-  },
-  "es": {
-    "nav_features": "Características",
-    "nav_tech": "Tecnología",
-    "nav_privacy": "Privacidad",
-    "nav_terms": "Términos",
-    "badge_ver": "✨ Versión v4.4.0 Disponible",
-    "hero_title": "Lleva tu Navegador al Futuro",
-    "hero_desc": "Cloud StartPage HaYTooL es tu página de inicio de última generación con estética Glassmorphism, rendimiento ultrarrápido y sincronización en la nube con GitHub.",
-    "btn_install": "Repositorio GitHub (Código)",
-    "btn_explore": "Explorar Funciones",
-    "store_sub_chrome": "Chrome Web Store",
-    "store_sub_edge": "Complementos Edge",
-    "store_sub_helium": "Vía Chrome Store",
-    "stat_speed": "Velocidad de Inicio (< 50ms)",
-    "stat_offline": "Prioridad Local (Offline-First)",
-    "stat_columns": "Soporte de Columnas Flexible",
-    "stat_sync": "Sincronización en la Nube",
-    "sec_title": "Características Destacadas",
-    "sec_sub": "Despeja el desorden de marcadores y maximiza tu productividad diaria.",
-    "feat_1_title": "Inicio Instantáneo Sin Parpadeos",
-    "feat_1_desc": "El cargador de temas síncrono elimina el parpadeo de estilos. Carga en menos de 50ms con puro Vanilla JS.",
-    "feat_2_title": "Sincronización en la Nube con GitHub",
-    "feat_2_desc": "Conéctate con tu cuenta de GitHub. Tus enlaces y ajustes se sincronizan con un modo ahorro de 10 segundos.",
-    "feat_3_title": "Carpetas Inteligentes y Lista Corta",
-    "feat_3_desc": "Elige vista de Iconos, Lista Completa o Lista Corta de 10 enlaces. Ordenación A–Z y arrastrar y soltar.",
-    "feat_4_title": "Carpetas Ocultas con Clic Central",
-    "feat_4_desc": "Haz clic con la rueda del ratón en los botones de control para mostrar u ocultar carpetas privadas.",
-    "feat_5_title": "Clima en Vivo y Búsqueda Global",
-    "feat_5_desc": "Widget del tiempo con Open-Meteo, búsqueda mundial de ciudades y protección con caché sin conexión.",
-    "feat_6_title": "Temas Dinámicos y Personalización",
-    "feat_6_desc": "Temas Oscuro, Claro, Aurora, Cyberpunk y AMOLED. Fondos personalizados y columnas flexibles.",
-    "feat_7_title": "7 Idiomas y Soporte en Tiendas",
-    "feat_7_desc": "Interfaz nativa y soporte de tiendas en turco, inglés, alemán, español, francés, ruso y portugués.",
-    "all_rights": "Todos los derechos reservados."
-  },
-  "fr": {
-    "nav_features": "Fonctionnalités",
-    "nav_tech": "Technologie",
-    "nav_privacy": "Confidentialité",
-    "nav_terms": "Conditions",
-    "badge_ver": "✨ Version v4.4.0 En Ligne",
-    "hero_title": "Propulsez Votre Navigateur Vers l'Avenir",
-    "hero_desc": "Cloud StartPage HaYTooL est votre tableau de bord nouvelle génération alliant esthétique Glassmorphism, rapidité locale et synchronisation Cloud GitHub fluide.",
-    "btn_install": "Dépôt GitHub (Code Source)",
-    "btn_explore": "Explorer les Fonctions",
-    "store_sub_chrome": "Chrome Web Store",
-    "store_sub_edge": "Extensions Edge",
-    "store_sub_helium": "Via Chrome Store",
-    "stat_speed": "Vitesse d'Ouverture (< 50ms)",
-    "stat_offline": "Priorité Locale (Offline-First)",
-    "stat_columns": "Colonnes Modulables",
-    "stat_sync": "Garantie de Synchronisation",
-    "sec_title": "Fonctionnalités Clés",
-    "sec_sub": "Désencombrez vos favoris et libérez votre productivité au quotidien.",
-    "feat_1_title": "Démarrage Instantané Sans Scintillement",
-    "feat_1_desc": "Le chargeur de thème synchrone évite tout clignotement visuel. Chargement en moins de 50ms en pur Vanilla JS.",
-    "feat_2_title": "Synchronisation Cloud avec GitHub",
-    "feat_2_desc": "Connectez-vous avec GitHub. Vos favoris et réglages se synchronisent avec un délai économique de 10s.",
-    "feat_3_title": "Dossiers Intelligents & Liste Courte",
-    "feat_3_desc": "Choisissez la vue Icônes, Liste Complète ou Liste Courte de 10 liens. Tri A–Z et Glisser-Déposer.",
-    "feat_4_title": "Dossiers Masqués via Clic Molette",
-    "feat_4_desc": "Cliquez avec la molette de la souris sur les boutons de contrôle pour afficher ou masquer vos dossiers privés.",
-    "feat_5_title": "Météo en Direct & Recherche Mondiale",
-    "feat_5_desc": "Widget météo Open-Meteo, recherche mondiale de villes et gestion hors ligne sécurisée.",
-    "feat_6_title": "Thèmes Dynamiques & Personnalisation",
-    "feat_6_desc": "Thèmes Sombre, Clair, Aurore, Cyberpunk et AMOLED. Fond d'écran personnalisé et colonnes ajustables.",
-    "feat_7_title": "Support en 7 Langues & Stores",
-    "feat_7_desc": "Interface native complète et intégration store en turc, anglais, allemand, espagnol, français, russe et portugais.",
-    "all_rights": "Tous droits réservés."
-  },
-  "ru": {
-    "nav_features": "Возможности",
-    "nav_tech": "Технологии",
-    "nav_privacy": "Конфиденциальность",
-    "nav_terms": "Условия",
-    "badge_ver": "✨ Версия v4.4.0 Выпущена",
-    "hero_title": "Ваш браузер будущего",
-    "hero_desc": "Cloud StartPage HaYTooL — стартовая страница нового поколения с эффектом матового стекла, сверхбыстрой загрузкой и облачной синхронизацией через GitHub.",
-    "btn_install": "Репозиторий GitHub (Код)",
-    "btn_explore": "Узнать подробнее",
-    "store_sub_chrome": "Chrome Web Store",
-    "store_sub_edge": "Расширения Edge",
-    "store_sub_helium": "Через Chrome Store",
-    "stat_speed": "Скорость запуска (< 50мс)",
-    "stat_offline": "Локальный приоритет (Offline-First)",
-    "stat_columns": "Гибкая сетка колонок",
-    "stat_sync": "Облачная синхронизация",
-    "sec_title": "Мощные возможности",
-    "sec_sub": "Избавьтесь от хаоса закладок и повысьте свою ежедневную продуктивность.",
-    "feat_1_title": "Мгновенный запуск без мерцания",
-    "feat_1_desc": "Синхронный загрузчик предотвращает мерцание темы. Загрузка менее чем за 50мс на чистом Vanilla JS.",
-    "feat_2_title": "Облачная синхронизация через GitHub",
-    "feat_2_desc": "Входите через GitHub. Все ссылки и параметры синхронизируются с 10-секундным экономным пакетом.",
-    "feat_3_title": "Умные папки и краткий список",
-    "feat_3_desc": "Выбирайте значки, полный список или топ-10 ссылок. Сортировка А-Я и перетаскивание Drag & Drop.",
-    "feat_4_title": "Скрытые папки кликом колесика мыши",
-    "feat_4_desc": "Нажимайте колесико мыши на кнопках управления, чтобы мгновенно скрыть или показать приватные папки.",
-    "feat_5_title": "Живая погода и глобальный поиск",
-    "feat_5_desc": "Виджет погоды Open-Meteo, глобальный поиск городов и надежный автономный кэш.",
-    "feat_6_title": "Динамические темы и настройка",
-    "feat_6_desc": "Темная, светлая, полярное сияние, киберпанк и AMOLED темы. Свои фоновые рисунки и колонки.",
-    "feat_7_title": "Поддержка 7 языков и магазинов",
-    "feat_7_desc": "Полная поддержка на турецком, английском, немецком, испанском, французском, русском и португальском языках.",
-    "all_rights": "Все права защищены."
-  },
-  "pt": {
-    "nav_features": "Recursos",
-    "nav_tech": "Tecnologia",
-    "nav_privacy": "Privacidade",
-    "nav_terms": "Termos",
-    "badge_ver": "✨ Versão v4.4.0 Disponível",
-    "hero_title": "Leve o Seu Navegador para o Futuro",
-    "hero_desc": "Cloud StartPage HaYTooL é o seu painel de nova guia de última geração com estética Glassmorphism, velocidade local ultrarrápida e sincronização na nuvem com GitHub.",
-    "btn_install": "Repositório GitHub (Código)",
-    "btn_explore": "Explorar Recursos",
-    "store_sub_chrome": "Chrome Web Store",
-    "store_sub_edge": "Extensões do Edge",
-    "store_sub_helium": "Via Chrome Store",
-    "stat_speed": "Velocidade de Abertura (< 50ms)",
-    "stat_offline": "Prioridade Local (Offline-First)",
-    "stat_columns": "Colunas Personalizáveis",
-    "stat_sync": "Garantia de Sincronização",
-    "sec_title": "Recursos Poderosos",
-    "sec_sub": "Organize o caos dos seus favoritos e turbine a sua produtividade diária.",
-    "feat_1_title": "Inicialização Instantânea Sem Piscar",
-    "feat_1_desc": "O carregador síncrono elimina oscilações de tema. Carrega em menos de 50ms em puro Vanilla JS.",
-    "feat_2_title": "Sincronização na Nuvem com GitHub",
-    "feat_2_desc": "Conecte-se com sua conta GitHub. Atalhos e configurações sincronizam com modo econômico de 10s.",
-    "feat_3_title": "Pastas Inteligentes e Lista Curta",
-    "feat_3_desc": "Escolha grade de ícones, lista completa ou lista curta de 10 links. Ordenação A–Z e arrastar e soltar.",
-    "feat_4_title": "Pastas Ocultas com Clique do Meio",
-    "feat_4_desc": "Clique com o botão do meio do mouse (roda) nos botões de controle para revelar ou ocultar pastas privadas.",
-    "feat_5_title": "Clima ao Vivo e Pesquisa Global",
-    "feat_5_desc": "Widget de clima Open-Meteo, pesquisa mundial de cidades e proteção com cache offline.",
-    "feat_6_title": "Temas Dinâmicos e Personalização",
-    "feat_6_desc": "Temas Escuro, Claro, Aurora, Cyberpunk e AMOLED. Papéis de parede personalizados e colunas ajustáveis.",
-    "feat_7_title": "Suporte a 7 Idiomas e Lojas",
-    "feat_7_desc": "Interface nativa completa e suporte para lojas em turco, inglês, alemão, espanhol, francês, russo e português.",
-    "all_rights": "Todos os direitos reservados."
-  }
-};
+      "tr": {
+        "nav_features": "Özellikler",
+        "nav_tech": "Mimari",
+        "nav_privacy": "Gizlilik",
+        "nav_terms": "Şartlar",
+        "badge_ver": "Açık Kaynak & Bulut Senkronizasyonlu",
+        "hero_title": "Tarayıcınızı Geleceğe Taşıyın",
+        "hero_desc": "Buzlu cam estetiği (Glassmorphism), ultra-hızlı yerel mimari ve GitHub Gist bulut senkronizasyonu ile donatılmış yeni nesil başlangıç sayfası paneli.",
+        "btn_install": "Ücretsiz İndir (Chrome Web Store)",
+        "btn_explore": "Özellikleri Keşfet",
+        "store_sub_chrome": "Chrome Mağazası",
+        "store_sub_edge": "Edge Eklentileri",
+        "store_sub_helium": "Chrome Mağazası ile",
+        "stat_speed": "Açılış Hızı (Sıfır FOIT)",
+        "stat_offline": "Yerel-Öncelikli (Offline-First)",
+        "stat_columns": "Esnek Sütun Desteği",
+        "stat_sync": "Bulut Gist Eşitlemesi",
+        "sec_badge": "BENTO VİTRİNİ",
+        "sec_title": "Güçlü ve Ayrıcalıklı Özellikler",
+        "sec_sub": "Klasik yer imi kalabalığından kurtulun, üretkenliğinizi zirveye taşıyın.",
+        "feat_1_title": "Sıfır Parlama & Anında Açılış",
+        "feat_1_desc": "Senkronize tema önyükleyicisi ile hiçbir parlama (FOIT) yaşanmaz. Saf Vanilla JS ile 50ms altında ışık hızında açılır.",
+        "feat_2_title": "GitHub Gist Bulut Senkronizasyonu",
+        "feat_2_desc": "GitHub Personal Access Token ile tek tıkla bağlanın. Tüm linkleriniz, özel klasörleriniz ve tercihleriniz şifreli Gist üzerinden tüm bilgisayarlarınıza anında eşitlenir.",
+        "feat_3_title": "Akıllı Klasör & Canlı Arama",
+        "feat_3_desc": "Her klasör için bağımsız İkon (⊞), Liste (📋) veya Kısa Liste modları. Klasör başlığındaki 🔍 büyüteç ile klasör içinde anında arama yapın.",
+        "feat_4_title": "Fare Orta Tuşu ile Gizli Mod",
+        "feat_4_desc": "Dişli çarka veya üst kontrol butonlarına fare tekerleğiyle (orta tık) bastığınızda gizli klasörleriniz anında görünür hale gelir.",
+        "feat_5_title": "Canlı Hava Durumu & AI Arama",
+        "feat_5_desc": "Open-Meteo destekli küresel hava durumu. Üst arama çubuğunda Google, ChatGPT, Perplexity, Gemini ve DeepSeek arasında tek tıkla geçiş.",
+        "feat_6_title": "Dinamik Temalar & 7 Dil",
+        "feat_6_desc": "Karanlık, Aydınlık, Aurora ve AMOLED temaları. Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, Rusça ve Portekizce dillerinde tam destek.",
+        "all_rights": "Tüm hakları saklıdır."
+      },
+      "en": {
+        "nav_features": "Features",
+        "nav_tech": "Architecture",
+        "nav_privacy": "Privacy Policy",
+        "nav_terms": "Terms of Use",
+        "badge_ver": "Open Source & Cloud Synced",
+        "hero_title": "Elevate Your Browsing Experience",
+        "hero_desc": "Next-generation new tab dashboard featuring frosted glassmorphism aesthetics, zero-latency local-first speed, and seamless GitHub Gist cloud synchronization.",
+        "btn_install": "Free Download (Chrome Web Store)",
+        "btn_explore": "Explore Features",
+        "store_sub_chrome": "Chrome Web Store",
+        "store_sub_edge": "Edge Add-ons",
+        "store_sub_helium": "Via Chrome Store",
+        "stat_speed": "Startup Speed (Zero FOIT)",
+        "stat_offline": "Local-First Architecture",
+        "stat_columns": "Flexible Column Layout",
+        "stat_sync": "Cloud Gist Sync",
+        "sec_badge": "BENTO SHOWCASE",
+        "sec_title": "Powerful & Distinctive Features",
+        "sec_sub": "Declutter your bookmark chaos and supercharge your daily browsing productivity.",
+        "feat_1_title": "Zero-Flicker & Instant Startup",
+        "feat_1_desc": "Synchronous theme bootstrapper eliminates theme flashing (FOIT). Loads in under 50ms with zero-framework pure Vanilla JS.",
+        "feat_2_title": "GitHub Gist Cloud Sync",
+        "feat_2_desc": "Connect seamlessly via GitHub Personal Access Token. Shortcuts, custom folders, and preferences sync encrypted across all devices.",
+        "feat_3_title": "Smart Folders & Live Filter",
+        "feat_3_desc": "Icon (⊞), Full List (📋) or Shortlist views. Live in-folder search directly from the folder header pill.",
+        "feat_4_title": "Middle-Click Hidden Mode",
+        "feat_4_desc": "Middle-click (wheel click) on settings or controls to toggle private hidden folders instantly.",
+        "feat_5_title": "Live Weather & Multi-AI Search",
+        "feat_5_desc": "Global Open-Meteo forecasts. One-click instant search switching between Google, ChatGPT, Perplexity, Gemini, and DeepSeek.",
+        "feat_6_title": "Dynamic Themes & 7 Languages",
+        "feat_6_desc": "Dark, Light, Aurora, AMOLED themes. Full localized experience in Turkish, English, German, Spanish, French, Russian, and Portuguese.",
+        "all_rights": "All rights reserved."
+      },
+      "de": {
+        "nav_features": "Funktionen", "nav_tech": "Architektur", "nav_privacy": "Datenschutz", "nav_terms": "Nutzungsbedingungen",
+        "badge_ver": "Open Source & Cloud Sync", "hero_title": "Bringen Sie Ihren Browser in die Zukunft",
+        "hero_desc": "Neuer Tab-Dashboard mit Glassmorphism-Ästhetik, blitzschneller lokaler Architektur und Cloud-Synchronisierung via GitHub Gist.",
+        "btn_install": "Kostenlos herunterladen", "btn_explore": "Funktionen erkunden",
+        "store_sub_chrome": "Chrome Web Store", "store_sub_edge": "Edge Add-ons", "store_sub_helium": "Über Chrome Store",
+        "stat_speed": "Startgeschwindigkeit (< 50ms)", "stat_offline": "Local-First Architektur", "stat_columns": "Flexible Spalten", "stat_sync": "GitHub Gist Sync",
+        "sec_badge": "BENTO VORSCHAU", "sec_title": "Leistungsstarke Funktionen", "sec_sub": "Befreien Sie sich vom Lesezeichen-Chaos.",
+        "feat_1_title": "Flackerfreier Sofortstart", "feat_1_desc": "Synchroner Bootstrapper verhindert FOIT. Startet unter 50ms mit reinem Vanilla JS.",
+        "feat_2_title": "GitHub Gist Cloud-Sync", "feat_2_desc": "Synchronisieren Sie Ihre Lesezeichen verschlüsselt über alle Geräte mit GitHub Gist.",
+        "feat_3_title": "Smarte Ordner & Schnellsuche", "feat_3_desc": "Symbol-, Listen- und Kurzlistenansichten mit Echtzeit-Ordnersuche.",
+        "feat_4_title": "Versteckte Ordner per Mittelklick", "feat_4_desc": "Klicken Sie mit dem Mausrad, um private Ordner sofort ein- oder auszublenden.",
+        "feat_5_title": "Wetter & Multi-AI Suche", "feat_5_desc": "Open-Meteo Wetter und Direktsuche mit Google, ChatGPT, Gemini und Perplexity.",
+        "feat_6_title": "Dynamische Themes & 7 Sprachen", "feat_6_desc": "Dunkel, Hell, Aurora und AMOLED Themes mit voller Sprachunterstützung.",
+        "all_rights": "Alle Rechte vorbehalten."
+      },
+      "es": {
+        "nav_features": "Características", "nav_tech": "Arquitectura", "nav_privacy": "Privacidad", "nav_terms": "Términos",
+        "badge_ver": "Código Abierto & Sincronizado", "hero_title": "Lleva Tu Navegador al Futuro",
+        "hero_desc": "Panel de nueva pestaña con estética Glassmorphism, arquitectura ultrarrápida y sincronización en la nube mediante GitHub Gist.",
+        "btn_install": "Descargar Gratis", "btn_explore": "Explorar Funciones",
+        "store_sub_chrome": "Chrome Web Store", "store_sub_edge": "Extensiones Edge", "store_sub_helium": "Vía Chrome Store",
+        "stat_speed": "Velocidad (< 50ms)", "stat_offline": "Arquitectura Local-First", "stat_columns": "Columnas Flexibles", "stat_sync": "Gist en la Nube",
+        "sec_badge": "ESCAPARATE BENTO", "sec_title": "Funciones Poderosas", "sec_sub": "Organiza tus marcadores y maximiza tu productividad.",
+        "feat_1_title": "Inicio Instantáneo Sin Parpadeos", "feat_1_desc": "Carga en menos de 50ms con puro Vanilla JS sin parpadeos de tema.",
+        "feat_2_title": "Sincronización GitHub Gist", "feat_2_desc": "Conéctate mediante GitHub Token y sincroniza tus enlaces en todos tus equipos.",
+        "feat_3_title": "Carpetas Inteligentes y Filtro", "feat_3_desc": "Vistas de iconos, lista completa o compacta con búsqueda interna en vivo.",
+        "feat_4_title": "Carpetas Ocultas con Clic Central", "feat_4_desc": "Usa la rueda del ratón para mostrar u ocultar carpetas privadas.",
+        "feat_5_title": "Clima en Vivo y Búsqueda IA", "feat_5_desc": "Pronóstico Open-Meteo y cambio instantáneo entre Google, ChatGPT y Gemini.",
+        "feat_6_title": "Temas Dinámicos y 7 Idiomas", "feat_6_desc": "Temas Oscuro, Claro, Aurora y AMOLED con soporte nativo de idiomas.",
+        "all_rights": "Todos los derechos reservados."
+      },
+      "fr": {
+        "nav_features": "Fonctionnalités", "nav_tech": "Architecture", "nav_privacy": "Confidentialité", "nav_terms": "Conditions",
+        "badge_ver": "Open Source & Synchronisé Cloud", "hero_title": "Propulsez Votre Navigateur Dans Le Futur",
+        "hero_desc": "Tableau de bord de nouvel onglet avec esthétique Glassmorphism, rapidité locale extrême et synchronisation cloud GitHub Gist.",
+        "btn_install": "Télécharger Gratuitement", "btn_explore": "Explorer",
+        "store_sub_chrome": "Chrome Web Store", "store_sub_edge": "Extensions Edge", "store_sub_helium": "Via Chrome Store",
+        "stat_speed": "Vitesse (< 50ms)", "stat_offline": "Local-First", "stat_columns": "Colonnes Flexibles", "stat_sync": "Synchronisation Gist",
+        "sec_badge": "VITRINE BENTO", "sec_title": "Fonctionnalités Puissantes", "sec_sub": "Désencombrez vos favoris et gagnez du temps.",
+        "feat_1_title": "Démarrage Instantané Sans Scintillement", "feat_1_desc": "S'ouvre en moins de 50ms sans framework en pur Vanilla JS.",
+        "feat_2_title": "Synchronisation GitHub Gist", "feat_2_desc": "Vos favoris synchronisés de manière chiffrée sur tous vos ordinateurs.",
+        "feat_3_title": "Dossiers Intelligents & Recherche", "feat_3_desc": "Modes Icônes, Liste et Liste Courte avec filtre en direct.",
+        "feat_4_title": "Dossiers Cachés au Clic Molette", "feat_4_desc": "Cliquez avec la molette de la souris pour afficher vos dossiers privés.",
+        "feat_5_title": "Météo en Direct & Recherche IA", "feat_5_desc": "Météo Open-Meteo et basculement instantané entre Google, ChatGPT et Perplexity.",
+        "feat_6_title": "Thèmes Dynamiques & 7 Langues", "feat_6_desc": "Thèmes Sombre, Clair, Aurora et AMOLED en 7 langues.",
+        "all_rights": "Tous droits réservés."
+      },
+      "ru": {
+        "nav_features": "Функции", "nav_tech": "Архитектура", "nav_privacy": "Конфиденциальность", "nav_terms": "Условия",
+        "badge_ver": "Open Source & Синхронизация", "hero_title": "Перенесите Ваш Браузер в Будущее",
+        "hero_desc": "Панель новой вкладки с дизайном Glassmorphism, сверхбыстрой работой и синхронизацией через GitHub Gist.",
+        "btn_install": "Установить Бесплатно", "btn_explore": "Обзор Функций",
+        "store_sub_chrome": "Chrome Web Store", "store_sub_edge": "Edge Add-ons", "store_sub_helium": "Через Chrome Store",
+        "stat_speed": "Скорость (< 50мс)", "stat_offline": "Локальная архитектура", "stat_columns": "Гибкие Колонки", "stat_sync": "GitHub Gist",
+        "sec_badge": "BENTO ВИТРИНА", "sec_title": "Мощные Возможности", "sec_sub": "Наведите порядок в закладках и работайте быстрее.",
+        "feat_1_title": "Мгновенный Запуск Без Мерцания", "feat_1_desc": "Запуск быстрее 50мс без фреймворков на чистом Vanilla JS.",
+        "feat_2_title": "Облачная Синхронизация GitHub Gist", "feat_2_desc": "Надежная зашифрованная синхронизация всех папок и настроек.",
+        "feat_3_title": "Умные Папки и Поиск", "feat_3_desc": "Иконки, список и компактный режим со встроенным поиском внутри папки.",
+        "feat_4_title": "Скрытые Папки Средней Кнопкой Мыши", "feat_4_desc": "Кликните колесиком мыши для быстрого отображения скрытых папок.",
+        "feat_5_title": "Погода и Поиск с ИИ", "feat_5_desc": "Точный прогноз Open-Meteo и переключение между Google, ChatGPT и Gemini.",
+        "feat_6_title": "Динамические Темы и 7 Языков", "feat_6_desc": "Темная, светлая, Аврора и AMOLED темы с поддержкой 7 языков.",
+        "all_rights": "Все права защищены."
+      },
+      "pt": {
+        "nav_features": "Recursos", "nav_tech": "Arquitetura", "nav_privacy": "Privacidade", "nav_terms": "Termos",
+        "badge_ver": "Código Aberto & Sincronizado", "hero_title": "Leve Seu Navegador para o Futuro",
+        "hero_desc": "Painel de nova guia com estética Glassmorphism, velocidade ultrarrápida e sincronização na nuvem com GitHub Gist.",
+        "btn_install": "Baixar Grátis", "btn_explore": "Explorar Recursos",
+        "store_sub_chrome": "Chrome Web Store", "store_sub_edge": "Extensões Edge", "store_sub_helium": "Via Chrome Store",
+        "stat_speed": "Velocidade (< 50ms)", "stat_offline": "Offline-First", "stat_columns": "Colunas Flexíveis", "stat_sync": "GitHub Gist",
+        "sec_badge": "VITRINE BENTO", "sec_title": "Recursos Poderosos", "sec_sub": "Organize o caos dos seus favoritos com elegância.",
+        "feat_1_title": "Inicialização Instantânea Sem Piscar", "feat_1_desc": "Carrega em menos de 50ms em puro Vanilla JS sem oscilações de tema.",
+        "feat_2_title": "Sincronização GitHub Gist", "feat_2_desc": "Conexão rápida com token GitHub para sincronizar todos os seus dados.",
+        "feat_3_title": "Pastas Inteligentes e Filtro ao Vivo", "feat_3_desc": "Modos de ícones, lista completa ou lista curta com busca em tempo real.",
+        "feat_4_title": "Pastas Ocultas com Clique do Meio", "feat_4_desc": "Clique com a roda do mouse para alternar pastas privadas instantaneamente.",
+        "feat_5_title": "Clima ao Vivo e Busca com IA", "feat_5_desc": "Clima Open-Meteo e busca com Google, ChatGPT, Gemini e Perplexity.",
+        "feat_6_title": "Temas Dinâmicos e 7 Idiomas", "feat_6_desc": "Temas Escuro, Claro, Aurora e AMOLED com suporte nativo a 7 idiomas.",
+        "all_rights": "Todos os direitos reservados."
+      }
+    };
 
     function setLang(lang) {
       document.documentElement.lang = lang;
@@ -992,7 +1135,6 @@
       
       const shot = document.getElementById("appScreenshotImg");
       if (shot) {
-        // Türkçe seçildiğinde Türkçe resim, diğer tüm dillerde İngilizce resim
         shot.src = lang === "tr" ? "assets/screenshots/tr.jpeg" : "assets/screenshots/eng.jpeg";
       }
 
@@ -1004,6 +1146,26 @@
     const defaultAvailable = ["tr", "en", "de", "es", "fr", "ru", "pt"].includes(browserLang) ? browserLang : "en";
     const savedLang = localStorage.getItem("haytool_web_lang") || defaultAvailable;
     setLang(savedLang);
+
+    // Scroll Reveal (Linear/Apple Animations)
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+
+      document.querySelectorAll('.bento-card, .stat-cell, .mac-window, .code-terminal, .store-chip').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(28px)';
+        el.style.transition = 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+        observer.observe(el);
+      });
+    }
   </script>
 
   <!-- Ziyaret & Durum Bildirimi Servisi -->
