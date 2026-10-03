@@ -408,10 +408,14 @@ export const Shortcuts = {
       });
     }
 
-    /* --- Header --- */
+    /* --- Header (Baştan Sıfırdan Modern Tasarım) --- */
     const header = document.createElement('div');
     header.className = 'folder-header';
     if (cat.id !== '__other__') header.style.cursor = 'grab';
+
+    // Sol blok: [Ok] [İkon] [Başlık]
+    const titleArea = document.createElement('div');
+    titleArea.className = 'folder-title-area';
 
     const arrow = document.createElement('span');
     arrow.className = 'folder-arrow';
@@ -425,41 +429,106 @@ export const Shortcuts = {
     namEl.className = 'folder-name';
     namEl.textContent = cat.name;
 
-    const cnt = document.createElement('span');
-    cnt.className = 'folder-count';
-    cnt.textContent = items.length;
-
-    const optBtn = document.createElement('button');
-    optBtn.className = 'folder-opt-btn';
-    optBtn.innerHTML = '⋯';
-    optBtn.title = I18n.t('folder_options_title', 'Folder Options');
-    optBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      this._showFolderMenu(e, cat, items.length, card);
-    });
+    titleArea.appendChild(arrow);
+    titleArea.appendChild(ico);
+    titleArea.appendChild(namEl);
 
     if (cat.isIncognito) {
       const incBadge = document.createElement('span');
       incBadge.className = 'folder-incognito-badge';
       incBadge.textContent = '🕶️';
       incBadge.title = I18n.t('modal_folder_open_incognito', 'Bu klasördeki linkler gizli sekmede açılır');
-      incBadge.style.cssText = 'font-size:0.8rem; margin-left:0.25rem; opacity:0.85; cursor:help;';
-      header.appendChild(arrow);
-      header.appendChild(ico);
-      header.appendChild(namEl);
-      header.appendChild(incBadge);
-      header.appendChild(cnt);
-    } else {
-      header.appendChild(arrow);
-      header.appendChild(ico);
-      header.appendChild(namEl);
-      header.appendChild(cnt);
+      titleArea.appendChild(incBadge);
     }
-    header.appendChild(optBtn);
+
+    // Canlı arama kutusu (Gerektiğinde başlığın yerini alır)
+    const filterInput = document.createElement('input');
+    filterInput.type = 'text';
+    filterInput.className = 'folder-filter-input';
+    filterInput.placeholder = I18n.t('search_in_folder', 'Klasörde ara...');
+    filterInput.autocomplete = 'off';
+    filterInput.style.display = 'none';
+
+    // Sağ blok: [Sayı Rozeti] + [Aksiyon Kapsülü: 🔍 | ⋯]
+    const metaArea = document.createElement('div');
+    metaArea.className = 'folder-meta-area';
+
+    const cnt = document.createElement('span');
+    cnt.className = 'folder-count-badge';
+    cnt.textContent = items.length;
+
+    const actionPill = document.createElement('div');
+    actionPill.className = 'folder-actions-pill';
+
+    const filterBtn = document.createElement('button');
+    filterBtn.className = 'folder-action-btn folder-filter-btn';
+    filterBtn.innerHTML = '🔍';
+    filterBtn.title = I18n.t('filter_links', 'Ara');
+
+    const optBtn = document.createElement('button');
+    optBtn.className = 'folder-action-btn folder-opt-btn';
+    optBtn.innerHTML = '⋯';
+    optBtn.title = I18n.t('folder_options_title', 'Seçenekler');
+
+    actionPill.appendChild(filterBtn);
+    actionPill.appendChild(optBtn);
+
+    metaArea.appendChild(cnt);
+    metaArea.appendChild(actionPill);
+
+    header.appendChild(titleArea);
+    header.appendChild(filterInput);
+    header.appendChild(metaArea);
+
+    // Canlı Arama Etkileşimi
+    const closeFilter = () => {
+      filterInput.value = '';
+      filterInput.style.display = 'none';
+      titleArea.style.display = 'flex';
+      filterBtn.classList.remove('active');
+      body.querySelectorAll('.link-item').forEach(el => el.style.display = '');
+      this.applyMasonry();
+    };
+
+    filterBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = filterInput.style.display === 'block';
+      if (isOpen) {
+        closeFilter();
+      } else {
+        if (card.classList.contains('collapsed')) {
+          card.classList.remove('collapsed');
+          this.collapsedFolders.delete(cat.id);
+        }
+        titleArea.style.display = 'none';
+        filterInput.style.display = 'block';
+        filterBtn.classList.add('active');
+        setTimeout(() => filterInput.focus(), 50);
+      }
+    });
+
+    filterInput.addEventListener('click', e => e.stopPropagation());
+    filterInput.addEventListener('input', e => {
+      const term = e.target.value.trim().toLowerCase();
+      body.querySelectorAll('.link-item').forEach(el => {
+        const text = el.textContent.toLowerCase();
+        el.style.display = (!term || text.includes(term)) ? '' : 'none';
+      });
+      this.applyMasonry();
+    });
+
+    filterInput.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeFilter();
+    });
+
+    optBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      this._showFolderMenu(e, cat, items.length, card);
+    });
 
     header.addEventListener('click', async e => {
-      if (isFolderDragging) return; // Sürükleme yapıldıysa klasörü katlama/açma
-      if (e.target.closest('.folder-opt-btn')) return;
+      if (isFolderDragging) return;
+      if (e.target.closest('.folder-actions-pill') || e.target.closest('.folder-filter-input')) return;
       card.classList.toggle('collapsed');
       if (card.classList.contains('collapsed')) this.collapsedFolders.add(cat.id);
       else this.collapsedFolders.delete(cat.id);

@@ -109,26 +109,8 @@ body {
   transform: scale(1.08);
 }
 
-.weather-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-main);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  user-select: none;
-}
-.weather-badge-top { display: flex; align-items: center; gap: 0.5rem; }
-.weather-badge-bottom { display: flex; align-items: center; gap: 0.75rem; font-size: 0.75rem; color: var(--text-dim); font-weight: 400; }
-
-.weather-badge .weather-icon {
-  font-size: 1.1rem;
-}
+.weather-badge-top { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; }
+.weather-badge-bottom { display: flex; align-items: center; gap: 0.5rem; font-size: 0.70rem; color: var(--text-dim); font-weight: 400; }
 
 .icon-btn {
   background: var(--surface-glass);
@@ -143,8 +125,10 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 1rem;
-  transition: all var(--transition-fast);
+  font-size: 1.05rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  position: relative;
 }
 
 .header-btn-group {
@@ -155,8 +139,9 @@ body {
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
-  padding: 2px;
-  gap: 2px;
+  padding: 3px;
+  gap: 3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .header-btn-group .icon-btn {
@@ -165,24 +150,27 @@ body {
   border: none;
   background: transparent;
   border-radius: var(--radius-sm);
+  box-shadow: none;
 }
 
 .header-btn-group .icon-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   color: var(--text-main);
+  transform: translateY(0);
 }
 
 .btn-create-folder {
   color: #38bdf8 !important;
-  border-color: rgba(56, 189, 248, 0.25) !important;
+  border-color: rgba(56, 189, 248, 0.28) !important;
   background: rgba(56, 189, 248, 0.08) !important;
 }
 
 .btn-create-folder:hover {
-  color: #7dd3fc !important;
-  background: rgba(56, 189, 248, 0.18) !important;
-  border-color: rgba(56, 189, 248, 0.45) !important;
-  transform: translateY(-1px);
+  color: #ffffff !important;
+  background: rgba(56, 189, 248, 0.28) !important;
+  border-color: rgba(56, 189, 248, 0.6) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
 }
 
 .icon-btn:hover {
@@ -190,6 +178,11 @@ body {
   background: var(--surface-glass-hover);
   border-color: var(--border-glass-hover);
   transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.icon-btn:active {
+  transform: translateY(0) scale(0.96);
 }
 
 /* ==========================================================================
@@ -1236,198 +1229,7 @@ body {
 
 
 
-/* ==========================================================================
-   ACCORDION FOLDER CARDS
-   ========================================================================== */
-.folder-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--border-glass);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  backdrop-filter: var(--glass-blur);
-  display: inline-block;
-  width: 100%;
-  
-  margin-bottom: 0;
-  box-sizing: border-box;
-}
-.folder-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.8rem 1.1rem;
-  cursor: pointer;
-  user-select: none;
-  transition: background var(--transition-fast);
-  border-left: 3px solid var(--folder-accent, var(--accent-primary));
-}
-
-.folder-header:hover {
-  background: rgba(255,255,255,0.04);
-}
-
-.folder-collapse-icon {
-  font-size: 0.7rem;
-  color: var(--text-dim);
-  transition: transform var(--transition-fast);
-  flex-shrink: 0;
-  width: 14px;
-  text-align: center;
-}
-
-.folder-card:not(.collapsed) .folder-collapse-icon {
-  transform: rotate(90deg);
-}
-
-.folder-emoji {
-  font-size: 1.1rem;
-  flex-shrink: 0;
-}
-
-.folder-name {
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--text-main);
-  flex: 1;
-  letter-spacing: -0.01em;
-}
-
-.folder-count {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--bg-main);
-  background: var(--text-muted);
-  padding: 0.15rem 0.55rem;
-  border-radius: var(--radius-full);
-  flex-shrink: 0;
-}
-
-.folder-actions {
-  display: flex;
-  gap: 0.35rem;
-  opacity: 0;
-  transition: opacity var(--transition-fast);
-}
-
-.folder-header:hover .folder-actions {
-  opacity: 1;
-}
-
-.folder-action-btn {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  cursor: pointer;
-  font-size: 0.8rem;
-  padding: 0.2rem 0.4rem;
-  border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
-  line-height: 1;
-}
-.folder-action-btn:hover {
-  color: var(--text-main);
-  background: rgba(255,255,255,0.08);
-}
-
-/* Folder Body - link kartları */
-.folder-body {
-  padding: 0.75rem 1.1rem 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  border-top: 1px solid var(--border-glass);
-}
-
-/* Küçük link chip kartları */
-.link-chip {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.75rem 0.35rem 0.45rem;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: var(--radius-full);
-  text-decoration: none;
-  color: var(--text-muted);
-  font-size: 0.83rem;
-  font-weight: 500;
-  font-family: inherit;
-  transition: all var(--transition-fast);
-  position: relative;
-  max-width: 220px;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.link-chip:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: var(--border-glass-hover);
-  color: var(--text-main);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.link-chip-icon {
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  font-size: 0.9rem;
-}
-
-.link-chip-icon img {
-  width: 16px;
-  height: 16px;
-  border-radius: 3px;
-  object-fit: contain;
-}
-
-.link-chip-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 160px;
-}
-
-.link-chip-del {
-  display: none;
-  margin-left: 0.2rem;
-  background: none;
-  border: none;
-  color: var(--accent-rose);
-  cursor: pointer;
-  font-size: 0.7rem;
-  padding: 0;
-  line-height: 1;
-  flex-shrink: 0;
-}
-.link-chip:hover .link-chip-del {
-  display: inline;
-}
-
-/* Kısayol ekle chip */
-.add-link-chip {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.35rem 0.75rem;
-  border: 1px dashed var(--border-glass-hover);
-  border-radius: var(--radius-full);
-  color: var(--text-dim);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  background: none;
-  font-family: inherit;
-  transition: all var(--transition-fast);
-}
-.add-link-chip:hover {
-  color: var(--accent-primary);
-  border-color: var(--accent-primary);
-  background: rgba(99,102,241,0.07);
-}
+/* Eski Accordion Klasör Kuralları Temizlendi (Aşağıdaki Modern Klasör Mimarisi Kullanılıyor) */
 
 /* ==========================================================================
    EMPTY STATE
@@ -1593,207 +1395,388 @@ body {
   align-items: start;
 }
 
-/* ---- Folder Card ---- */
+/* ---- Modern Glass Folder Card (Linear & Apple macOS Inspiration) ---- */
 .folder-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--border-glass);
-  border-radius: 12px;
+  background: var(--surface-glass, rgba(15, 23, 42, 0.7));
+  border: 1px solid var(--border-glass-light, rgba(255, 255, 255, 0.12));
+  border-radius: var(--radius-lg, 14px);
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  backdrop-filter: var(--glass-blur);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22), 0 1px 2px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   display: inline-block;
   width: 100%;
-  
   margin-bottom: 0;
   box-sizing: border-box;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease;
+  position: relative;
+}
+
+.folder-card:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32), 0 0 20px color-mix(in srgb, var(--fc, var(--accent-primary)) 15%, transparent);
+  transform: translateY(-2px);
 }
 
 /* Klasör Sürükle & Bırak Göstergeleri */
 .folder-card.folder-dragging {
-  opacity: 0.4 !important;
-  transform: scale(0.98);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.45) !important;
-  border: 1.5px dashed var(--accent-primary) !important;
+  opacity: 0.35 !important;
+  transform: scale(0.97);
+  box-shadow: 0 0 24px var(--fc, var(--accent-primary)) !important;
+  border: 1.5px dashed var(--fc, var(--accent-primary)) !important;
 }
 
 .folder-card.folder-drag-over-top {
-  border-top: 3px solid var(--accent-primary) !important;
-  box-shadow: 0 -8px 20px -2px rgba(99, 102, 241, 0.6) !important;
+  border-top: 3px solid var(--fc, var(--accent-primary)) !important;
+  box-shadow: 0 -8px 20px -2px var(--fc, var(--accent-primary)) !important;
   transform: translateY(3px);
 }
 
 .folder-card.folder-drag-over-bottom {
-  border-bottom: 3px solid var(--accent-primary) !important;
-  box-shadow: 0 8px 20px -2px rgba(99, 102, 241, 0.6) !important;
+  border-bottom: 3px solid var(--fc, var(--accent-primary)) !important;
+  box-shadow: 0 8px 20px -2px var(--fc, var(--accent-primary)) !important;
   transform: translateY(-3px);
 }
+
+/* Modern Klasör Başlığı (Header) */
 .folder-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.6rem 0.75rem;
+  padding: 0.65rem 0.8rem;
   cursor: pointer;
   user-select: none;
-  border-left: 3px solid var(--fc, #6366f1);
-  transition: background var(--transition-fast);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--fc, #6366f1) 18%, transparent) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  box-sizing: border-box;
 }
-.folder-header:hover { background: rgba(255,255,255,0.04); }
+
+.folder-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 3.5px;
+  background: var(--fc, var(--accent-primary));
+  box-shadow: 0 0 10px var(--fc, var(--accent-primary));
+}
+
+.folder-header:hover { 
+  background: linear-gradient(135deg, color-mix(in srgb, var(--fc, #6366f1) 26%, transparent) 0%, rgba(255, 255, 255, 0.05) 100%);
+}
+
+.folder-title-area {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
 
 .folder-arrow {
   font-size: 0.6rem;
   color: var(--text-dim);
-  transition: transform var(--transition-fast);
-  width: 10px; flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+  width: 12px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
-.folder-card:not(.collapsed) .folder-arrow { transform: rotate(90deg); }
 
-.folder-emoji { font-size: 1rem; flex-shrink: 0; }
+.folder-header:hover .folder-arrow {
+  color: var(--text-main);
+}
+
+.folder-card:not(.collapsed) .folder-arrow {
+  transform: rotate(90deg);
+  color: var(--fc, var(--accent-primary));
+}
+
+.folder-emoji {
+  font-size: 1.05rem;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  transition: transform 0.2s ease;
+}
+
+.folder-header:hover .folder-emoji {
+  transform: scale(1.12);
+}
 
 .folder-name {
-  flex: 1; font-size: 0.85rem; font-weight: 700;
-  color: var(--text-main); overflow: hidden;
-  text-overflow: ellipsis; white-space: nowrap;
+  flex: 1;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.015em;
 }
 
-.folder-count {
-  font-size: 0.7rem; font-weight: 700;
-  color: var(--bg-main);
-  background: var(--text-muted);
-  padding: 0.15rem 0.45rem;
-  border-radius: var(--radius-full); flex-shrink: 0;
+.folder-meta-area {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
 }
 
-.folder-opt-btn {
-  background: none; border: none;
-  color: var(--text-dim);
-  font-size: 0.9rem; padding: 0.1rem 0.3rem;
-  border-radius: var(--radius-sm);
-  cursor: pointer; opacity: 0;
-  transition: opacity var(--transition-fast), background var(--transition-fast);
+/* Klasör Renkli Sayı Rozeti (Accent Count Badge) */
+.folder-count-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--fc, var(--accent-primary));
+  background: color-mix(in srgb, var(--fc, #6366f1) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--fc, #6366f1) 32%, transparent);
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  line-height: 1.2;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Entegre Aksiyon Kapsülü (🔍 | ⋯) */
+.folder-actions-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-full, 9999px);
+  padding: 2px 4px;
+  gap: 2px;
+  opacity: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.folder-card:hover .folder-actions-pill,
+.folder-header:hover .folder-actions-pill {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.folder-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
   line-height: 1;
+  transition: all 0.15s ease;
 }
-.folder-header:hover .folder-opt-btn { opacity: 1; }
-.folder-opt-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.1); }
 
-/* Body */
-.folder-body {
-  padding: 0.55rem 0.65rem 0.65rem;
-  border-top: 1px solid rgba(255,255,255,0.05);
+.folder-action-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.08);
 }
+
+.folder-filter-btn.active {
+  color: #fff;
+  background: var(--fc, var(--accent-primary));
+  box-shadow: 0 0 8px var(--fc, var(--accent-primary));
+}
+
+.folder-filter-input {
+  flex: 1;
+  min-width: 0;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--fc, var(--accent-primary));
+  border-radius: var(--radius-full);
+  color: var(--text-main);
+  font-size: 0.76rem;
+  padding: 0.22rem 0.6rem;
+  outline: none;
+  font-family: inherit;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--fc, #6366f1) 30%, transparent);
+  transition: all 0.2s ease;
+}
+
+/* Klasör Gövdesi (Folder Body) */
+.folder-body {
+  padding: 0.6rem 0.75rem 0.75rem;
+  background: rgba(0, 0, 0, 0.04);
+}
+
 .folder-card.collapsed .folder-body {
   display: none !important;
 }
 
 /* İkon Görünümü */
 .folder-body.view-icon {
-  display: flex; flex-wrap: wrap; gap: 0.3rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
   align-items: flex-start;
 }
+
 .folder-body.view-icon .link-item {
-  position: relative; display: inline-flex;
+  position: relative;
+  display: inline-flex;
 }
+
 .link-icon-card {
   width: var(--folder-icon-size, 64px);
   height: var(--folder-icon-size, 64px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 0; border-radius: 12px;
-  text-decoration: none; position: relative;
-  transition: transform 0.18s ease-out, background 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 12px;
+  text-decoration: none;
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.18s ease, box-shadow 0.2s ease;
   overflow: hidden;
 }
+
 .link-icon-card:hover {
-  background: rgba(255,255,255,0.08);
-  transform: scale(1.30);
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.18) translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
   z-index: 5;
 }
+
 .link-fav-icon {
-  width: 24px; height: 24px; border-radius: 6px;
-  background: transparent; display: flex; align-items: center; justify-content: center;
-  font-size: 1.2rem; color: var(--text-main); flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--text-main);
+  flex-shrink: 0;
 }
+
 .link-icon-card .link-fav-icon {
-  width: 100%; height: 100%; border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
   font-size: calc(var(--folder-icon-size, 64px) * 0.5);
 }
+
 .link-fav-icon img {
-  width: 16px; height: 16px; border-radius: 4px; object-fit: contain;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  object-fit: contain;
 }
+
 .link-icon-card .link-fav-icon img {
-  width: 100%; height: 100%; border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
 }
 
 .link-icon-label { display: none; }
 
+/* Liste Görünümü (List View) */
+.folder-body.view-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
-/* Liste Görünümü */
-.folder-body.view-list { display: flex; flex-direction: column; gap: 0; }
 .folder-body.view-list .link-item {
-  display: flex; align-items: center; position: relative;
-  transition: transform var(--transition-fast), border var(--transition-fast);
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: var(--radius-sm);
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 
 /* Link Sürükle & Bırak Sıralama Stilleri */
 .link-item {
   cursor: grab;
 }
+
 .link-item:active {
   cursor: grabbing;
 }
+
 .link-item.link-dragging {
   opacity: 0.35 !important;
   transform: scale(0.97);
   box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
 }
+
 .link-item.link-drag-over-top {
   border-top: 2px solid var(--accent-primary) !important;
 }
+
 .link-item.link-drag-over-bottom {
   border-bottom: 2px solid var(--accent-primary) !important;
 }
-.link-item-icon.link-drag-over-top {
-  border-left: 2px solid var(--accent-primary) !important;
-  border-top: none !important;
-}
-.link-item-icon.link-drag-over-bottom {
-  border-right: 2px solid var(--accent-primary) !important;
-  border-bottom: none !important;
-}
+
 .link-list-row {
-  display: flex; align-items: center; gap: 0.4rem;
-  text-decoration: none; padding: 0.32rem 0.45rem;
-  border-radius: var(--radius-sm); color: var(--text-muted);
-  flex: 1; min-width: 0; overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  padding: 0.38rem 0.55rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
   box-sizing: border-box;
-  transition: background var(--transition-fast), color var(--transition-fast), padding var(--transition-fast);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.link-list-row:hover { background: rgba(255,255,255,0.06); color: var(--text-main); }
+
+.link-list-row:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  transform: translateX(3px);
+}
+
 .link-item:hover .link-list-row {
-  padding-right: 58px; /* Sağdaki hover aksiyon butonları için dinamik alan */
+  padding-right: 58px;
 }
+
 .link-list-title {
-  font-size: 0.82rem; font-weight: 500;
-  flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-size: 0.83rem;
+  font-weight: 500;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
 .link-list-url {
-  font-size: 0.68rem; color: var(--text-dim);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  max-width: 38%; min-width: 0; flex: 0 1 auto;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 0.1rem 0.35rem;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 38%;
+  min-width: 0;
+  flex: 0 1 auto;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.12rem 0.4rem;
   border-radius: 4px;
   letter-spacing: -0.01em;
   box-sizing: border-box;
-  transition: all var(--transition-fast);
-}
-.link-list-row:hover .link-list-url {
-  background: rgba(255, 255, 255, 0.09);
-  color: var(--text-muted);
-  border-color: rgba(255, 255, 255, 0.12);
+  transition: all 0.15s ease;
 }
 
-/* Sütun Sayısına Göre Duyarlı (Responsive) URL Rozeti */
+.link-list-row:hover .link-list-url {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Sütun Sayısına Göre Duyarlı URL Rozeti */
 [data-cols="5"] .link-list-url,
 [data-cols="6"] .link-list-url {
   max-width: 36%;
@@ -1813,40 +1796,93 @@ body {
 /* Sil Butonu */
 .link-del-btn {
   display: none;
-  background: none; border: none; color: var(--accent-rose);
-  font-size: 0.65rem; cursor: pointer; padding: 0 3px;
-  border-radius: 50%; flex-shrink: 0; line-height: 1;
+  background: none;
+  border: none;
+  color: var(--accent-rose);
+  font-size: 0.65rem;
+  cursor: pointer;
+  padding: 0 3px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  line-height: 1;
 }
-.link-item:hover .link-del-btn { display: inline; }
-.link-del-list { margin-left: 0.25rem; }
+
+.link-item:hover .link-del-btn {
+  display: inline;
+}
+
+.link-del-list {
+  margin-left: 0.25rem;
+}
 
 /* "+ Bu klasöre ekle" butonu */
 .add-to-folder-btn {
-  background: none; border: 1px dashed rgba(255,255,255,0.1);
-  border-radius: var(--radius-sm); color: var(--text-dim);
-  font-size: 0.75rem; cursor: pointer; font-family: inherit;
-  display: flex; align-items: center; gap: 0.3rem;
-  padding: 0.25rem 0.5rem; margin-top: 0.25rem;
-  transition: all var(--transition-fast);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 0.76rem;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  margin-top: 0.35rem;
+  width: 100%;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.view-icon .add-to-folder-btn { padding: 0.35rem 0.4rem; min-width: 36px; justify-content: center; }
-.add-to-folder-btn:hover { color: var(--accent-primary); border-color: var(--accent-primary); background: rgba(99,102,241,0.07); }
+
+.view-icon .add-to-folder-btn {
+  padding: 0.35rem 0.4rem;
+  min-width: 36px;
+  width: auto;
+  justify-content: center;
+}
+
+.add-to-folder-btn:hover {
+  color: #fff;
+  border-color: var(--fc, var(--accent-primary));
+  background: color-mix(in srgb, var(--fc, #6366f1) 18%, transparent);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--fc, #6366f1) 25%, transparent);
+}
 
 /* Yeni klasör ekle kartı */
 .folder-add-card {
-  border: 1.5px dashed var(--border-glass-hover) !important;
-  border-top: 1.5px dashed var(--border-glass-hover) !important;
-  background: transparent !important;
-  display: flex; align-items: center; justify-content: center;
+  border: 1.5px dashed rgba(255, 255, 255, 0.16) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 72px;
+  border-radius: var(--radius-lg, 14px) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
+
+.folder-add-card:hover {
+  border-color: var(--accent-primary) !important;
+  background: rgba(99, 102, 241, 0.06) !important;
+  transform: translateY(-2px);
+}
+
 .folder-add-btn {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 0.35rem; background: none; border: none;
-  color: var(--text-dim); cursor: pointer; font-family: inherit;
-  padding: 1rem; transition: color var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  padding: 1rem;
+  transition: color 0.15s ease;
 }
-.folder-add-btn:hover { color: var(--accent-primary); }
+
+.folder-add-btn:hover {
+  color: var(--accent-primary);
+}
 
 /* ==========================================================================
    CONTEXT MENU
@@ -2116,31 +2152,145 @@ body[data-cols="1"] .folders-grid {
 .fav-bar-container.view-icon .fav-item-label { display: none; }
 
 
+/* Modern Birleşik Kapsül (Capsule Widget Bar) */
+.header-widgets-group {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  padding: 3px;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.header-widgets-group:hover {
+  border-color: var(--border-glass-hover);
+  box-shadow: 0 6px 20px -2px rgba(0, 0, 0, 0.3);
+}
+
+.header-widget-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0 2px;
+}
+
 /* Saat, Tarih ve Hava Durumu kartlarını aynı boyutta tutma */
 .header-widget {
-  min-width: 140px;
-  height: 64px;
+  min-width: 125px;
+  height: 52px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 0.5rem;
-  border-radius: var(--radius-lg);
+  padding: 0.35rem 0.65rem;
+  border-radius: 13px;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
   margin: 0;
+  transition: background var(--transition-fast), transform var(--transition-fast);
 }
-.header-clock-widget { display: none; } /* Eskiyi gizle */
-.header-time { font-size: 1.6rem; display: flex; align-items: baseline; gap: 0.2rem; }
-.header-date { margin-top: 0; opacity: 0.9; }
 
-/* --- FAVORİLER BARI (ORTAK ÖLÇÜLER) --- */
+.header-widget:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.header-clock-widget { display: none; }
+.header-time { 
+  font-size: 1.45rem; 
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  display: flex; 
+  align-items: baseline; 
+  gap: 0.2rem; 
+  color: var(--text-main);
+}
+.header-seconds {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  opacity: 0.85;
+}
+.header-date { 
+  margin-top: 0; 
+  opacity: 0.95; 
+}
+
+/* Hava durumu kartı - Kapsül içine entegre */
+.weather-badge {
+  min-width: 135px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-main);
+  border-radius: 13px;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.weather-badge:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.weather-badge:active .weather-icon {
+  transform: rotate(180deg);
+}
+
+.weather-badge .weather-icon {
+  font-size: 1.15rem;
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.weather-badge:hover .weather-icon {
+  transform: scale(1.18);
+}
+
+/* --- FAVORİLER BARI (PREMIUM APPLE DOCK STANDARDI) --- */
+.fav-bar-section {
+  width: 100%;
+  position: relative;
+  padding: 0.5rem 1.5rem;
+  background: rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid var(--border-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  flex-shrink: 0;
+}
+
+.fav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0.2rem 0;
+}
+
 .fav-bar-container .fav-item {
-  width: 76px;
-  height: 72px;
+  width: 72px;
+  height: 68px;
   background: var(--surface-glass);
   border: 1px solid var(--border-glass);
-  border-radius: var(--radius-md);
-  padding: 0.3rem;
+  border-radius: 14px;
+  padding: 0.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2148,21 +2298,35 @@ body[data-cols="1"] .folders-grid {
   box-sizing: border-box;
   cursor: grab;
   user-select: none;
-  transition: transform var(--transition-fast), opacity var(--transition-fast), border-color var(--transition-fast);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background var(--transition-fast), border-color var(--transition-fast), box-shadow 0.18s ease;
 }
+
+.fav-bar-container .fav-item:hover {
+  transform: translateY(-3px) scale(1.06);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-glass-hover);
+  box-shadow: 0 8px 20px -2px rgba(0, 0, 0, 0.35);
+  z-index: 5;
+}
+
 .fav-bar-container .fav-item:active {
   cursor: grabbing;
+  transform: scale(0.96);
 }
+
 .fav-bar-container .fav-item.fav-dragging {
   opacity: 0.35;
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
+
 .fav-bar-container .fav-item.drag-over-left {
-  border-left: 2px solid var(--accent) !important;
+  border-left: 2px solid var(--accent-primary) !important;
 }
 .fav-bar-container .fav-item.drag-over-right {
-  border-right: 2px solid var(--accent) !important;
+  border-right: 2px solid var(--accent-primary) !important;
 }
+
 .fav-bar-container .fav-item-link {
   display: flex;
   flex-direction: column;
@@ -2172,26 +2336,50 @@ body[data-cols="1"] .folders-grid {
   height: 100%;
   text-decoration: none;
 }
+
 .fav-bar-container .fav-item-label {
-  margin-top: 0.3rem;
-  font-size: 0.65rem;
+  margin-top: 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
+  max-width: 90%;
   display: block;
+  letter-spacing: -0.01em;
+  transition: color var(--transition-fast);
 }
-/* İkon görünümünde sadece yazıyı gizliyoruz, kutu boyutu aynı kalıyor */
+
+.fav-bar-container .fav-item:hover .fav-item-label {
+  color: var(--text-main);
+}
+
 .fav-bar-container.view-icon .fav-item-label {
   display: none;
 }
 
 /* Fav Ekle Butonunu da aynı ölçüye alalım */
 .fav-add-btn {
-  width: 76px;
-  height: 72px;
+  width: 72px;
+  height: 68px;
+  background: transparent;
+  border: 1.5px dashed var(--border-glass);
+  border-radius: 14px;
+  color: var(--text-dim);
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.fav-add-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: rgba(99, 102, 241, 0.08);
+  transform: translateY(-2px);
 }
 
 /* İkon Görünümünde İkonu Büyüt */
@@ -2207,55 +2395,106 @@ body[data-cols="1"] .folders-grid {
   border-radius: 8px;
 }
 /* --- SEARCH BAR --- */
+/* --- MODERN SPOTLIGHT ARAMA BARI --- */
 .top-bar-center {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 1rem;
+  margin: 0 0.85rem;
   transition: all var(--transition-normal);
 }
+
 .top-search-form {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 500px;
-  height: 42px;
-  padding: 0 0.5rem;
-  border-radius: 21px;
-  transition: all var(--transition-normal);
+  max-width: 520px;
+  height: 44px;
+  padding: 0 0.4rem 0 0.8rem;
+  border-radius: 22px;
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
 }
+
+.top-search-form:hover {
+  border-color: var(--border-glass-hover);
+  background: rgba(255, 255, 255, 0.05);
+}
+
 .top-search-form:focus-within {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 0 2px var(--accent-rose);
-  background: rgba(255,255,255,0.08);
+  border-color: var(--accent-primary);
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.35), 0 8px 25px -4px rgba(0, 0, 0, 0.5);
+  transform: translateY(-1px) scale(1.01);
 }
+
 .top-search-btn {
   background: transparent;
   border: none;
   color: var(--text-dim);
-  font-size: 1.1rem;
-  padding: 0 0.5rem;
+  font-size: 1.05rem;
+  padding: 0 0.4rem 0 0;
   cursor: pointer;
-  transition: color var(--transition-fast);
+  line-height: 1;
+  transition: color var(--transition-fast), transform var(--transition-fast);
 }
-.top-search-btn:hover { color: var(--text-main); }
+
+.top-search-btn:hover { 
+  color: var(--accent-primary);
+  transform: scale(1.1);
+}
+
 .top-search-form input {
   flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   color: var(--text-main);
-  font-size: 0.95rem;
-  padding: 0 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 0 0.4rem;
   height: 100%;
   outline: none;
-  width: 100%;
+  letter-spacing: -0.01em;
 }
-.top-search-form input::placeholder { color: var(--text-muted); }
+
+.top-search-form input::placeholder { 
+  color: var(--text-muted); 
+  font-weight: 400;
+}
+
 .top-search-engine-picker {
   position: relative;
   display: inline-flex;
   align-items: center;
   user-select: none;
+}
+
+.top-search-engine-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0.25rem 0.55rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.top-search-engine-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 .top-search-engine-btn {
   display: inline-flex;
@@ -2371,52 +2610,59 @@ body[data-cols="1"] .folders-grid {
 .lang-picker-btn {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.2rem 0.55rem;
-  height: 32px;
-  background: rgba(255,255,255,0.05);
+  gap: 0.45rem;
+  padding: 0.25rem 0.65rem;
+  height: 38px;
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border-glass);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--text-main);
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition-fast), border-color var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 
 .lang-picker-btn:hover {
   background: var(--surface-glass-hover);
   border-color: var(--border-glass-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
 }
 
 .lang-flag {
   width: 20px;
   height: 14px;
   object-fit: cover;
-  border-radius: 2px;
+  border-radius: 3px;
   display: block;
   flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .lang-picker-menu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 8px);
   right: 0;
-  background: var(--surface-glass);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border-glass);
+  background: var(--surface-glass-card, rgba(15, 23, 42, 0.88));
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid var(--border-glass-light, rgba(255, 255, 255, 0.14));
   border-radius: var(--radius-md);
-  box-shadow: var(--glass-shadow-hover);
-  min-width: 140px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255,255,255,0.06);
+  min-width: 150px;
   overflow: hidden;
   z-index: 9999;
   opacity: 0;
   transform: translateY(-6px) scale(0.97);
   pointer-events: none;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 4px;
 }
 
 .lang-picker.open .lang-picker-menu {
