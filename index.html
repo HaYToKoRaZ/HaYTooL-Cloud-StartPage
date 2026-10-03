@@ -59,7 +59,9 @@
   <link rel="icon" type="image/png" href="assets/icon32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
   <style>
     :root {
       --bg: #05070b;
@@ -748,7 +750,7 @@
   <header>
     <div class="nav-container">
       <a href="#" class="brand">
-        <img src="assets/icon128.png" alt="HaYTooL Logo">
+        <img src="assets/icon128.png" alt="HaYTooL Logo" width="40" height="40">
         <span>HaYTooL Cloud</span>
       </a>
 
@@ -839,7 +841,7 @@
         </a>
 
         <a href="https://chromewebstore.google.com/detail/cloud-startpage-haytool/fgiompioalgpjalpmdjchlgecgdkkncn" target="_blank" class="store-chip" title="Helium Browser">
-          <img src="assets/helium.png" alt="Helium" style="border-radius:4px;">
+          <img src="assets/helium.png" alt="Helium" width="24" height="24" loading="lazy" decoding="async" style="border-radius:4px;">
           <div class="store-chip-text">
             <span class="store-chip-sub" data-i18n="store_sub_helium">Chrome Mağazası ile</span>
             <span class="store-chip-name">Helium Browser</span>
@@ -862,7 +864,7 @@
             <div style="width: 48px;"></div>
           </div>
           <div class="window-content">
-            <img id="appScreenshotImg" src="assets/screenshots/tr.jpeg" alt="HaYTooL Cloud StartPage Interactive Preview">
+            <img id="appScreenshotImg" src="assets/screenshots/tr.jpeg" alt="HaYTooL Cloud StartPage Interactive Preview" width="1794" height="866" decoding="async" fetchpriority="high">
           </div>
         </div>
       </div>
