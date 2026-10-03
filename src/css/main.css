@@ -1760,21 +1760,54 @@ body {
   border-bottom: none !important;
 }
 .link-list-row {
-  display: flex; align-items: center; gap: 0.5rem;
-  text-decoration: none; padding: 0.3rem 0.4rem;
+  display: flex; align-items: center; gap: 0.4rem;
+  text-decoration: none; padding: 0.32rem 0.45rem;
   border-radius: var(--radius-sm); color: var(--text-muted);
-  flex: 1; overflow: hidden;
-  transition: background var(--transition-fast);
+  flex: 1; min-width: 0; overflow: hidden;
+  box-sizing: border-box;
+  transition: background var(--transition-fast), color var(--transition-fast), padding var(--transition-fast);
 }
 .link-list-row:hover { background: rgba(255,255,255,0.06); color: var(--text-main); }
+.link-item:hover .link-list-row {
+  padding-right: 58px; /* Sağdaki hover aksiyon butonları için dinamik alan */
+}
 .link-list-title {
   font-size: 0.82rem; font-weight: 500;
-  flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .link-list-url {
-  font-size: 0.72rem; color: var(--text-dim);
+  font-size: 0.68rem; color: var(--text-dim);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  max-width: 120px;
+  max-width: 38%; min-width: 0; flex: 0 1 auto;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  letter-spacing: -0.01em;
+  box-sizing: border-box;
+  transition: all var(--transition-fast);
+}
+.link-list-row:hover .link-list-url {
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--text-muted);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Sütun Sayısına Göre Duyarlı (Responsive) URL Rozeti */
+[data-cols="5"] .link-list-url,
+[data-cols="6"] .link-list-url {
+  max-width: 36%;
+  font-size: 0.64rem;
+  padding: 0.08rem 0.3rem;
+}
+
+[data-cols="7"] .link-list-url,
+[data-cols="8"] .link-list-url,
+[data-cols="9"] .link-list-url,
+[data-cols="10"] .link-list-url {
+  max-width: 34%;
+  font-size: 0.60rem;
+  padding: 0.06rem 0.25rem;
 }
 
 /* Sil Butonu */

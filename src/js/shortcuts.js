@@ -669,7 +669,12 @@ export const Shortcuts = {
 
       const urlSpan = document.createElement('span');
       urlSpan.className = 'link-list-url';
-      try { urlSpan.textContent = new URL(item.url).hostname; } catch(e) { urlSpan.textContent = item.url; }
+      try {
+        const host = new URL(item.url).hostname.replace(/^www\./i, '');
+        urlSpan.textContent = host;
+      } catch(e) {
+        urlSpan.textContent = (item.url || '').replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+      }
 
       const titleSpan = document.createElement('span');
       titleSpan.className = 'link-list-title';
