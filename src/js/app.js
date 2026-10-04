@@ -7,7 +7,7 @@ import { Settings }  from './settings.js';
 import { GistSync }  from './gist-sync.js';
 
 /**
- * Cloud StartPage HaYTooL v4.6.11
+ * Cloud StartPage HaYTooL v5.6
  */
 class StartPageApp {
   async init() {
@@ -50,7 +50,7 @@ class StartPageApp {
         this.initQuotes();
       });
       
-      console.log('✨ Cloud StartPage HaYTooL v4.6.11 - hazır.');
+      console.log('✨ Cloud StartPage HaYTooL v5.6 - hazır.');
       
       // Günün ilk açılışında arka planda sessizce otomatik Gist yedeği al
       setTimeout(() => {

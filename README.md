@@ -9,7 +9,7 @@
 <p align="center">
   
   
-  <img src="src/assets/badges/version.svg" alt="Version 4.5.4">
+  <img src="src/assets/badges/version.svg" alt="Version 5.6">
   <img src="src/assets/badges/manifest.svg" alt="Manifest V3">
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Cloud-StartPage/latest/total?style=for-the-badge&logo=github&color=2ea44f&label=LATEST%20DOWNLOADS" alt="Latest Release Downloads"></a>
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Cloud-StartPage/releases"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Cloud-StartPage/total?style=for-the-badge&logo=github&color=0969da&label=TOTAL%20DOWNLOADS" alt="Total Downloads"></a>

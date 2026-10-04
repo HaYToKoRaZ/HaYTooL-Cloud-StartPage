@@ -1,0 +1,43 @@
+name: Release Extension Package
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'manifest.json'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master branch
+        uses: actions/checkout@v4
+
+      - name: Read version from manifest.json
+        id: get_version
+        run: |
+          VERSION=$(jq -r '.version' manifest.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "TAG=v$VERSION" >> $GITHUB_ENV
+
+      - name: Build Clean Extension ZIP Package
+        run: |
+          mkdir -p dist
+          ZIP_NAME="HaYTooL-StartPage-v${{ env.VERSION }}.zip"
+          zip -r "dist/${ZIP_NAME}" . -x "*.git*" "README.md" "src/assets/screenshots/*"
+          echo "ZIP_PATH=dist/${ZIP_NAME}" >> $GITHUB_ENV
+
+      - name: Create or Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: HaYTooL StartPage ${{ env.TAG }}
+          files: ${{ env.ZIP_PATH }}
+          generate_release_notes: true
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
