@@ -13,8 +13,16 @@
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="theme-color" content="#05070b">
   
-  <!-- Canonical & Alternate Links -->
+  <!-- Canonical & Multilingual Alternate Links (SEO & Hreflang) -->
   <link rel="canonical" href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/">
+  <link rel="alternate" hreflang="tr" href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/?lang=tr">
+  <link rel="alternate" hreflang="en" href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/?lang=en">
+  <link rel="alternate" hreflang="de" href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/?lang=de">
+  <link rel="alternate" hreflang="es" href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/?lang=es">
+  <link rel="alternate" hreflang="fr" href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/?lang=fr">
+  <link rel="alternate" hreflang="ru" href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/?lang=ru">
+  <link rel="alternate" hreflang="pt" href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/?lang=pt">
+  <link rel="alternate" hreflang="x-default" href="https://haytokoraz.github.io/HaYTooL-Cloud-StartPage/">
   
   <!-- Open Graph / Facebook (Google, DuckDuckGo & Socials) -->
   <meta property="og:type" content="website">
@@ -39,6 +47,7 @@
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "HaYTooL Cloud StartPage",
+    "softwareVersion": "5.6",
     "operatingSystem": "All Chromium Browsers (Chrome, Edge, Brave, Helium)",
     "applicationCategory": "BrowserApplication",
     "offers": {
@@ -1195,11 +1204,15 @@
       localStorage.setItem("haytool_web_lang", lang);
     }
 
-    // Başlangıç dili algılama
+    // Başlangıç dili algılama (?lang parametresi, kayıtlı dil veya tarayıcı dili)
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlLang = urlParams.get("lang");
     const browserLang = (navigator.language || "en").split("-")[0];
     const defaultAvailable = ["tr", "en", "de", "es", "fr", "ru", "pt"].includes(browserLang) ? browserLang : "en";
-    const savedLang = localStorage.getItem("haytool_web_lang") || defaultAvailable;
-    setLang(savedLang);
+    const initialLang = (urlLang && ["tr", "en", "de", "es", "fr", "ru", "pt"].includes(urlLang))
+      ? urlLang
+      : (localStorage.getItem("haytool_web_lang") || defaultAvailable);
+    setLang(initialLang);
 
     // Scroll Reveal (Linear/Apple Animations)
     if ('IntersectionObserver' in window) {
