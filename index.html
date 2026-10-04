@@ -745,6 +745,18 @@
       box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
     }
 
+    /* Scroll Reveal Animation Styles (GPU Accelerated, No Forced Reflow) */
+    .reveal-init {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .reveal-visible {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+
     /* Responsive */
     @media (max-width: 900px) {
       .bento-col-8, .bento-col-4, .bento-col-6 {
@@ -767,7 +779,7 @@
   <header>
     <div class="nav-container">
       <a href="#" class="brand">
-        <img src="assets/icon128.png" alt="HaYTooL Logo" width="40" height="40">
+        <img src="assets/icon48.png" alt="HaYTooL Logo" width="40" height="40" loading="eager" decoding="async">
         <span>HaYTooL Cloud</span>
       </a>
 
@@ -881,7 +893,7 @@
             <div style="width: 48px;"></div>
           </div>
           <div class="window-content">
-            <img id="appScreenshotImg" src="assets/screenshots/tr.jpeg" alt="HaYTooL Cloud StartPage Interactive Preview" width="1794" height="866" decoding="async" fetchpriority="high">
+            <img id="appScreenshotImg" src="assets/screenshots/tr.jpeg" alt="HaYTooL Cloud StartPage Interactive Preview" width="1200" height="579" decoding="async" fetchpriority="high">
           </div>
         </div>
       </div>
@@ -1222,62 +1234,62 @@
       : (localStorage.getItem("haytool_web_lang") || defaultAvailable);
     setLang(initialLang);
 
-    // Scroll Reveal (Linear/Apple Animations)
+    // Scroll Reveal (GPU Accelerated CSS Classes - No Forced Reflow)
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.classList.add('reveal-visible');
             observer.unobserve(entry.target);
           }
         });
       }, { threshold: 0.08 });
 
       document.querySelectorAll('.bento-card, .stat-cell, .mac-window, .code-terminal, .store-chip').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(28px)';
-        el.style.transition = 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+        el.classList.add('reveal-init');
         observer.observe(el);
       });
     }
   </script>
 
-  <!-- Ziyaret & Durum Bildirimi Servisi -->
+  <!-- Ziyaret & Durum Bildirimi Servisi (Kritik İstek Zincirinden Çıkarıldı - Sayfa Yüklemesi Sonrasına Ertelendi) -->
   <script>
-  (function() {
-    var SERVICE_URL = 'https://hayto-telemetry.korazhayto.workers.dev/api/ping';
-    var APP_ID = 'web_cloud_startpage';
+  window.addEventListener('load', function() {
+    var delayTelemetry = ('requestIdleCallback' in window) ? window.requestIdleCallback : function(cb) { setTimeout(cb, 2000); };
+    delayTelemetry(function() {
+      var SERVICE_URL = 'https://hayto-telemetry.korazhayto.workers.dev/api/ping';
+      var APP_ID = 'web_cloud_startpage';
 
-    function sendPulse() {
-      if (!navigator.onLine) return;
-      try {
-        var todayStr = new Date().toISOString().slice(0, 10);
-        var sid = localStorage.getItem('hayto_site_sid');
-        var lastDate = localStorage.getItem('hayto_site_last_date');
+      function sendPulse() {
+        if (!navigator.onLine) return;
+        try {
+          var todayStr = new Date().toISOString().slice(0, 10);
+          var sid = localStorage.getItem('hayto_site_sid');
+          var lastDate = localStorage.getItem('hayto_site_last_date');
 
-        var isNew = false;
-        if (!sid) {
-          sid = 's_' + Math.random().toString(36).substring(2, 15);
-          localStorage.setItem('hayto_site_sid', sid);
-        }
-        if (lastDate !== todayStr) {
-          isNew = true;
-          localStorage.setItem('hayto_site_last_date', todayStr);
-        }
+          var isNew = false;
+          if (!sid) {
+            sid = 's_' + Math.random().toString(36).substring(2, 15);
+            localStorage.setItem('hayto_site_sid', sid);
+          }
+          if (lastDate !== todayStr) {
+            isNew = true;
+            localStorage.setItem('hayto_site_last_date', todayStr);
+          }
 
-        fetch(SERVICE_URL, {
-          method: 'POST',
-          mode: 'cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ app: APP_ID, session_id: sid, is_new_session: isNew }),
-          keepalive: true
-        }).catch(function() {});
-      } catch(e) {}
-    }
-    sendPulse();
-    setInterval(sendPulse, 2 * 60 * 1000);
-  })();
+          fetch(SERVICE_URL, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ app: APP_ID, session_id: sid, is_new_session: isNew }),
+            keepalive: true
+          }).catch(function() {});
+        } catch(e) {}
+      }
+      sendPulse();
+      setInterval(sendPulse, 2 * 60 * 1000);
+    });
+  });
   </script>
 
 </body>
